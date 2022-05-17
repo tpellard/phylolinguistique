@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Phylogénies linguistiques avec R"
+  title: "Phylolinguistique avec R"
   # subtitle: "intro"
   author:
     - name: "Thomas Pellard"
