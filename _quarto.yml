@@ -13,6 +13,7 @@ book:
       affiliation-url: http://crlao.ehess.fr/
   # date: today
   logo: phyloling.svg
+  favicon: phyloling.png
   
   chapters:
     - index.qmd
