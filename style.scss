@@ -1,0 +1,24 @@
+/*-- scss:defaults --*/
+
+$font-family-sans-serif: "Saira Condensed";
+$headings-font-family: $font-family-sans-serif;
+
+/*-- scss:rules --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Andada+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+ 
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@100;200;300;400;500;600;700&display=swap');
+
+.subtitle,
+.sidebar-title,
+.nav-footer,
+.sidebar nav[role="doc-toc"] > h2,
+.sidebar nav[role="doc-toc"] > .h2,
+.quarto-title-meta-heading
+{
+  text-transform: none;
+	font-family: $headings-font-family;
+	font-weight: 400;
+}

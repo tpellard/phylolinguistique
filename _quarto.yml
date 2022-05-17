@@ -3,14 +3,48 @@ project:
   output-dir: docs
 
 book:
-  title: "mybook"
-  author: "Thomas Pellard"
+  title: "Phylogénies linguistiques avec R"
+  # subtitle: "intro"
+  author:
+  - name: "Thomas Pellard"
+    # url: 
+    orcid: 0000-0001-6189-1677
+    affiliation: "CRLAO (EHESS, Inalco, CNRS)"
+    affiliation-url: http://crlao.ehess.fr/
   # date: today
+  
   chapters:
     - index.qmd
+  
+  site-url: https://tpellard.github.io/phylolinguistique
+  repo-url: https://github.com/tpellard/phylolinguistique
+  repo-branch: master
+  repo-actions: [issue]
+  sharing: [twitter, facebook]
+  twitter-card:
+    creator: "@ThomasPellard"
+  opengraph:
+    locale: fr-FR
+  
+  page-navigation: true
+  page-footer: 
+    right: 
+      - text: "[Thomas Pellard]"
+
+lang: fr
+title-block-affiliation-single: "Affiliation"
+repo-action-links-issue: "Signaler un problème"
 
 format:
+
   html:
-    theme: cosmo
+    theme: 
+      light: [lumen, style.scss]
+      dark: slate
+    mainfont: "Andada Pro"
+    highlight-style: arrow
+    code-link: true
+    toc-title: "Sur cette page"
+    
   pdf:
     documentclass: scrbook
