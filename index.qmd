@@ -1,7 +1,37 @@
-# Preface {.unnumbered}
+## Bienvenue {.unnumbered}
 
-This is a Quarto book.
+Ce tutoriel est une introduction aux méthodes phylogénétiques appliquées à la linguistique et implémentées avec le logiciel R. Le but est d'apprendre à des linguistes à utiliser les méthodes de classification et d'inférence phylogénétique courantes en biologie.
+    
+:::{.callout-warning}
+Ce tutoriel est en construction. Il reste assez basique et, s'il pourra s'étoffer à l'avenir, il ne s'adresse pour l'instant pas aux néophytes complets. Les concepts de base de la linguistique historique et comparative comme de la phylogénétique sont rarement expliqués et le plus souvent présupposés, et il n'y a pas de références systématiques à la littérature scientifique pertinente.
+:::
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+:::{.callout-note}
+Ce tutoriel est réalisé avec [Quarto](https://quarto.org/), et le code R utilise le [Tidyverse](https://www.tidyverse.org/).
+:::
 
-$x + y = \sqrt{z}$
+## Lectures
+
+Les lectures ci-dessous sont recommandées pour une (re)mise à niveau ou pour aller plus loin.
+
+### Phylogénétique
+
+En français, l'introduction à la systématique de @Herve2020SystematiqueAnimale constitue une bonne porte d'entrée, et @Aubert2017ClasserVivant est un manuel plus complet. On peut également recommander l'article de @Gregory2008UnderstandingEvolutionaryTrees pour éviter les erreurs d'interprétations courantes des arbres phylogénétiques.
+
+Pour aller plus loin, on peut consulter les manuels avancés de @DarluEtAl2019ReconstructionPhylogenetique et @PerriereBrochierArmanet2010ConceptsMethodesPhylogenieMoleculaire, ainsi que ceux en anglais de @Felsenstein2004InferringPhylogenies, @LemeyEtAl2009PhylogeneticHandbook et @BrowerSchuh2021BiologicalSystematics.
+
+### Linguistique
+
+Concernant les applications à la linguistique, @AtkinsonGray2005CuriousParallelsCuriousConnections, @GeislerList2013DoLanguagesGrowTrees, et @JacquesList2019SaveTrees détaillent le transfert de concepts phylogénétiques entre la biologie et la linguistique.
+
+D'un point de vue pratique et technique, on peut recommander @Dunn2015LanguagePhylogenies, ainsi que l'excellent tutoriel en R de @Goldstein2020IndoEuropeanPhylogeneticsR.
+
+### R
+Les manuels de @Grolemund2014HandsProgrammingWithR et de @WickhamGrolemund2017RDataScience sont librement disponibles en ligne, et il existe une traduction en français de ce dernier [@WickhamGrolemund2018RDataSciences].
+
+Il existe en outre de nombreux tutoriels en ligne, y compris en français, comme:
+
+  * [Introduction à R et au tidyverse](https://juba.github.io/tidyverse/)
+  * [Begin'R](http://beginr.u-bordeaux.fr/)
+  * [utilitR](https://www.book.utilitr.org/)
+  * [Préparation et manipulation de données dans R](https://hackmd.io/zoXTvwg8SqiFZ-pw9-98AA)

@@ -6,15 +6,16 @@ book:
   title: "Phylogénies linguistiques avec R"
   # subtitle: "intro"
   author:
-  - name: "Thomas Pellard"
+    - name: "Thomas Pellard"
     # url: 
-    orcid: 0000-0001-6189-1677
-    affiliation: "CRLAO (EHESS, Inalco, CNRS)"
-    affiliation-url: http://crlao.ehess.fr/
+      orcid: 0000-0001-6189-1677
+      affiliation: "CRLAO (EHESS, Inalco, CNRS)"
+      affiliation-url: http://crlao.ehess.fr/
   # date: today
-  
+
   chapters:
     - index.qmd
+    - bibliographie.qmd
   
   site-url: https://tpellard.github.io/phylolinguistique
   repo-url: https://github.com/tpellard/phylolinguistique
@@ -34,6 +35,8 @@ book:
 lang: fr
 title-block-affiliation-single: "Affiliation"
 repo-action-links-issue: "Signaler un problème"
+bibliography: "/home/tpellard/texmf/bibtex/bib/linguistica_bib/linguistica.bib"
+csl: unified-style-sheet-for-linguistics_nocap.csl
 
 format:
 
@@ -45,6 +48,6 @@ format:
     highlight-style: arrow
     code-link: true
     toc-title: "Sur cette page"
-    
-  pdf:
-    documentclass: scrbook
+
+  # pdf:
+  #   documentclass: scrbook
