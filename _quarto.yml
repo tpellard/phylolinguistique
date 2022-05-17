@@ -44,8 +44,10 @@ format:
   html:
     theme: 
       light: [lumen, style.scss]
-      dark: slate
-    mainfont: "Andada Pro"
+      dark: [slate, style.scss]
+    mainfont: "Titillium Web"
+    # mainfont: "Andada Pro"
+    # mainfont: "Source Sans Pro"
     highlight-style: arrow
     code-link: true
     toc-title: "Sur cette page"
