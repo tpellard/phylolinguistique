@@ -1,6 +1,8 @@
 ## Bienvenue {.unnumbered}
 
 Ce tutoriel est une introduction aux méthodes phylogénétiques appliquées à la linguistique et implémentées avec le logiciel R. Le but est d'apprendre à des linguistes à utiliser les méthodes de classification et d'inférence phylogénétique courantes en biologie.
+
+En l'état, il s'agit avant tout d'un pense-bête pour moi-même ainsi que mes collègues et étudiants.
     
 :::{.callout-warning}
 Ce tutoriel est en construction. Il reste assez basique et, s'il pourra s'étoffer à l'avenir, il ne s'adresse pour l'instant pas aux néophytes complets. Les concepts de base de la linguistique historique et comparative comme de la phylogénétique sont rarement expliqués et le plus souvent présupposés, et il n'y a pas de références systématiques à la littérature scientifique pertinente.
