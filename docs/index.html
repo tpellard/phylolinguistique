@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.339">
+<meta name="generator" content="quarto-0.9.349">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -45,7 +45,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <link href="./bibliographie.html" rel="next">
-<link href="./phyloling.png" rel="icon" type="image/png">
+<link href="./phyloling_circ.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -83,7 +83,7 @@ div.csl-indent {
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -102,7 +102,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="./">
-      <img src="./phyloling.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="./phyloling_scirc.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Phylolinguistique avec R</a> 
@@ -154,7 +154,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#bienvenue" id="toc-bienvenue" class="nav-link active" data-scroll-target="#bienvenue">Bienvenue</a></li>
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a>
+  <li><a href="#ressources" id="toc-ressources" class="nav-link" data-scroll-target="#ressources">Ressources</a>
   <ul class="collapse">
   <li><a href="#phylogénétique" id="toc-phylogénétique" class="nav-link" data-scroll-target="#phylogénétique">Phylogénétique</a></li>
   <li><a href="#linguistique" id="toc-linguistique" class="nav-link" data-scroll-target="#linguistique">Linguistique</a></li>
@@ -164,7 +164,7 @@ div.csl-indent {
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -199,10 +199,22 @@ div.csl-indent {
 
 </header>
 
-<section id="bienvenue" class="level2 unnumbered">
+<section id="bienvenue" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="bienvenue">Bienvenue</h2>
-<p>Ce tutoriel est une introduction aux méthodes phylogénétiques appliquées à la linguistique et implémentées avec le logiciel R. Le but est d’apprendre à des linguistes à utiliser les méthodes de classification et d’inférence phylogénétique courantes en biologie.</p>
-<p>En l’état, il s’agit avant tout d’un pense-bête pour moi-même ainsi que mes collègues et étudiants.</p>
+<p>Ce tutoriel est une introduction aux méthodes phylogénétiques appliquées à la linguistique et implémentées avec le logiciel libre <a href="https://www.r-project.org/">R</a>. Le but est d’apprendre à des linguistes à utiliser les méthodes de classification et d’inférence phylogénétique courantes en biologie.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout-tip callout callout-style-simple">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Vous pouvez visualiser ce site en version sombre à l’aide du bouton <i class="bi bi-toggle-off"></i> du menu latéral droit.</p>
+</div>
+</div>
+</div>
+</div></div><p>En l’état, il s’agit avant tout d’un pense-bête pour moi-même ainsi que mes collègues et étudiants.</p>
 <div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -216,32 +228,50 @@ Avertissement
 <p>Ce tutoriel est en construction. Il reste assez basique et, s’il pourra s’étoffer à l’avenir, il ne s’adresse pour l’instant pas aux néophytes complets. Les concepts de base de la linguistique historique et comparative comme de la phylogénétique sont rarement expliqués et le plus souvent présupposés, et il n’y a pas de références systématiques à la littérature scientifique pertinente.</p>
 </div>
 </div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Participez!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>N’hésitez pas à signaler un problème ou bien à faire part de vos commentaires sur Github via le <a href="https://github.com/tpellard/phylolinguistique/issues/new">lien du menu latéral gauche</a>.</p>
+</div>
+</div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-Note
+Note technique
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Ce tutoriel est réalisé avec <a href="https://quarto.org/">Quarto</a>, et le code R utilise le <a href="https://www.tidyverse.org/">Tidyverse</a>.</p>
+<p>Ce tutoriel est réalisé avec <a href="https://quarto.org/">Quarto</a>, et le code R utilise le <a href="https://www.tidyverse.org/">Tidyverse</a>. Le code source est librement accessible sur <a href="https://github.com/tpellard/phylolinguistique">Github</a>.</p>
 </div>
 </div>
 </section>
-<section id="lectures" class="level2">
-<h2 class="anchored" data-anchor-id="lectures">Lectures</h2>
-<p>Les lectures ci-dessous sont recommandées pour une (re)mise à niveau ou pour aller plus loin.</p>
+<section id="ressources" class="level2">
+<h2 class="anchored" data-anchor-id="ressources">Ressources</h2>
+<p>Les ressources ci-dessous sont recommandées pour une (re)mise à niveau ou pour aller plus loin.</p>
 <section id="phylogénétique" class="level3">
 <h3 class="anchored" data-anchor-id="phylogénétique">Phylogénétique</h3>
-<p>En français, l’introduction à la systématique de <span class="citation" data-cites="Herve2020SystematiqueAnimale">Hervé (<a href="bibliographie.html#ref-Herve2020SystematiqueAnimale" role="doc-biblioref">2020</a>)</span> constitue une bonne porte d’entrée, et <span class="citation" data-cites="Aubert2017ClasserVivant">Aubert (<a href="bibliographie.html#ref-Aubert2017ClasserVivant" role="doc-biblioref">2017</a>)</span> est un manuel plus complet. On peut également recommander l’article de <span class="citation" data-cites="Gregory2008UnderstandingEvolutionaryTrees">Gregory (<a href="bibliographie.html#ref-Gregory2008UnderstandingEvolutionaryTrees" role="doc-biblioref">2008</a>)</span> pour éviter les erreurs d’interprétations courantes des arbres phylogénétiques.</p>
+<p>En français, l’introduction à la systématique de <span class="citation" data-cites="Herve2020SystematiqueAnimale">Hervé (<a href="bibliographie.html#ref-Herve2020SystematiqueAnimale" role="doc-biblioref">2020</a>)</span> constitue une bonne porte d’entrée, et <span class="citation" data-cites="Aubert2017ClasserVivant">Aubert (<a href="bibliographie.html#ref-Aubert2017ClasserVivant" role="doc-biblioref">2017</a>)</span> est un manuel plus complet. On peut également recommander l’article de <span class="citation" data-cites="Gregory2008UnderstandingEvolutionaryTrees">Gregory (<a href="bibliographie.html#ref-Gregory2008UnderstandingEvolutionaryTrees" role="doc-biblioref">2008</a>)</span> pour éviter les erreurs d’interprétations courantes des arbres phylogénétiques. Le cours en ligne <a href="https://ressources.unisciel.fr/intro_biologie_evolution/co/module_Introduction_biologie_evolution.html">Introduction à la biologie de l’évolution</a> est également à signaler.</p>
 <p>Pour aller plus loin, on peut consulter les manuels avancés de <span class="citation" data-cites="DarluEtAl2019ReconstructionPhylogenetique">Darlu, Tassy &amp; Zaragüeta i Bagils (<a href="bibliographie.html#ref-DarluEtAl2019ReconstructionPhylogenetique" role="doc-biblioref">2019</a>)</span> et <span class="citation" data-cites="PerriereBrochierArmanet2010ConceptsMethodesPhylogenieMoleculaire">Perrière &amp; Brochier-Armanet (<a href="bibliographie.html#ref-PerriereBrochierArmanet2010ConceptsMethodesPhylogenieMoleculaire" role="doc-biblioref">2010</a>)</span>, ainsi que ceux en anglais de <span class="citation" data-cites="Felsenstein2004InferringPhylogenies">Felsenstein (<a href="bibliographie.html#ref-Felsenstein2004InferringPhylogenies" role="doc-biblioref">2004</a>)</span>, <span class="citation" data-cites="LemeyEtAl2009PhylogeneticHandbook">Lemey, Salemi &amp; Vandamme (<a href="bibliographie.html#ref-LemeyEtAl2009PhylogeneticHandbook" role="doc-biblioref">2009</a>)</span> et <span class="citation" data-cites="BrowerSchuh2021BiologicalSystematics">Brower &amp; Schuh (<a href="bibliographie.html#ref-BrowerSchuh2021BiologicalSystematics" role="doc-biblioref">2021</a>)</span>.</p>
+<p>Voir aussi les tutoriels:</p>
+<ul>
+<li><a href="https://fuzzyatelin.github.io/bioanth-stats/module-24/module-24.html">An Intro to Phylogenetic Tree Construction in R</a></li>
+<li>la vignette <a href="https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html">Estimating phylogenetic trees with phangorn</a></li>
+</ul>
 </section>
 <section id="linguistique" class="level3">
 <h3 class="anchored" data-anchor-id="linguistique">Linguistique</h3>
 <p>Concernant les applications à la linguistique, <span class="citation" data-cites="AtkinsonGray2005CuriousParallelsCuriousConnections">Atkinson &amp; Gray (<a href="bibliographie.html#ref-AtkinsonGray2005CuriousParallelsCuriousConnections" role="doc-biblioref">2005</a>)</span>, <span class="citation" data-cites="GeislerList2013DoLanguagesGrowTrees">Geisler &amp; List (<a href="bibliographie.html#ref-GeislerList2013DoLanguagesGrowTrees" role="doc-biblioref">2013</a>)</span>, et <span class="citation" data-cites="JacquesList2019SaveTrees">Jacques &amp; List (<a href="bibliographie.html#ref-JacquesList2019SaveTrees" role="doc-biblioref">2019</a>)</span> détaillent le transfert de concepts phylogénétiques entre la biologie et la linguistique.</p>
-<p>D’un point de vue pratique et technique, on peut recommander <span class="citation" data-cites="Dunn2015LanguagePhylogenies">Dunn (<a href="bibliographie.html#ref-Dunn2015LanguagePhylogenies" role="doc-biblioref">2015</a>)</span>, ainsi que l’excellent tutoriel en R de <span class="citation" data-cites="Goldstein2020IndoEuropeanPhylogeneticsR">Goldstein (<a href="bibliographie.html#ref-Goldstein2020IndoEuropeanPhylogeneticsR" role="doc-biblioref">2020</a>)</span>.</p>
+<p>D’un point de vue pratique et technique, on peut recommander <span class="citation" data-cites="Dunn2015LanguagePhylogenies">Dunn (<a href="bibliographie.html#ref-Dunn2015LanguagePhylogenies" role="doc-biblioref">2015</a>)</span>, ainsi que l’excellent tutoriel en R de <span class="citation" data-cites="Goldstein2020IndoEuropeanPhylogeneticsR">Goldstein (<a href="bibliographie.html#ref-Goldstein2020IndoEuropeanPhylogeneticsR" role="doc-biblioref">2020</a>)</span>. Voir aussi le tutoriel <a href="https://slcladal.github.io/phylo.html">Practical phylogenetic methods for linguistic typology</a>.</p>
 </section>
 <section id="r" class="level3">
 <h3 class="anchored" data-anchor-id="r">R</h3>
@@ -260,7 +290,7 @@ Note
 Atkinson, Quentin D. &amp; Russell D. Gray. 2005. Curious parallels and curious connections: Phylogenetic thinking in biology and historical linguistics. <em>Systematic Biology</em> 54(4). 513‑526. <a href="https://doi.org/10.1080/10635150590950317">https://doi.org/10.1080/10635150590950317</a>.
 </div>
 <div id="ref-Aubert2017ClasserVivant" class="csl-entry" role="doc-biblioentry">
-Aubert, Damien. 2017. <em>Classer le vivant</em>. Paris: Ellipses.
+Aubert, Damien. 2017. <em>Classer le vivant: Les perspectives de la systématique évolutionniste moderne</em>. Paris: Ellipses.
 </div>
 <div id="ref-BrowerSchuh2021BiologicalSystematics" class="csl-entry" role="doc-biblioentry">
 Brower, Andrew V. Z. &amp; Randall T. Schuh. 2021. <em>Biological systematics: Principle and applications</em>. 3ᵉ edn. Ithaca: Comstock.
@@ -284,7 +314,7 @@ Goldstein. 2020. Indo-European phylogenetics with R: A tutorial introduction. <e
 Gregory, T. Ryan. 2008. Understanding evolutionary trees. <em>Evolution: Education and Outreach</em> 1(2). 121‑137. <a href="https://doi.org/10.1007/s12052-008-0035-x">https://doi.org/10.1007/s12052-008-0035-x</a>.
 </div>
 <div id="ref-Grolemund2014HandsProgrammingWithR" class="csl-entry" role="doc-biblioentry">
-Grolemund, Garrett. 2014. <em>Hands-on programming with R: Write your own functions and simulations</em>. Sebastopol: O’Reilly Media.
+Grolemund, Garrett. 2014. <em>Hands-on programming with R: Write your own functions and simulations</em>. Sebastopol: O’Reilly Media. <a href="https://rstudio-education.github.io/hopr/">https://rstudio-education.github.io/hopr/</a>.
 </div>
 <div id="ref-Herve2020SystematiqueAnimale" class="csl-entry" role="doc-biblioentry">
 Hervé, Maxime. 2020. <em>Systématique animale: D’Aristote aux phylogénies moléculaires. Histoire, concepts et méthodes de la classification</em>. Louvain-la-Neuve: De Boeck Supérieur.

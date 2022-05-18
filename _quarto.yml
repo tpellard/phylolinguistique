@@ -12,8 +12,8 @@ book:
       affiliation: "CRLAO (EHESS, Inalco, CNRS)"
       affiliation-url: http://crlao.ehess.fr/
   # date: today
-  logo: phyloling.svg
-  favicon: phyloling.png
+  logo: phyloling_scirc.png
+  favicon: phyloling_circ.png
   
   chapters:
     - index.qmd
