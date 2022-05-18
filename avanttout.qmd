@@ -1,0 +1,26 @@
+---
+execute: 
+  eval: false
+---
+
+# Avant tout chose {.unnumbered}
+
+Il est nécessaire avant toute chose d'installer le logiciel R si ce n'est pas déjà fait: <https://cran.r-project.org/>.
+
+:::{.callout-tip appearance="simple"}
+L'utilisation de l'environnement de développement gratuit, libre et multiplateforme [Rstudio](https://www.rstudio.com/) est recommandée.
+:::
+
+Il est également nécessaire d'installer un certain nombre d'extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.
+```{r}
+install.packages("tidyverse")
+install.packages("ape")
+install.packages("phangorn")
+```
+
+L'extension `ggtree` pour la visualistation avancée des arbres phylogénétiques nécessite au préalable d'installer `BiocManager`.
+```{r}
+install.packages("BiocManager")
+BiocManager::install("ggtree")
+```
+

@@ -17,6 +17,7 @@ book:
   
   chapters:
     - index.qmd
+    - avanttout.qmd
     - bibliographie.qmd
   
   site-url: https://tpellard.github.io/phylolinguistique
