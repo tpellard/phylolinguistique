@@ -18,7 +18,21 @@
     "href": "avanttout.html",
     "title": "Avant tout chose",
     "section": "",
-    "text": "L’utilisation de l’environnement de développement gratuit, libre et multiplateforme Rstudio est recommandée.\n\n\n\nIl est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ape\")\ninstall.packages(\"phangorn\")\n\nL’extension ggtree pour la visualistation avancée des arbres phylogénétiques nécessite au préalable d’installer BiocManager.\n\ninstall.packages(\"BiocManager\")\nBiocManager::install(\"ggtree\")"
+    "text": "L’utilisation de l’environnement de développement gratuit, libre et multiplateforme Rstudio est recommandée.\n\n\n\nIl est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ape\")\ninstall.packages(\"phangorn\")\n\nL’extension ggtree pour la visualisation avancée des arbres phylogénétiques nécessite au préalable d’installer BiocManager.\n\ninstall.packages(\"BiocManager\")\nBiocManager::install(\"ggtree\")"
+  },
+  {
+    "objectID": "import.html",
+    "href": "import.html",
+    "title": "\n1  Import des données\n",
+    "section": "",
+    "text": "La plupart des analyses phylolinguistiques utilisent des données lexicales. Une étape préalable à l’analyse phylogénétique consiste à déterminer quels mots sont cognats (homologues) et à les annoter. Cette tâche peut être grandement facilitée grâce à Edictor, un éditeur libre et gratuit de bases de données lexicales comparatives créé par Mattis List. Il permet entre autres d’annoter facilement les groupes de cognats dans un navigateur internet en ligne ou hors ligne. Un tutoriel en ligne détaillé est disponible.\nEdictor permet de sauvegarder les données traitées sous forme d’un fichier tabulaire au format .tsv. Il est alors très simple de l’importer avec R, en prennant garde d’ignorer les lignes de commentaires à la fin marquées par #.\nTéléchargeons et importons pour l’exemple des données sur les langues bai fournies dans Edictor.\n\nlibrary(tidyverse)\nurl <- \"https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv\"\ndownload.file(url, \"BAI.tsv\")\nlx <- read_tsv(\"BAI.tsv\", comment = \"#\")\n\nL’information sur les cognats se trouve dans la colonne COGIDS.\n\n\n\n  \n\n\n\nComme il s’agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte.\n\nlx <- lx %>% \n  mutate(DOCULECT = case_when(\n    DOCULECT == \"Gongxing\" ~ \"Magenta\",\n    DOCULECT == \"Jinman\" ~ \"Cyan\",\n    DOCULECT == \"Mazhelong\" ~ \"Jaune\",\n    DOCULECT == \"Dashi\" ~ \"Vert\",\n    DOCULECT == \"Zhoucheng\" ~ \"Violet\",\n    DOCULECT == \"Jinxing\" ~ \"Orange\",\n    DOCULECT == \"Tuolo\" ~ \"Rouge\",\n    DOCULECT == \"Enqi\" ~ \"Bleu\",\n    DOCULECT == \"Ega\" ~ \"Indigo\",\n  ))"
+  },
+  {
+    "objectID": "import.html#autres-types-de-données",
+    "href": "import.html#autres-types-de-données",
+    "title": "\n1  Import des données\n",
+    "section": "\n1.2 Autres types de données",
+    "text": "1.2 Autres types de données\nDans le case de matrices de traits phylogénétiques déjà préparées il suffit d’importer le fichier\nPour les fichiers d’arbre au format nexus"
   },
   {
     "objectID": "bibliographie.html",

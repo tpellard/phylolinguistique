@@ -1,0 +1,47 @@
+# Import des données
+
+## Lexiques comparatifs
+
+La plupart des analyses phylolinguistiques utilisent des données lexicales. Une étape préalable à l'analyse phylogénétique consiste à déterminer quels mots sont cognats (homologues) et à les annoter. Cette tâche peut être grandement facilitée grâce à [Edictor](https://digling.org/edictor/), un éditeur libre et gratuit de bases de données lexicales comparatives créé par [Mattis List](https://lingulist.de). Il permet entre autres d'annoter facilement les groupes de cognats dans un navigateur internet en ligne ou hors ligne. Un [tutoriel en ligne](https://github.com/digling/edictor-tutorial) détaillé est disponible.
+
+Edictor permet de sauvegarder les données traitées sous forme d'un fichier tabulaire au format [`.tsv`](https://fr.wikipedia.org/wiki/Tabulation-separated_values). Il est alors très simple de l'importer avec R, en prennant garde d'ignorer les lignes de commentaires à la fin marquées par `#`.
+
+Téléchargeons et importons pour l'exemple des données sur les langues bai fournies dans Edictor.
+```{r}
+#| message: false
+library(tidyverse)
+url <- "https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"
+download.file(url, "BAI.tsv")
+lx <- read_tsv("BAI.tsv", comment = "#")
+```
+
+L'information sur les cognats se trouve dans la colonne `COGIDS`.
+```{r}
+#| echo: false
+#| column: screen-inset
+rmarkdown::paged_table(lx)
+```
+
+Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte.
+
+```{r}
+lx <- lx %>% 
+  mutate(DOCULECT = case_when(
+    DOCULECT == "Gongxing" ~ "Magenta",
+    DOCULECT == "Jinman" ~ "Cyan",
+    DOCULECT == "Mazhelong" ~ "Jaune",
+    DOCULECT == "Dashi" ~ "Vert",
+    DOCULECT == "Zhoucheng" ~ "Violet",
+    DOCULECT == "Jinxing" ~ "Orange",
+    DOCULECT == "Tuolo" ~ "Rouge",
+    DOCULECT == "Enqi" ~ "Bleu",
+    DOCULECT == "Ega" ~ "Indigo",
+  ))
+```
+
+
+## Autres types de données
+
+Dans le case de matrices de traits phylogénétiques déjà préparées il suffit d'importer le fichier
+
+Pour les fichiers d'arbre au format nexus

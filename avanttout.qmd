@@ -18,7 +18,7 @@ install.packages("ape")
 install.packages("phangorn")
 ```
 
-L'extension `ggtree` pour la visualistation avancée des arbres phylogénétiques nécessite au préalable d'installer `BiocManager`.
+L'extension `ggtree` pour la visualisation avancée des arbres phylogénétiques nécessite au préalable d'installer `BiocManager`.
 ```{r}
 install.packages("BiocManager")
 BiocManager::install("ggtree")
