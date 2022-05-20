@@ -25,7 +25,7 @@
     "href": "avanttout.html#installation-des-logiciels",
     "title": "Avant tout chose",
     "section": "Installation des logiciels",
-    "text": "Installation des logiciels\nIl est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: https://cran.r-project.org/.\n\n\n\n\n\n\nL’utilisation de l’environnement de développement gratuit, libre et multiplateforme Rstudio est recommandée.\n\n\n\nIl est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ape\")\ninstall.packages(\"phangorn\")\n\nLes extension ggtree et tanggle pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d’installer BiocManager.\n\ninstall.packages(\"BiocManager\")\nBiocManager::install(\"ggtree\")\nBiocManager::install(\"tanggle\")"
+    "text": "Installation des logiciels\nIl est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: https://cran.r-project.org/.\n\n\n\n\n\n\nL’utilisation de l’environnement de développement gratuit, libre et multiplateforme Rstudio est recommandée.\n\n\n\nIl est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"ape\")\ninstall.packages(\"phangorn\")\n\nLes extensions ggtree et tanggle pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d’installer BiocManager.\n\ninstall.packages(\"BiocManager\")\nBiocManager::install(\"ggtree\")\nBiocManager::install(\"tanggle\")"
   },
   {
     "objectID": "import.html",
