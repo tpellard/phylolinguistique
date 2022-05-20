@@ -39,6 +39,33 @@ lx <- lx %>%
   ))
 ```
 
+Ce tableau au format long doit ensuite etre transforme au format large avec les langues (taxons) en colonnes et les mots (caracteres) en lignes. Il est preferable de produire une matrice avec des caracteres binaires (la langue possede-t-elle (1) ou non (0) un cognat) plutot qu'avec des caracteres a etats multiples (quelle est la classe de cognat du mot de chaque langue). Cela permet de traiter plus facilement les cas de polymorphismes (plusieurs formes pour un meme concept). Il faut donc transposer la colonne `COGIDS` en lignes et non la colonne `CONCEPT`. Comme certaines langues ont plusieurs formes (variantes?) pour une meme classe de cognat, mais l'information qui nous interesse est la presence ou non d'un cognat. Quand il n'y a pas de cognat dans une langue pour un `COGIDS` donne, on insere un `0`, et sinon on triche un peu pour obtenir un `1`.
+
+```{r}
+#| message: false
+#| warning: false
+lx_m <- lx %>% 
+  select(CONCEPT, DOCULECT, COGIDS) %>%
+  distinct() %>%
+  pivot_wider(names_from = DOCULECT, values_from = CONCEPT, values_fill = 0, values_fn = length) %>% 
+  select(-COGIDS)
+```
+
+```{r}
+#| echo: false
+#| column: screen-inset
+rmarkdown::paged_table(lx_m)
+```
+
+Il suffit enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques.
+
+```{r}
+#| message: false
+#| warning: false
+library(phangorn)
+lx_phy <- phyDat(lx_m, type = "USER", levels = 0:1, names = names(lx_m))
+lx_phy
+```
 
 ## Autres types de données
 
