@@ -2,6 +2,9 @@ project:
   type: book
   output-dir: docs
 
+execute:
+  warning: false
+
 book:
   title: "Phylolinguistique avec R"
   # subtitle: "intro"

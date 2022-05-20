@@ -5,6 +5,32 @@ execute:
 
 # Avant tout chose {.unnumbered}
 
+## Pourquoi?
+
+Les linguistes ont pendant longtemps réalisé des classifications phylogénétiques des langues à la main. Toutefois cela devient rapidement impossible avec de larges jeux de données à moins de partir à la [«cueillette de cerises»](https://fr.wikipedia.org/wiki/Cherry_picking) en sélectionnant intentionnellement un petit nombre de données, ce qui est la porte ouverte [aux biais de sélection](https://fr.wikipedia.org/wiki/Biais_de_s%C3%A9lection).
+
+Même pour les méthodes les plus simples, comme la [lexicostatistique](https://en.wikipedia.org/wiki/Lexicostatistics), qui peuvent être effectuées manuellement, l'analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s'agit là typiquement d'une tâche pour un ordinateur.
+
+:::{.column-margin}
+Pour *n* taxons, il y a $\frac{(2n-3)!}{2^{n-2}(n-2)!}$ arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.
+```{r}
+#| eval: true
+#| echo: false
+library(tidyverse)
+options(scipen=100)
+options(scipen = 1, digits = 6)
+tibble(n = c(2:10, 20, 30, 40, 50)) %>% 
+  mutate(arbres = factorial(2*n - 3) / (2^(n-2)*factorial(n-2))) %>%
+  mutate(arbres = ifelse(n > 10, knitr:::format_sci(arbres, "html"), arbres)) %>% 
+  knitr::kable(digits=1, align = c("r", "r"))
+```
+:::
+En outre, la plupart des méthodes d'inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d'arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu'il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des [méthodes heuristiques](https://en.wikipedia.org/wiki/Heuristic_(computer_science)) complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d'un ordinateur pour cela.
+
+Le logiciel [R](https://www.r-project.org/), en plus d'être libre, gratuit et multi-plateforme, est particulièrement indiqué pour ce genre de travail. Il est particulièrement adapté à l'analyse quantitative et la visualisation de données et il existe de nombreuses extensions spécialisées pour la phylogénétique.
+
+## Installation des logiciels
+
 Il est nécessaire avant toute chose d'installer le logiciel R si ce n'est pas déjà fait: <https://cran.r-project.org/>.
 
 :::{.callout-tip appearance="simple"}

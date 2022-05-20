@@ -42,3 +42,19 @@ h1, h2, h3, h4 {
 	font-size: inherit;
 	font-weight: 400;
 }
+
+table {
+	font-size: .9rem;
+}
+
+.table {
+	font-size: .825rem;
+}
+
+.panel-caption, caption, .figure-caption {
+	font-size: .9rem;
+}
+
+.header-section-number {
+	color: var(--bs-body-color);
+}

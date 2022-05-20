@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.339">
+<meta name="generator" content="quarto-0.9.349">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - Avant tout chose</title>
 <style>
@@ -104,12 +104,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Annuler",
     "search-submit-button-title": "Envoyer"
   }
-}</script>
+}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 <meta name="twitter:title" content="Phylolinguistique avec R - Avant tout chose">
 <meta name="twitter:creator" content="@ThomasPellard">
 <meta name="twitter:card" content="summary">
 </head>
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Import des données</span></a>
+  <a href="./import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Préparation des données</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -176,10 +176,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
 </div>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+<li><a href="#pourquoi" id="toc-pourquoi" class="nav-link active" data-scroll-target="#pourquoi">Pourquoi?</a></li>
+  <li><a href="#installation-des-logiciels" id="toc-installation-des-logiciels" class="nav-link" data-scroll-target="#installation-des-logiciels">Installation des logiciels</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title d-none d-lg-block">Avant tout chose</h1>
 </div>
 
@@ -194,7 +199,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><p>Il est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>.</p>
+</header><section id="pourquoi" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="pourquoi">Pourquoi?</h2>
+<p>Les linguistes ont pendant longtemps réalisé des classifications phylogénétiques des langues à la main. Toutefois cela devient rapidement impossible avec de larges jeux de données à moins de partir à la <a href="https://fr.wikipedia.org/wiki/Cherry_picking">«cueillette de cerises»</a> en sélectionnant intentionnellement un petit nombre de données, ce qui est la porte ouverte <a href="https://fr.wikipedia.org/wiki/Biais_de_s%C3%A9lection">aux biais de sélection</a>.</p>
+<p>Même pour les méthodes les plus simples, comme la <a href="https://en.wikipedia.org/wiki/Lexicostatistics">lexicostatistique</a>, qui peuvent être effectuées manuellement, l’analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s’agit là typiquement d’une tâche pour un ordinateur.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Pour <em>n</em> taxons, il y a <span class="math inline">\(\frac{(2n-3)!}{2^{n-2}(n-2)!}\)</span> arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead><tr class="header">
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">arbres</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">105</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">945</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">10395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">135135</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2027025</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">34459425</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8.200795 × 10<sup>21</sup>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">4.951798 × 10<sup>38</sup>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">1.009847 × 10<sup>57</sup>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">2.752921 × 10<sup>76</sup>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></div><p>En outre, la plupart des méthodes d’inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d’arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu’il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des <a href="https://en.wikipedia.org/wiki/Heuristic_(computer_science)">méthodes heuristiques</a> complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d’un ordinateur pour cela.</p>
+<p>Le logiciel <a href="https://www.r-project.org/">R</a>, en plus d’être libre, gratuit et multi-plateforme, est particulièrement indiqué pour ce genre de travail. Il est particulièrement adapté à l’analyse quantitative et la visualisation de données et il existe de nombreuses extensions spécialisées pour la phylogénétique.</p>
+</section><section id="installation-des-logiciels" class="level2"><h2 class="anchored" data-anchor-id="installation-des-logiciels">Installation des logiciels</h2>
+<p>Il est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>.</p>
 <div class="callout-tip callout callout-style-simple">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -205,19 +287,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Il est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R. ::: {.cell}</p>
+<p>Il est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.</p>
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ape"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"phangorn"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
-<p>L’extension <code>ggtree</code> pour la visualisation avancée des arbres phylogénétiques nécessite au préalable d’installer <code>BiocManager</code>. ::: {.cell}</p>
+</div>
+<p>L’extension <code>ggtree</code> pour la visualisation avancée des arbres phylogénétiques nécessite au préalable d’installer <code>BiocManager</code>.</p>
+<div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"ggtree"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
+</div>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {
     for (let i=0; i < stylesheets.length; i++) {
@@ -399,7 +482,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./import.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Import des données</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Préparation des données</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
