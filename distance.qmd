@@ -13,6 +13,7 @@ Les méthodes par distance ne peuvent donc pas être recommandées pour l'analys
 ## Calcul des distances
 
 Commençons par importer de nouveau la matrice de traits que nous avions sauvegardées.
+
 ```{r}
 library(tidyverse)
 library(phangorn)
@@ -22,12 +23,14 @@ lx_phy <- read.phyDat("lx_phy.txt",
 )
 ```
 
-Il est trivial de calculer la distance observée, ou *p*-distance sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symmétrique, on peut donc se passer d'afficher l'un des deux triangles.
+Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symmétrique, on peut donc se passer d'afficher l'un des deux triangles.
+
 ```{r}
 lx_dist <- dist.hamming(lx_phy)
 ```
+
 ```{r}
-#| echo: false
+#| code-fold: true
 lx_dist_m <- as.matrix(lx_dist)
 lx_dist_m[upper.tri(lx_dist_m)] <- NA
 options(knitr.kable.NA = "")
@@ -35,12 +38,13 @@ knitr::kable(lx_dist_m, digits=2)
 ```
 
 On peut alternativement afficher la matrice des similitudes en retranchant les distances de 1, voir des pourcentages en multipliant le résultat par 100. On obtient alors une matrice semblable à ce qu'on voit en lexicostatistique.
+
 ```{r}
 lx_sim_m <- (1 - as.matrix(lx_dist)) * 100
 ```
 
 ```{r}
-#| echo: false
+#| code-fold: true
 lx_sim_m[upper.tri(lx_sim_m)] <- NA
 options(knitr.kable.NA = "")
 knitr::kable(lx_sim_m, digits=2)
@@ -58,6 +62,7 @@ lx_upgma
 ```
 
 On obtient un arbre unique raciné qu'on peut facilement visualiser. Il est néanmoins souvent nécessaire d'ajuster les axes afin d'afficher correctement les étiquettes des feuilles de l'arbre.
+
 ```{r}
 library(ggtree)
 upgma_tree <- ggtree(lx_upgma) +
@@ -82,6 +87,7 @@ nj_tree
 ```
 
 On peut bien sûr artificiellement raciner l'arbre, mais c'est rarement une bonne idée. C'est néanmoins parfois nécessaire pour visualiser un grand nombre de langues.
+
 ```{r}
 ggtree(lx_nj) +
   geom_tiplab() +
@@ -102,7 +108,7 @@ lx_nn
 library(tanggle)
 nn_nx <- ggsplitnet(lx_nn) +
   geom_tiplab2() +
-  xlim(-.15,.065) +
+  xlim(-.15,.13) +
   ylim(-.16,.1) +
   theme_tree()
 nn_nx
