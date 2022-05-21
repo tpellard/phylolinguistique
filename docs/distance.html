@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.349">
+<meta name="generator" content="quarto-0.9.339">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 2&nbsp; Méthodes par distance</title>
 <style>
@@ -233,12 +233,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Il est trivial de calculer la distance observée, ou <em>p</em>-distance sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/dist.hamming.html">dist.hamming()</a></code>. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symmétrique, on peut donc se passer d’afficher l’un des deux triangles.</p>
+<p>Il est trivial de calculer la distance observée, ou <em>p</em>-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/dist.hamming.html">dist.hamming()</a></code>. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symmétrique, on peut donc se passer d’afficher l’un des deux triangles.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="cell-output-display">
+<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_dist_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
+<span class="va">lx_dist_m</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">upper.tri</a></span><span class="op">(</span><span class="va">lx_dist_m</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>knitr.kable.NA <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">lx_dist_m</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 12%">
@@ -379,10 +383,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>On peut alternativement afficher la matrice des similitudes en retranchant les distances de 1, voir des pourcentages en multipliant le résultat par 100. On obtient alors une matrice semblable à ce qu’on voit en lexicostatistique.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_sim_m</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_sim_m</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="cell-output-display">
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_sim_m</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">upper.tri</a></span><span class="op">(</span><span class="va">lx_sim_m</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>knitr.kable.NA <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">lx_sim_m</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 11%">
@@ -526,7 +533,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>L’algorithme de classification <a href="https://fr.wikipedia.org/wiki/Unweighted_pair_group_method_with_arithmetic_mean">UPGMA (Unweighted pair group method with arithmetic mean)</a> est le plus basique et le moins bon pour les classifications génétiques. Cette méthode présuppose notamment une <a href="https://fr.wikipedia.org/wiki/Horloge_mol%C3%A9culaire">«horloge moléculaire»</a>, c’est-à-dire que la vitesse de changement était constante, ce qui est faux en biologie comme en linguistique. Le résultat est un arbre dit ultramétrique où toutes les langues sont alignées au lieu d’être placées en fonction du nombre de changements avec des branches de longueur variées.</p>
 <p>Néanmoins cette méthode est simplissime: on groupe les taxons les plus proches ensemble, et la distance du groupe obtenu aux taxons restants est recalculée en faisant la moyenne des distances des éléments groupés, et on recommence jusqu’à n’avoir plus que deux groupes.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_upgma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/upgma.html">upgma</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_upgma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/upgma.html">upgma</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
 <span class="va">lx_upgma</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -540,7 +547,7 @@ Rooted; includes branch lengths.</code></pre>
 </div>
 <p>On obtient un arbre unique raciné qu’on peut facilement visualiser. Il est néanmoins souvent nécessaire d’ajuster les axes afin d’afficher correctement les étiquettes des feuilles de l’arbre.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
 <span class="va">upgma_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_upgma</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/xlim_tree.html">xlim_tree</a></span><span class="op">(</span><span class="fl">0.14</span><span class="op">)</span> <span class="op">+</span>
@@ -554,11 +561,11 @@ Rooted; includes branch lengths.</code></pre>
 <span class="header-section-number">2.2.1</span> Neighbour joining</h3>
 <p>La méthode de <a href="https://fr.wikipedia.org/wiki/Neighbour_joining">neighbour joining</a> est plus sophistiquée que celle de UPGMA mais reste néanmoins simple. Elle s’en distingue par la prise en compte dans l’algorithme de la distance entre toutes les paires de taxons, et non seulement entre les paires les plus proches. Elle produit un arbre non raciné et non ultramétrique.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/NJ.html">NJ</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/NJ.html">NJ</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
 <span class="va">nj_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_nj</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.2</span>,<span class="fl">.09</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.17</span>,<span class="fl">.12</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.2</span>, <span class="fl">.09</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.17</span>, <span class="fl">.12</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">nj_tree</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -567,7 +574,7 @@ Rooted; includes branch lengths.</code></pre>
 </div>
 <p>On peut bien sûr artificiellement raciner l’arbre, mais c’est rarement une bonne idée. C’est néanmoins parfois nécessaire pour visualiser un grand nombre de langues.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_nj</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_nj</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/xlim_tree.html">xlim_tree</a></span><span class="op">(</span><span class="fl">0.21</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -579,7 +586,7 @@ Rooted; includes branch lengths.</code></pre>
 <span class="header-section-number">2.2.2</span> NeighborNet</h3>
 <p>L’algorithme <a href="https://en.wikipedia.org/wiki/Neighbor-net">NeighborNet</a> permet d’obtenir non pas un arbre mais un réseau qui montre notamment les conflits dans les données.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
 <span class="va">lx_nn</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -592,11 +599,11 @@ Unrooted; includes branch lengths.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://klausvigo.github.io/tanggle">tanggle</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://klausvigo.github.io/tanggle">tanggle</a></span><span class="op">)</span>
 <span class="va">nn_nx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/tanggle/reference/ggsplitnet.html">ggsplitnet</a></span><span class="op">(</span><span class="va">lx_nn</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.15</span>,<span class="fl">.065</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.16</span>,<span class="fl">.1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.15</span>, <span class="fl">.13</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.16</span>, <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">nn_nx</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
