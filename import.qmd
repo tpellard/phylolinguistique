@@ -11,7 +11,7 @@ Téléchargeons et importons pour l'exemple des données sur les variétés [bai
 library(tidyverse)
 url <- "https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"
 download.file(url, "BAI.tsv")
-lx <- read_tsv("BAI.tsv", comment = "#") %>% 
+lx <- read_tsv("BAI.tsv", comment = "#") %>%
   select(-MORPHEMES)
 ```
 
@@ -24,7 +24,7 @@ rmarkdown::paged_table(select(lx, -TOKENS, -ID))
 
 Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique.
 ```{r}
-lx <- lx %>% 
+lx <- lx %>%
   mutate(DOCULECT = case_when(
     DOCULECT == "Gongxing" ~ "Magenta",
     DOCULECT == "Jinman" ~ "Cyan",
@@ -76,7 +76,11 @@ Traitement des données manquantes `?`
 Il suffit enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques.
 ```{r}
 library(phangorn)
-lx_phy <- phyDat(lx_m, type = "USER", levels = 0:1, names = names(lx_m))
+lx_phy <- phyDat(lx_m,
+  type = "USER",
+  levels = c(0, 1),
+  names = names(lx_m)
+)
 lx_phy
 ```
 
