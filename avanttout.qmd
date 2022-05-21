@@ -27,7 +27,7 @@ tibble(n = c(2:10, 20, 30, 40, 50)) %>%
 :::
 En outre, la plupart des méthodes d'inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d'arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu'il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des [méthodes heuristiques](https://en.wikipedia.org/wiki/Heuristic_(computer_science)) complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d'un ordinateur pour cela.
 
-Le logiciel [R](https://www.r-project.org/), en plus d'être libre, gratuit et multi-plateforme, est particulièrement indiqué pour ce genre de travail. Il est particulièrement adapté à l'analyse quantitative et la visualisation de données et il existe de nombreuses extensions spécialisées pour la phylogénétique.
+Le logiciel [R](https://www.r-project.org/), en plus d'être libre, gratuit et multi-plateforme, est particulièrement indiqué pour ce genre de travail. Il est spécialisé dans l'analyse quantitative et la visualisation de données, et il existe de nombreuses extensions dédiées à la phylogénétique.
 
 ## Installation des logiciels
 
