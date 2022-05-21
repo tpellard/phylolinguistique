@@ -187,13 +187,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
 <li><a href="#calcul-des-distances" id="toc-calcul-des-distances" class="nav-link active" data-scroll-target="#calcul-des-distances"> <span class="header-section-number">2.1</span> Calcul des distances</a></li>
-  <li>
-<a href="#upgma" id="toc-upgma" class="nav-link" data-scroll-target="#upgma"> <span class="header-section-number">2.2</span> UPGMA</a>
-  <ul class="collapse">
-<li><a href="#neighbour-joining" id="toc-neighbour-joining" class="nav-link" data-scroll-target="#neighbour-joining"> <span class="header-section-number">2.2.1</span> Neighbour joining</a></li>
-  <li><a href="#neighbornet" id="toc-neighbornet" class="nav-link" data-scroll-target="#neighbornet"> <span class="header-section-number">2.2.2</span> NeighborNet</a></li>
-  </ul>
-</li>
+  <li><a href="#upgma" id="toc-upgma" class="nav-link" data-scroll-target="#upgma"> <span class="header-section-number">2.2</span> UPGMA</a></li>
+  <li><a href="#neighbour-joining" id="toc-neighbour-joining" class="nav-link" data-scroll-target="#neighbour-joining"> <span class="header-section-number">2.3</span> Neighbour joining</a></li>
+  <li><a href="#neighbornet" id="toc-neighbornet" class="nav-link" data-scroll-target="#neighbornet"> <span class="header-section-number">2.4</span> NeighborNet</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -557,8 +553,8 @@ Rooted; includes branch lengths.</code></pre>
 <p><img src="distance_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="neighbour-joining" class="level3" data-number="2.2.1"><h3 data-number="2.2.1" class="anchored" data-anchor-id="neighbour-joining">
-<span class="header-section-number">2.2.1</span> Neighbour joining</h3>
+</section><section id="neighbour-joining" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="neighbour-joining">
+<span class="header-section-number">2.3</span> Neighbour joining</h2>
 <p>La méthode de <a href="https://fr.wikipedia.org/wiki/Neighbour_joining">neighbour joining</a> est plus sophistiquée que celle de UPGMA mais reste néanmoins simple. Elle s’en distingue par la prise en compte dans l’algorithme de la distance entre toutes les paires de taxons, et non seulement entre les paires les plus proches. Elle produit un arbre non raciné et non ultramétrique.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/NJ.html">NJ</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
@@ -582,8 +578,8 @@ Rooted; includes branch lengths.</code></pre>
 <p><img src="distance_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="neighbornet" class="level3" data-number="2.2.2"><h3 data-number="2.2.2" class="anchored" data-anchor-id="neighbornet">
-<span class="header-section-number">2.2.2</span> NeighborNet</h3>
+</section><section id="neighbornet" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="neighbornet">
+<span class="header-section-number">2.4</span> NeighborNet</h2>
 <p>L’algorithme <a href="https://en.wikipedia.org/wiki/Neighbor-net">NeighborNet</a> permet d’obtenir non pas un arbre mais un réseau qui montre notamment les conflits dans les données.</p>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_nn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">lx_dist</span><span class="op">)</span>
@@ -612,7 +608,7 @@ Unrooted; includes branch lengths.</code></pre>
 </div>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {
     for (let i=0; i < stylesheets.length; i++) {

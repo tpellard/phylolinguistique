@@ -72,7 +72,7 @@ upgma_tree <- ggtree(lx_upgma) +
 upgma_tree
 ```
 
-### Neighbour joining
+## Neighbour joining
 
 La méthode de [neighbour joining](https://fr.wikipedia.org/wiki/Neighbour_joining) est plus sophistiquée que celle de UPGMA mais reste néanmoins simple. Elle s'en distingue par la prise en compte dans l'algorithme de la distance entre toutes les paires de taxons, et non seulement entre les paires les plus proches. Elle produit un arbre non raciné et non ultramétrique.
 
@@ -95,7 +95,7 @@ ggtree(lx_nj) +
   theme_tree()
 ```
 
-### NeighborNet
+## NeighborNet
 
 L'algorithme [NeighborNet](https://en.wikipedia.org/wiki/Neighbor-net) permet d'obtenir non pas un arbre mais un réseau qui montre notamment les conflits dans les données.
 
