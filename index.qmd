@@ -1,6 +1,6 @@
 ## Bienvenue {.unnumbered}
 
-Ce tutoriel est une introduction aux méthodes phylogénétiques appliquées à la linguistique et implémentées avec le logiciel libre [R](https://www.r-project.org/). Le but est d'apprendre à des linguistes à utiliser les méthodes de classification et d'inférence phylogénétique courantes en biologie.
+Ce tutoriel est une introduction à la phylolinguistique, c'est-à-dire aux méthodes phylogénétiques appliquées à la linguistique, à l'aide du logiciel libre [R](https://www.r-project.org/). Le but est d'apprendre à des linguistes à utiliser les méthodes de classification et d'inférence phylogénétique courantes en biologie.
 
 :::{.column-margin}
 :::{.callout-tip appearance="simple"}
