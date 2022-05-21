@@ -1,6 +1,6 @@
 # Préparation des données 
 
-La plupart des analyses phylolinguistiques utilisent des données lexicales. Une étape préalable à l'analyse phylogénétique consiste à déterminer quels mots sont cognats (homologues) et à les annoter. Cette tâche peut être grandement facilitée grâce à [Edictor](https://digling.org/edictor/), un éditeur libre et gratuit de bases de données lexicales comparatives créé par [Mattis List](https://lingulist.de). Il permet entre autres d'annoter facilement les classes de cognats (ensembles de mots cognats) dans un navigateur internet en ligne ou hors ligne. Un [tutoriel en ligne](https://github.com/digling/edictor-tutorial) détaillé est disponible en ligne.
+La plupart des analyses phylolinguistiques utilisent des données lexicales. Une étape préalable à l'analyse phylogénétique consiste à déterminer quels mots sont cognats (homologues) et à les annoter. Cette tâche peut être grandement facilitée grâce à [Edictor](https://digling.org/edictor/), un éditeur libre et gratuit de bases de données lexicales comparatives créé par [Mattis List](https://lingulist.de). Il permet entre autres d'annoter facilement les classes de cognats (ensembles de mots apparentés) dans un navigateur internet en ligne ou hors ligne. Un [tutoriel en ligne](https://github.com/digling/edictor-tutorial) détaillé est disponible en ligne.
 
 ## Import
 
@@ -15,14 +15,14 @@ lx <- read_tsv("BAI.tsv", comment = "#") %>%
   select(-MORPHEMES)
 ```
 
-L'information sur les classes de cognats se trouve dans la colonne `COGIDS` (les colonnes `ID` et `TOKENS` n'est pas montrées ci-dessous).
+L'information sur les classes de cognats se trouve dans la colonne `COGIDS` (les colonnes `ID` et `TOKENS` ne sont pas montrées ci-dessous).
 
 ```{r}
 #| echo: false
 rmarkdown::paged_table(select(lx, -TOKENS, -ID))
 ```
 
-Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte.
+Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique.
 ```{r}
 lx <- lx %>% 
   mutate(DOCULECT = case_when(
@@ -40,11 +40,15 @@ lx <- lx %>%
 
 ## Conversion
 
-Les seules colonnes qui vont nous servir sont `CONCEPTID` (identifiant unique du «mot» défini par sons sens), `DOCULECT` (langue) et `COGIDS` (classe de cognat). Certaines langues ont plusieurs formes (variantes?) pour une même classe de cognat, mais l'information qui nous intéresse est la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
+Les seules colonnes qui vont nous servir sont `CONCEPTID` (identifiant unique du concept), `DOCULECT` (langue) et `COGIDS` (classe de cognats). Il s'agit de construire une matrice indiquant pour un concept donné quelles langues ont des formes apparentées.
 
-Ce tableau au format long doit ensuite être transformé au format large (`pivot_wider()`) avec les langues (taxons) en colonnes et les mots (caractères) en lignes. Il est préférable de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat du mot de chaque langue?). Cela permet de traiter plus facilement les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple. Il faut donc transposer la colonne `COGIDS` en lignes (ce serait la colonne `CONCEPT` si l'on voulait obtenir une matrice de caractères à états multiples).
+Il est préférable de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat pour une classe donnée?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat de la forme de chaque langue?). Cela permet de traiter plus facilement les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple.
 
-Quand il n'y a pas de cognat dans une langue pour un `COGIDS` donné, on insère un `0`, et sinon on insère un `1` (l'option `values_fn = length` permet de transformer le contenu de la cellule (le `CONCEPTID`), ici avec la fonction `length` qui transforme le contenu en le nombre d'éléments de ce contenu, c'est-à-dire toujours `1`.
+Il faut donc transposer la colonne `COGIDS` en lignes (ce serait la colonne `CONCEPT` si l'on voulait obtenir une matrice de caractères à états multiples) avec la fonction `pivot_wider()`. On obtient ainsi un tableau au format largeavec les langues (taxons) en colonnes et les classes de cognats (caractères) en lignes.  
+
+Par ailleurs, certaines langues ont plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
+
+Quand il n'y a pas de cognat dans une langue pour un `COGIDS` donné, on insère un `0`, et sinon on insère un `1` avec l'option `values_fn = length`. Cela permet de transformer le contenu de la cellule (le `CONCEPTID`) avec la fonction `length` qui transforme le contenu en le nombre d'éléments de ce contenu, c'est-à-dire toujours `1`.
 
 ```{r}
 lx_m <- lx %>%
@@ -76,7 +80,7 @@ lx_phy <- phyDat(lx_m, type = "USER", levels = 0:1, names = names(lx_m))
 lx_phy
 ```
 
-On peut également sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP). Pour une simple matrice comme la nôtre, le format a peu d'importance et l'option par défaut (Phylip) est suffisante.
+On peut également sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, le format a peu d'importance et l'option par défaut (Phylip) est suffisante.
 ```{r}
 write.phyDat(lx_phy, "lx_phy.txt")
 ```
