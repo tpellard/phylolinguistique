@@ -34,7 +34,7 @@ lx_dist <- dist.hamming(lx_phy)
 lx_dist_m <- as.matrix(lx_dist)
 lx_dist_m[upper.tri(lx_dist_m)] <- NA
 options(knitr.kable.NA = "")
-knitr::kable(lx_dist_m, digits=2)
+knitr::kable(lx_dist_m, digits = 2)
 ```
 
 On peut alternativement afficher la matrice des similitudes en retranchant les distances de 1, voir des pourcentages en multipliant le résultat par 100. On obtient alors une matrice semblable à ce qu'on voit en lexicostatistique.
@@ -47,7 +47,7 @@ lx_sim_m <- (1 - as.matrix(lx_dist)) * 100
 #| code-fold: true
 lx_sim_m[upper.tri(lx_sim_m)] <- NA
 options(knitr.kable.NA = "")
-knitr::kable(lx_sim_m, digits=2)
+knitr::kable(lx_sim_m, digits = 2)
 ```
 
 ## UPGMA
@@ -80,8 +80,8 @@ La méthode de [neighbour joining](https://fr.wikipedia.org/wiki/Neighbour_joini
 lx_nj <- NJ(lx_dist)
 nj_tree <- ggtree(lx_nj, layout = "daylight") +
   geom_tiplab2() +
-  xlim(-.2,.09) +
-  ylim(-.17,.12) +
+  xlim(-.2, .09) +
+  ylim(-.17, .12) +
   theme_tree()
 nj_tree
 ```
@@ -108,8 +108,8 @@ lx_nn
 library(tanggle)
 nn_nx <- ggsplitnet(lx_nn) +
   geom_tiplab2() +
-  xlim(-.15,.13) +
-  ylim(-.16,.1) +
+  xlim(-.15, .13) +
+  ylim(-.16, .1) +
   theme_tree()
 nn_nx
 ```
