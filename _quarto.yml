@@ -25,15 +25,15 @@ book:
     - distance.qmd
     - bibliographie.qmd
   
+  twitter-card:
+    creator: "@ThomasPellard"
+  opengraph:
+    locale: fr-FR
   site-url: https://tpellard.github.io/phylolinguistique
   repo-url: https://github.com/tpellard/phylolinguistique
   repo-branch: master
   repo-actions: [issue]
   sharing: [twitter, facebook]
-  twitter-card:
-    creator: "@ThomasPellard"
-  opengraph:
-    locale: fr-FR
   
   page-navigation: true
   page-footer: 
