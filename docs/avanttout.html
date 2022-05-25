@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.339">
+<meta name="generator" content="quarto-0.9.349">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - Avant tout chose</title>
 <style>
@@ -209,8 +209,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Même pour les méthodes les plus simples, comme la <a href="https://en.wikipedia.org/wiki/Lexicostatistics">lexicostatistique</a>, qui peuvent être effectuées manuellement, l’analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s’agit là typiquement d’une tâche pour un ordinateur.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>Pour <em>n</em> taxons, il y a <span class="math inline">\(\frac{(2n-3)!}{2^{n-2}(n-2)!}\)</span> arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités. ::: {.cell} ::: {.cell-output-display} | n| arbres| |–:|——————————–:| | 2| 1| | 3| 3| | 4| 15| | 5| 105| | 6| 945| | 7| 10395| | 8| 135135| | 9| 2027025| | 10| 34459425| | 20| 8.200795 × 10<sup>21</sup>| | 30| 4.951798 × 10<sup>38</sup>| | 40| 1.009847 × 10<sup>57</sup>| | 50| 2.752921 × 10<sup>76</sup>|</p>
-</div></div><p>::: ::: En outre, la plupart des méthodes d’inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d’arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu’il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des <a href="https://en.wikipedia.org/wiki/Heuristic_(computer_science)">méthodes heuristiques</a> complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d’un ordinateur pour cela.</p>
+<p>Pour <em>n</em> taxons, il y a <span class="math inline">\(\frac{(2n-3)!}{2^{n-2}(n-2)!}\)</span> arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead><tr class="header">
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">arbres</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">105</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">945</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">10395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">135135</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2027025</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">34459425</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8.200795 × 10<sup>21</sup>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">4.951798 × 10<sup>38</sup>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">1.009847 × 10<sup>57</sup>
+</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">2.752921 × 10<sup>76</sup>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></div><p>En outre, la plupart des méthodes d’inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d’arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu’il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des <a href="https://en.wikipedia.org/wiki/Heuristic_(computer_science)">méthodes heuristiques</a> complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d’un ordinateur pour cela.</p>
 <p>Le logiciel <a href="https://www.r-project.org/">R</a>, en plus d’être libre, gratuit et multi-plateforme, est particulièrement indiqué pour ce genre de travail. Il est spécialisé dans l’analyse quantitative et la visualisation de données, et il existe de nombreuses extensions dédiées à la phylogénétique.</p>
 </section><section id="installation-des-logiciels" class="level2"><h2 class="anchored" data-anchor-id="installation-des-logiciels">Installation des logiciels</h2>
 <p>Il est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>.</p>
@@ -224,16 +292,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Il est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R. ::: {.cell}</p>
+<p>Il est également nécessaire d’installer un certain nombre d’extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.</p>
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ape"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"phangorn"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
-<p>Les extensions <code>ggtree</code> et <code>tanggle</code> pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d’installer <code>BiocManager</code>. ::: {.cell}</p>
+</div>
+<p>Les extensions <code>ggtree</code> et <code>tanggle</code> pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d’installer <code>BiocManager</code>.</p>
+<div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"ggtree"</span><span class="op">)</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"tanggle"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

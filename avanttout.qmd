@@ -13,6 +13,7 @@ Même pour les méthodes les plus simples, comme la [lexicostatistique](https://
 
 :::{.column-margin}
 Pour *n* taxons, il y a $\frac{(2n-3)!}{2^{n-2}(n-2)!}$ arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.
+
 ```{r}
 #| eval: true
 #| echo: false
@@ -38,6 +39,7 @@ L'utilisation de l'environnement de développement gratuit, libre et multiplatef
 :::
 
 Il est également nécessaire d'installer un certain nombre d'extensions R. Il suffit pour cela de saisir les commandes suivantes dans la console R.
+
 ```{r}
 install.packages("tidyverse")
 install.packages("ape")
@@ -45,9 +47,9 @@ install.packages("phangorn")
 ```
 
 Les extensions `ggtree` et `tanggle` pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d'installer `BiocManager`.
+
 ```{r}
 install.packages("BiocManager")
 BiocManager::install("ggtree")
 BiocManager::install("tanggle")
 ```
-

@@ -7,6 +7,7 @@ La plupart des analyses phylolinguistiques utilisent des données lexicales. Une
 Edictor permet de sauvegarder les données traitées sous forme d'un fichier tabulaire au format [`.tsv`](https://fr.wikipedia.org/wiki/Tabulation-separated_values). Il est alors très simple de l'importer avec R, en prenant garde d'ignorer les lignes de commentaires à la fin marquées par `#`.
 
 Téléchargeons et importons pour l'exemple des données sur les variétés [bai](https://fr.wikipedia.org/wiki/Bai_(langue)) fournies dans Edictor. Comme la colonne `MORPHEMES` est entièrement vide, on peut immédiatement la supprimer.
+
 ```{r}
 library(tidyverse)
 url <- "https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"
@@ -23,6 +24,7 @@ rmarkdown::paged_table(select(lx, -TOKENS, -ID))
 ```
 
 Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique.
+
 ```{r}
 lx <- lx %>%
   mutate(DOCULECT = case_when(
@@ -74,6 +76,7 @@ Traitement des données manquantes `?`
 :::
 
 Il suffit enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques.
+
 ```{r}
 library(phangorn)
 lx_phy <- phyDat(lx_m,
@@ -85,6 +88,7 @@ lx_phy
 ```
 
 On peut également sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, le format a peu d'importance et l'option par défaut (Phylip) est suffisante.
+
 ```{r}
 write.phyDat(lx_phy, "lx_phy.txt")
 ```

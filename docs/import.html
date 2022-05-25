@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.339">
+<meta name="generator" content="quarto-0.9.349">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 1&nbsp; Préparation des données</title>
 <style>
@@ -213,13 +213,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="import" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">1.1</span> Import</h2>
 <p>Edictor permet de sauvegarder les données traitées sous forme d’un fichier tabulaire au format <a href="https://fr.wikipedia.org/wiki/Tabulation-separated_values"><code>.tsv</code></a>. Il est alors très simple de l’importer avec R, en prenant garde d’ignorer les lignes de commentaires à la fin marquées par <code>#</code>.</p>
-<p>Téléchargeons et importons pour l’exemple des données sur les variétés <a href="https://fr.wikipedia.org/wiki/Bai_(langue)">bai</a> fournies dans Edictor. Comme la colonne <code>MORPHEMES</code> est entièrement vide, on peut immédiatement la supprimer. ::: {.cell}</p>
+<p>Téléchargeons et importons pour l’exemple des données sur les variétés <a href="https://fr.wikipedia.org/wiki/Bai_(langue)">bai</a> fournies dans Edictor. Comme la colonne <code>MORPHEMES</code> est entièrement vide, on peut immédiatement la supprimer.</p>
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="va">url</span>, <span class="st">"BAI.tsv"</span><span class="op">)</span>
 <span class="va">lx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"BAI.tsv"</span>, comment <span class="op">=</span> <span class="st">"#"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">MORPHEMES</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
+</div>
 <p>L’information sur les classes de cognats se trouve dans la colonne <code>COGIDS</code> (les colonnes <code>ID</code> et <code>TOKENS</code> ne sont pas montrées ci-dessous).</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -230,7 +231,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Comme il s’agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique. ::: {.cell}</p>
+<p>Comme il s’agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique.</p>
+<div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx</span> <span class="op">&lt;-</span> <span class="va">lx</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DOCULECT <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
     <span class="va">DOCULECT</span> <span class="op">==</span> <span class="st">"Gongxing"</span> <span class="op">~</span> <span class="st">"Magenta"</span>,
@@ -243,7 +245,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="va">DOCULECT</span> <span class="op">==</span> <span class="st">"Enqi"</span> <span class="op">~</span> <span class="st">"Bleu"</span>,
     <span class="va">DOCULECT</span> <span class="op">==</span> <span class="st">"Ega"</span> <span class="op">~</span> <span class="st">"Indigo"</span>,
   <span class="op">)</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
+</div>
 </section><section id="conversion" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="conversion">
 <span class="header-section-number">1.2</span> Conversion</h2>
 <p>Les seules colonnes qui vont nous servir sont <code>CONCEPTID</code> (identifiant unique du concept), <code>DOCULECT</code> (langue) et <code>COGIDS</code> (classe de cognats). Il s’agit de construire une matrice indiquant pour un concept donné quelles langues ont des formes apparentées.</p>
@@ -285,7 +287,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Traitement des données manquantes <code>?</code></p>
 </div>
 </div>
-<p>Il suffit enfin d’utiliser la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/phyDat.html">phyDat()</a></code> de <code>phangorn</code> en précisant l’ensemble des valeurs possibles de <code>COGIDS</code> et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques. ::: {.cell}</p>
+<p>Il suffit enfin d’utiliser la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/phyDat.html">phyDat()</a></code> de <code>phangorn</code> en précisant l’ensemble des valeurs possibles de <code>COGIDS</code> et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques.</p>
+<div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn">phangorn</a></span><span class="op">)</span>
 <span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">lx_m</span>,
   type <span class="op">=</span> <span class="st">"USER"</span>,
@@ -297,10 +300,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>9 sequences with 205 character and 74 different site patterns.
 The states are 0 1 </code></pre>
 </div>
-<p>:::</p>
-<p>On peut également sauvegarder la matrice obtenue avec la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat()</a></code>. Plusieurs formats courants comme <a href="https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)">Nexus</a> ou <a href="https://en.wikipedia.org/wiki/PHYLIP">Phylip</a> sont possibles. Pour une simple matrice comme la nôtre, le format a peu d’importance et l’option par défaut (Phylip) est suffisante. ::: {.cell}</p>
+</div>
+<p>On peut également sauvegarder la matrice obtenue avec la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat()</a></code>. Plusieurs formats courants comme <a href="https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)">Nexus</a> ou <a href="https://en.wikipedia.org/wiki/PHYLIP">Phylip</a> sont possibles. Pour une simple matrice comme la nôtre, le format a peu d’importance et l’option par défaut (Phylip) est suffisante.</p>
+<div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"lx_phy.txt"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>:::</p>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
