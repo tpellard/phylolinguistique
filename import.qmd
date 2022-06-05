@@ -89,6 +89,6 @@ lx_phy
 
 On peut également sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, le format a peu d'importance et l'option par défaut (Phylip) est suffisante.
 
-```{r}
+```{#lst:save .r}
 write.phyDat(lx_phy, "lx_phy.txt")
 ```

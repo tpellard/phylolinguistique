@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.349">
+<meta name="generator" content="quarto-0.9.339">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 1&nbsp; Préparation des données</title>
 <style>
@@ -302,9 +302,7 @@ The states are 0 1 </code></pre>
 </div>
 </div>
 <p>On peut également sauvegarder la matrice obtenue avec la fonction <code><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat()</a></code>. Plusieurs formats courants comme <a href="https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)">Nexus</a> ou <a href="https://en.wikipedia.org/wiki/PHYLIP">Phylip</a> sont possibles. Pour une simple matrice comme la nôtre, le format a peu d’importance et l’option par défaut (Phylip) est suffisante.</p>
-<div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"lx_phy.txt"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode" id="lst:save"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">write.phyDat</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"lx_phy.txt"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
