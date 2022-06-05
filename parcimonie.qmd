@@ -1,0 +1,77 @@
+# Méthodes de parcimonie
+
+Contrairement aux méthodes par distance, les méthodes de parcimonie ne construisent pas un arbre pas à pas mais recherchent le ou les arbre optimaux parmi les arbres possibles. Le critère d'évaluation des arbres est celui de [maximum de parcimonie](https://fr.wikipedia.org/wiki/Maximum_de_parcimonie): l'arbre préféré est celui qui suppose le moins de changements. Autrement dit, on suppose qu'un changement partagé s'est a priori produit dans l'ancêtre commun plutôt que de manière indépendante dans des langues différentes. Les méthodes de parcimonie cherchent donc à minimiser les homoplasies ou innovations parallèles.
+
+Les méthodes de parcimonie sont plus complexes que celles par distance mais restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans [certaines conditions](https://fr.wikipedia.org/wiki/Attraction_des_longues_branches).
+
+Commençons par importer de nouveau la matrice de traits que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+
+```{r}
+library(tidyverse)
+library(phangorn)
+lx_phy <- read.phyDat("lx_phy.txt",
+  type = "USER",
+  levels = c(0, 1)
+)
+```
+
+## Parcimonie générale non-pondérée
+
+Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité. Dans le cas d'un matrice de traits binaires, les changements 0 > 1 et 1 > 0 sont ainsi traités de manière identique. Il n'est donc pas nécessaire de connaitre l'état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.
+
+Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and bound* qui garantit de trouver la solution optimale.
+
+```{r}
+bab_trees <- bab(lx_phy)
+bab_trees
+```
+
+Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction `acctran()` permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l'arbre et favorise l'interprétation des homoplasies comme des réversions.
+
+```{r}
+bab_trees <- acctran(bab_trees, lx_phy)
+```
+
+
+Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.
+
+```{r}
+library(ggtree)
+ggtree(bab_trees[1], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-25, 45) +
+  ylim(-35, 55) +
+  theme_tree()
+ggtree(bab_trees[2], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-30, 35) +
+  ylim(-25, 55) +
+  theme_tree()
+ggtree(bab_trees[3], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-15, 50) +
+  ylim(-25, 60) +
+  theme_tree()
+ggtree(bab_trees[4], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-30, 35) +
+  ylim(-25, 50) +
+  theme_tree()
+```
+
+Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. 
+
+```{r}
+pratchet_trees <- pratchet(lx_phy)
+pratchet_trees <- acctran(pratchet_trees, lx_phy)
+ggtree(pratchet_trees, layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-60, 30) +
+  ylim(-35, 45) +
+  theme_tree()
+```
+
+:::{.callout-caution}
+### À faire
+Parcimonies de Camin-Sokal et de Dollo
+:::

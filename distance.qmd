@@ -12,7 +12,7 @@ Les méthodes par distance ne peuvent donc pas être recommandées pour l'analys
 
 ## Calcul des distances
 
-Commençons par importer de nouveau la matrice de traits que nous avions sauvegardées [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits que nous avions sauvegardée [précédemment](import.qmd#lst:save).
 
 ```{r}
 library(tidyverse)
