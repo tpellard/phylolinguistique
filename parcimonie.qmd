@@ -32,6 +32,12 @@ Il est nécessaire de calculer explicitement la longueur des différentes branch
 bab_trees <- acctran(bab_trees, lx_phy)
 ```
 
+On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick).
+
+```{r}
+write.tree(bab_trees, "bab_trees.nwk")
+```
+
 Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.
 
 ```{r}
@@ -58,13 +64,14 @@ ggtree(bab_trees[4], layout = "daylight") +
   theme_tree()
 ```
 
-Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre.
+Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.
 
 ```{r}
 #| message: false
 #| results: hide
 pratchet_trees <- pratchet(lx_phy)
 pratchet_trees <- acctran(pratchet_trees, lx_phy)
+write.tree(pratchet_trees, "pratchet_trees.nwk")
 ```
 
 ```{r}
