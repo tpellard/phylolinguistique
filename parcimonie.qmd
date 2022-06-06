@@ -15,9 +15,9 @@ lx_phy <- read.phyDat("lx_phy.txt",
 )
 ```
 
-## Parcimonie générale non-pondérée
+## Parcimonie générale
 
-Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité. Dans le cas d'un matrice de traits binaires, les changements 0 > 1 et 1 > 0 sont ainsi traités de manière identique. Il n'est donc pas nécessaire de connaitre l'état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.
+Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d'un matrice de traits binaires, les changements 0 > 1 et 1 > 0 sont ainsi traités de manière identique, et il n'est pas nécessaire de connaitre l'état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.
 
 Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and bound* qui garantit de trouver la solution optimale.
 
@@ -32,42 +32,45 @@ Il est nécessaire de calculer explicitement la longueur des différentes branch
 bab_trees <- acctran(bab_trees, lx_phy)
 ```
 
-
 Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.
 
 ```{r}
 library(ggtree)
 ggtree(bab_trees[1], layout = "daylight") +
   geom_tiplab2() +
-  xlim(-25, 45) +
-  ylim(-35, 55) +
-  theme_tree()
-ggtree(bab_trees[2], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-30, 35) +
-  ylim(-25, 55) +
-  theme_tree()
-ggtree(bab_trees[3], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-15, 50) +
-  ylim(-25, 60) +
-  theme_tree()
-ggtree(bab_trees[4], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-30, 35) +
-  ylim(-25, 50) +
+  xlim(-25, 45) + ylim(-35, 55) +
   theme_tree()
 ```
 
-Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. 
+```{r}
+#| code-fold: true
+ggtree(bab_trees[2], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-30, 38) + ylim(-28, 55) +
+  theme_tree()
+ggtree(bab_trees[3], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-17, 53) + ylim(-25, 60) +
+  theme_tree()
+ggtree(bab_trees[4], layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-30, 38) + ylim(-30, 50) +
+  theme_tree()
+```
+
+Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre.
 
 ```{r}
+#| message: false
+#| results: hide
 pratchet_trees <- pratchet(lx_phy)
 pratchet_trees <- acctran(pratchet_trees, lx_phy)
+```
+
+```{r}
 ggtree(pratchet_trees, layout = "daylight") +
   geom_tiplab2() +
-  xlim(-60, 30) +
-  ylim(-35, 45) +
+  xlim(-60, 30) + ylim(-35, 45) +
   theme_tree()
 ```
 
