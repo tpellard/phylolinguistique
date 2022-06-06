@@ -1,0 +1,115 @@
+# Évaluation
+
+## Évaluation de la robustesse
+
+Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un rééchantillonnage aléatoire avec remise ([bootstrap](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres rééchantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
+
+On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec-upgma).
+
+```{r}
+library(tidyverse)
+library(phangorn)
+lx_phy <- read.phyDat("lx_phy.txt",
+  type = "USER",
+  levels = c(0, 1)
+)
+lx_upgma <- read.tree("lx_upgma.nwk")
+```
+
+Il faut au préalable récupérer la matrice de données. C'est totalement redondant mais il s'agit d'une contrainte technique.
+Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `dist.hamming()` puis `upgma()`. On définit également à l'avance le nombre de rééchantillonages à effectuer, ici 1000.
+
+```{r}
+library(TreeTools)
+lx_m <- PhyDatToMatrix(lx_phy)
+boot_upgma_hamming <- function(x) {
+  upgma(dist.hamming(phyDat(x, type = "USER", levels = c(0, 1))))
+}
+n_bs <- 1000
+```
+
+On peut alors lancer la procédure de rééchantillonage sur l'arbre obtenu par UPGMA et la matrice transposée de données. Même avec 1000 rééchantillonages, obtient les résultats en un temps très court.
+
+::: {.column-margin}
+La fonction `set.seed()` permet de fixer la [graine aléatoire](https://fr.wikipedia.org/wiki/Graine_al%C3%A9atoire) et d'assurer la reproductibilité des résultats.
+:::
+
+```{r}
+set.seed(123456)
+lx_upgma_bs <- boot.phylo(lx_upgma,
+  lx_m,
+  boot_upgma_hamming,
+  B = n_bs,
+  trees = TRUE,
+  quiet = TRUE
+)
+```
+
+On peut ainsi obtenir le nombre de rééchantillonages où l'un des clades de l'arbre par UPGMA apparaît. Il faut rajouter les valeurs des feuilles (langues), qui par définition apparaissent toujours.
+
+```{r}
+upgma_bs_scores <- prop.clades(lx_upgma, lx_upgma_bs$trees, rooted = TRUE)
+upgma_support <- c(rep(n_bs, length(lx_phy)), upgma_bs_scores)
+upgma_support_pct <- upgma_support / n_bs
+```
+
+On peut ensuite rajouter les valeurs de *bootstrap* obtenues sur les différents nœuds internes de l'arbre UPGMA.
+
+```{r}
+library(ggtree)
+ggtree(lx_upgma) +
+  geom_tiplab() +
+  geom_nodelab(aes(label = upgma_support_pct), geom = "text", hjust = -.1) +
+  xlim_tree(0.14) +
+  theme_tree()
+```
+
+On peut choisir de n'afficher que les valeurs supérieures à un certain seuil, typiquement 70%.
+
+```{r}
+upgma_support_pct[upgma_support_pct < .7] <- NA
+ggtree(lx_upgma) +
+  geom_tiplab() +
+  geom_nodelab(aes(label = upgma_support_pct), geom = "text", hjust = -.1) +
+  xlim_tree(0.14) +
+  theme_tree()
+```
+
+## Résumer l'accord entre des résultats
+
+Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. C'est le cas par exemple de notre analyse par [parcimonie](parcimonie.qmd).
+
+```{r}
+lx_bab <- read.tree("lx_bab.nwk")
+```
+
+Il est possible de résumer l'accord entre ces arbres par un arbre consensus qui ne contient que les clades présents dans une proportion *p* des arbres. Un arbre consensus est donc normalement moins résolu que les arbres obtenus.
+
+Un arbre consensus strict ne contient que les clades présents dans *tous* les arbres (*p* = 1).
+
+::: {.column-margin}
+Un arbre consensus n'a pas en principe de longueurs de branches.
+:::
+
+```{r}
+lx_bab_consensus <- consensus(lx_bab, p = 1)
+ggtree(lx_bab_consensus, layout = "daylight") +
+  geom_tiplab2() +
+    xlim(-4.75, 3.85) + ylim(-4.25, 4.75) +
+  theme_tree()
+```
+
+Un arbre consensus majoritaire contient lui les clades présents dans la majorité (*p* ≥ .5) des arbres.
+
+```{r}
+lx_bab_consensus_mj <- consensus(lx_bab, p = .5)
+ggtree(lx_bab_consensus_mj, layout = "daylight") +
+  geom_tiplab2() +
+  xlim(-5.25, 5) + ylim(-5, 5.25) +
+  theme_tree()
+```
+
+:::{.callout-caution}
+### À faire
+score de parcimonie, CI, RI, etc.
+:::

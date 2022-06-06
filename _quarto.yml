@@ -4,6 +4,10 @@ project:
 
 execute:
   warning: false
+fig-dpi: 300
+fig-align: center
+fig-cap-location: bottom
+tbl-cap-location: top
 
 book:
   title: "Phylolinguistique avec R"
@@ -24,6 +28,7 @@ book:
     - import.qmd
     - distance.qmd
     - parcimonie.qmd
+    - evaluation.qmd
     - bibliographie.qmd
   
   twitter-card:

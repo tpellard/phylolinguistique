@@ -50,7 +50,7 @@ options(knitr.kable.NA = "")
 knitr::kable(lx_sim_m, digits = 2)
 ```
 
-## UPGMA
+## UPGMA {#sec-upgma}
 
 L'algorithme de classification [UPGMA (Unweighted pair group method with arithmetic mean)](https://fr.wikipedia.org/wiki/Unweighted_pair_group_method_with_arithmetic_mean) est le plus basique et le moins bon pour les classifications génétiques. Cette méthode présuppose notamment une [«horloge moléculaire»](https://fr.wikipedia.org/wiki/Horloge_mol%C3%A9culaire), c'est-à-dire que la vitesse de changement était constante, ce qui est faux en biologie comme en linguistique. Le résultat est un arbre dit ultramétrique où toutes les langues sont alignées au lieu d'être placées en fonction du nombre de changements avec des branches de longueur variées.
 
@@ -59,6 +59,12 @@ Néanmoins cette méthode est simplissime: on groupe les taxons les plus proches
 ```{r}
 lx_upgma <- upgma(lx_dist)
 lx_upgma
+```
+
+On peut alors sauvegarder les résultats dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick).
+
+```{r}
+write.tree(lx_upgma, "lx_upgma.nwk")
 ```
 
 On obtient un arbre unique raciné qu'on peut facilement visualiser. Il est néanmoins souvent nécessaire d'ajuster les axes afin d'afficher correctement les étiquettes des feuilles de l'arbre.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-0.9.339">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie</title>
+<title>Phylolinguistique avec R - 4&nbsp; Évaluation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -77,8 +77,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 <script src="site_libs/quarto-nav/quarto-nav.js"></script><script src="site_libs/quarto-nav/headroom.min.js"></script><script src="site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script><script src="site_libs/quarto-search/fuse.min.js"></script><script src="site_libs/quarto-search/quarto-search.js"></script><link href="./evaluation.html" rel="next">
-<link href="./distance.html" rel="prev">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script><script src="site_libs/quarto-search/fuse.min.js"></script><script src="site_libs/quarto-search/quarto-search.js"></script><link href="./bibliographie.html" rel="next">
+<link href="./parcimonie.html" rel="prev">
 <link href="./phyloling_circ.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script><script src="site_libs/quarto-html/popper.min.js"></script><script src="site_libs/quarto-html/tippy.umd.min.js"></script><script src="site_libs/quarto-html/anchor.min.js"></script><link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
@@ -105,16 +105,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Envoyer"
   }
 }</script>
-<meta name="twitter:title" content="Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie">
+<meta name="twitter:title" content="Phylolinguistique avec R - 4&nbsp; Évaluation">
 <meta name="twitter:creator" content="@ThomasPellard">
 <meta name="twitter:card" content="summary">
 </head>
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title">
-<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Méthodes de parcimonie</span>
+<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation</span>
 </h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
@@ -177,12 +177,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./parcimonie.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Méthodes de parcimonie</span></a>
+  <a href="./parcimonie.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Méthodes de parcimonie</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation</span></a>
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -196,13 +196,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc"><h2 id="toc-title">Sur cette page</h2>
    
   <ul>
-<li><a href="#parcimonie-g%C3%A9n%C3%A9rale" id="toc-parcimonie-générale" class="nav-link active" data-scroll-target="#parcimonie-g%C3%A9n%C3%A9rale"> <span class="header-section-number">3.1</span> Parcimonie générale</a></li>
+<li><a href="#%C3%A9valuation-de-la-robustesse" id="toc-évaluation-de-la-robustesse" class="nav-link active" data-scroll-target="#%C3%A9valuation-de-la-robustesse"> <span class="header-section-number">4.1</span> Évaluation de la robustesse</a></li>
+  <li><a href="#r%C3%A9sumer-laccord-entre-des-r%C3%A9sultats" id="toc-résumer-laccord-entre-des-résultats" class="nav-link" data-scroll-target="#r%C3%A9sumer-laccord-entre-des-r%C3%A9sultats"> <span class="header-section-number">4.2</span> Résumer l’accord entre des résultats</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title d-none d-lg-block">
-<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Méthodes de parcimonie</span>
+<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation</span>
 </h1>
 </div>
 
@@ -217,83 +218,102 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><p>Contrairement aux méthodes par distance, les méthodes de parcimonie ne construisent pas un arbre pas à pas mais recherchent le ou les arbre optimaux parmi les arbres possibles. Le critère d’évaluation des arbres est celui de <a href="https://fr.wikipedia.org/wiki/Maximum_de_parcimonie">maximum de parcimonie</a>: l’arbre préféré est celui qui suppose le moins de changements. Autrement dit, on suppose qu’un changement partagé s’est a priori produit dans l’ancêtre commun plutôt que de manière indépendante dans des langues différentes. Les méthodes de parcimonie cherchent donc à minimiser les homoplasies ou innovations parallèles.</p>
-<p>Les méthodes de parcimonie sont plus complexes que celles par distance mais restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans <a href="https://fr.wikipedia.org/wiki/Attraction_des_longues_branches">certaines conditions</a>.</p>
-<p>Commençons par importer de nouveau la matrice de traits que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
+</header><section id="évaluation-de-la-robustesse" class="level2 page-columns page-full" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="évaluation-de-la-robustesse">
+<span class="header-section-number">4.1</span> Évaluation de la robustesse</h2>
+<p>Il est utile d’évaluer la robustesse des résultats obtenus. On peut le faire avec un rééchantillonnage aléatoire avec remise (<a href="https://fr.wikipedia.org/wiki/Bootstrap_(statistiques)">bootstrap</a>) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l’échantillon observé. Cette méthode permet d’obtenir pour chaque branche de l’arbre la proportion d’arbres rééchantillonnés qui contiennent cette branche et ainsi d’identifier les branches reposant sur un faible nombre de données.</p>
+<p>On peut par exemple évaluer nos <a href="./distance.html#sec-upgma">résultats obtenus par UPGMA</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn">phangorn</a></span><span class="op">)</span>
 <span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="st">"lx_phy.txt"</span>,
   type <span class="op">=</span> <span class="st">"USER"</span>,
   levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">lx_upgma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html">read.tree</a></span><span class="op">(</span><span class="st">"lx_upgma.nwk"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Il faut au préalable récupérer la matrice de données. C’est totalement redondant mais il s’agit d’une contrainte technique. Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de <code><a href="https://rdrr.io/pkg/phangorn/man/phyDat.html">phyDat()</a></code>, <code><a href="https://rdrr.io/pkg/phangorn/man/dist.hamming.html">dist.hamming()</a></code> puis <code><a href="https://rdrr.io/pkg/phangorn/man/upgma.html">upgma()</a></code>. On définit également à l’avance le nombre de rééchantillonages à effectuer, ici 1000.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ms609.github.io/TreeTools/">TreeTools</a></span><span class="op">)</span>
+<span class="va">lx_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/MatrixToPhyDat.html">PhyDatToMatrix</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span>
+<span class="va">boot_upgma_hamming</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"USER"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">n_bs</span> <span class="op">&lt;-</span> <span class="fl">1000</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>On peut alors lancer la procédure de rééchantillonage sur l’arbre obtenu par UPGMA et la matrice transposée de données. Même avec 1000 rééchantillonages, obtient les résultats en un temps très court.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>La fonction <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> permet de fixer la <a href="https://fr.wikipedia.org/wiki/Graine_al%C3%A9atoire">graine aléatoire</a> et d’assurer la reproductibilité des résultats.</p>
+</div></div><div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123456</span><span class="op">)</span>
+<span class="va">lx_upgma_bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/boot.phylo.html">boot.phylo</a></span><span class="op">(</span><span class="va">lx_upgma</span>,
+  <span class="va">lx_m</span>,
+  <span class="va">boot_upgma_hamming</span>,
+  B <span class="op">=</span> <span class="va">n_bs</span>,
+  trees <span class="op">=</span> <span class="cn">TRUE</span>,
+  quiet <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="parcimonie-générale" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="parcimonie-générale">
-<span class="header-section-number">3.1</span> Parcimonie générale</h2>
-<p>Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d’un matrice de traits binaires, les changements 0 &gt; 1 et 1 &gt; 0 sont ainsi traités de manière identique, et il n’est pas nécessaire de connaitre l’état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.</p>
-<p>Jusqu’à une dizaine de taxons, il est possible d’utiliser l’algorithme <em>Branch and bound</em> qui garantit de trouver la solution optimale.</p>
+<p>On peut ainsi obtenir le nombre de rééchantillonages où l’un des clades de l’arbre par UPGMA apparaît. Il faut rajouter les valeurs des feuilles (langues), qui par définition apparaissent toujours.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/bab.html">bab</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span>
-<span class="va">lx_bab</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>4 phylogenetic trees</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">upgma_bs_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/boot.phylo.html">prop.clades</a></span><span class="op">(</span><span class="va">lx_upgma</span>, <span class="va">lx_upgma_bs</span><span class="op">$</span><span class="va">trees</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">upgma_support</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">n_bs</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span><span class="op">)</span>, <span class="va">upgma_bs_scores</span><span class="op">)</span>
+<span class="va">upgma_support_pct</span> <span class="op">&lt;-</span> <span class="va">upgma_support</span> <span class="op">/</span> <span class="va">n_bs</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction <code><a href="https://rdrr.io/pkg/phangorn/man/parsimony.html">acctran()</a></code> permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l’arbre et favorise l’interprétation des homoplasies comme des réversions.</p>
+<p>On peut ensuite rajouter les valeurs de <em>bootstrap</em> obtenues sur les différents nœuds internes de l’arbre UPGMA.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_bab</span>, <span class="va">lx_phy</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au <a href="https://fr.wikipedia.org/wiki/Newick">format Newick</a>.</p>
-<div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_bab</span>, <span class="st">"lx_bab.nwk"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.</p>
-<div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">25</span>, <span class="fl">45</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35</span>, <span class="fl">55</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_upgma</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodelab.html">geom_nodelab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">upgma_support_pct</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"text"</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">.1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/xlim_tree.html">xlim_tree</a></span><span class="op">(</span><span class="fl">0.14</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="2100"></p>
+<p><img src="evaluation_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
+<p>On peut choisir de n’afficher que les valeurs supérieures à un certain seuil, typiquement 70%.</p>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">38</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">28</span>, <span class="fl">55</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="2100"></p>
-</div>
-<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">17</span>, <span class="fl">53</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">25</span>, <span class="fl">60</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="2100"></p>
-</div>
-<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">38</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">50</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="2100"></p>
-</div>
-</div>
-<p>Au-delà d’une dizaine de taxons, il est nécessaire d’utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.</p>
-<div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span>
-<span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phangorn/man/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="va">lx_phy</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.nwk"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">60</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">upgma_support_pct</span><span class="op">[</span><span class="va">upgma_support_pct</span> <span class="op">&lt;</span> <span class="fl">.7</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_upgma</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab.html">geom_tiplab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_nodelab.html">geom_nodelab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">upgma_support_pct</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"text"</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">.1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/xlim_tree.html">xlim_tree</a></span><span class="op">(</span><span class="fl">0.14</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="2100"></p>
+<p><img src="evaluation_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+</section><section id="résumer-laccord-entre-des-résultats" class="level2 page-columns page-full" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="résumer-laccord-entre-des-résultats">
+<span class="header-section-number">4.2</span> Résumer l’accord entre des résultats</h2>
+<p>Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d’arbres. C’est le cas par exemple de notre analyse par <a href="./parcimonie.html">parcimonie</a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html">read.tree</a></span><span class="op">(</span><span class="st">"lx_bab.nwk"</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Il est possible de résumer l’accord entre ces arbres par un arbre consensus qui ne contient que les clades présents dans une proportion <em>p</em> des arbres. Un arbre consensus est donc normalement moins résolu que les arbres obtenus.</p>
+<p>Un arbre consensus strict ne contient que les clades présents dans <em>tous</em> les arbres (<em>p</em> = 1).</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Un arbre consensus n’a pas en principe de longueurs de branches.</p>
+</div></div><div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_bab_consensus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html">consensus</a></span><span class="op">(</span><span class="va">lx_bab</span>, p <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab_consensus</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4.75</span>, <span class="fl">3.85</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4.25</span>, <span class="fl">4.75</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="evaluation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+<p>Un arbre consensus majoritaire contient lui les clades présents dans la majorité (<em>p</em> ≥ .5) des arbres.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">lx_bab_consensus_mj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html">consensus</a></span><span class="op">(</span><span class="va">lx_bab</span>, p <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">lx_bab_consensus_mj</span>, layout <span class="op">=</span> <span class="st">"daylight"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom_tiplab2.html">geom_tiplab2</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5.25</span>, <span class="fl">5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5.25</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree.html">theme_tree</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="evaluation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
 <div class="callout-caution callout callout-style-default callout-captioned">
@@ -306,7 +326,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Parcimonies de Camin-Sokal et de Dollo</p>
+<p>score de parcimonie, CI, RI, etc.</p>
 </div>
 </div>
 
@@ -487,13 +507,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./distance.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Méthodes par distance</span></span>
+      <a href="./parcimonie.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Méthodes de parcimonie</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./evaluation.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./bibliographie.html" class="pagination-link">
+        <span class="nav-page-text">Bibliographie</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

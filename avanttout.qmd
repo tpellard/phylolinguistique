@@ -44,6 +44,7 @@ Il est également nécessaire d'installer un certain nombre d'extensions R. Il s
 install.packages("tidyverse")
 install.packages("ape")
 install.packages("phangorn")
+install.packages("TreeTools")
 ```
 
 Les extensions `ggtree` et `tanggle` pour la visualisation avancée des arbres phylogénétiques nécessitent au préalable d'installer `BiocManager`.

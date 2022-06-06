@@ -22,27 +22,27 @@ Parmi les différentes variantes de parcimonie, la plus simple autorise tous les
 Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and bound* qui garantit de trouver la solution optimale.
 
 ```{r}
-bab_trees <- bab(lx_phy)
-bab_trees
+lx_bab <- bab(lx_phy)
+lx_bab
 ```
 
 Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction `acctran()` permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l'arbre et favorise l'interprétation des homoplasies comme des réversions.
 
 ```{r}
-bab_trees <- acctran(bab_trees, lx_phy)
+lx_bab <- acctran(lx_bab, lx_phy)
 ```
 
 On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick).
 
 ```{r}
-write.tree(bab_trees, "bab_trees.nwk")
+write.tree(lx_bab, "lx_bab.nwk")
 ```
 
 Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.
 
 ```{r}
 library(ggtree)
-ggtree(bab_trees[1], layout = "daylight") +
+ggtree(lx_bab[[1]], layout = "daylight") +
   geom_tiplab2() +
   xlim(-25, 45) + ylim(-35, 55) +
   theme_tree()
@@ -50,15 +50,15 @@ ggtree(bab_trees[1], layout = "daylight") +
 
 ```{r}
 #| code-fold: true
-ggtree(bab_trees[2], layout = "daylight") +
+ggtree(lx_bab[[2]], layout = "daylight") +
   geom_tiplab2() +
   xlim(-30, 38) + ylim(-28, 55) +
   theme_tree()
-ggtree(bab_trees[3], layout = "daylight") +
+ggtree(lx_bab[[3]], layout = "daylight") +
   geom_tiplab2() +
   xlim(-17, 53) + ylim(-25, 60) +
   theme_tree()
-ggtree(bab_trees[4], layout = "daylight") +
+ggtree(lx_bab[[4]], layout = "daylight") +
   geom_tiplab2() +
   xlim(-30, 38) + ylim(-30, 50) +
   theme_tree()
@@ -69,13 +69,13 @@ Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heu
 ```{r}
 #| message: false
 #| results: hide
-pratchet_trees <- pratchet(lx_phy)
-pratchet_trees <- acctran(pratchet_trees, lx_phy)
-write.tree(pratchet_trees, "pratchet_trees.nwk")
+lx_pratchet <- pratchet(lx_phy)
+lx_pratchet <- acctran(lx_pratchet, lx_phy)
+write.tree(lx_pratchet, "lx_pratchet.nwk")
 ```
 
 ```{r}
-ggtree(pratchet_trees, layout = "daylight") +
+ggtree(lx_pratchet, layout = "daylight") +
   geom_tiplab2() +
   xlim(-60, 30) + ylim(-35, 45) +
   theme_tree()
