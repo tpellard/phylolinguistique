@@ -46,7 +46,7 @@ Les seules colonnes qui vont nous servir sont `CONCEPTID` (identifiant unique du
 
 Il est préférable de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat pour une classe donnée?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat de la forme de chaque langue?). Cela permet de traiter plus facilement les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple.
 
-Il faut donc transposer la colonne `COGIDS` en lignes (ce serait la colonne `CONCEPT` si l'on voulait obtenir une matrice de caractères à états multiples) avec la fonction `pivot_wider()`. On obtient ainsi un tableau au format largeavec les langues (taxons) en colonnes et les classes de cognats (caractères) en lignes.  
+Il faut donc transposer la colonne `COGIDS` en lignes (ce serait la colonne `CONCEPT` si l'on voulait obtenir une matrice de caractères à états multiples) avec la fonction `pivot_wider()`. On obtient ainsi un tableau au format large avec les langues (taxons) en colonnes et les classes de cognats (caractères) en lignes.  
 
 Par ailleurs, certaines langues ont plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
 
