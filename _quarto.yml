@@ -19,7 +19,7 @@ book:
       affiliation: "CRLAO (EHESS, Inalco, CNRS)"
       affiliation-url: http://crlao.ehess.fr/
   # date: today
-  logo: phyloling_scirc.png
+  # logo: phyloling_scirc.png
   favicon: phyloling_circ.png
   
   chapters:
@@ -33,7 +33,7 @@ book:
   
   twitter-card:
     creator: "@ThomasPellard"
-  opengraph:
+  open-graph:
     locale: fr-FR
   site-url: https://tpellard.github.io/phylolinguistique
   repo-url: https://github.com/tpellard/phylolinguistique
@@ -41,6 +41,9 @@ book:
   repo-actions: [issue]
   sharing: [twitter, facebook]
   
+  sidebar:
+    search: true
+    logo: phyloling_scirc.png
   page-navigation: true
   page-footer: 
     right: 
