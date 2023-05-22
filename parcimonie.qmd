@@ -17,7 +17,7 @@ lx_phy <- read.phyDat("lx_phy.txt",
 
 ## Parcimonie générale
 
-Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d'un matrice de traits binaires, les changements 0 > 1 et 1 > 0 sont ainsi traités de manière identique, et il n'est pas nécessaire de connaitre l'état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.
+Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d'une matrice de traits binaires, les changements 0 > 1 et 1 > 0 sont ainsi traités de manière identique, et il n'est pas nécessaire de connaitre l'état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non raciné.
 
 Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and bound* qui garantit de trouver la solution optimale.
 

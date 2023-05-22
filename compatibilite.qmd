@@ -1,0 +1,49 @@
+# Méthodes de compatibilite
+
+```{r}
+library(tidyverse)
+library(phangorn)
+```
+
+```{r}
+library(Rphylip)
+setPath("/usr/lib/phylip/bin")
+as.phylip.data <- function(x, ...) {
+  if (class(x) == "phyDat" && attr(x, "type") == "USER") {
+    X <- matrix(NA, length(x), length(attr(x, "index")))
+    rownames(X) <- names(x)
+    for (i in 1:ncol(X)) {
+      ii <- sapply(x, function(x, y, i) x[y[i]], y = attr(
+        x,
+        "index"
+      ), i = i)
+      X[, i] <- attr(x, "levels")[ii]
+    }
+    # X <- toupper(X)
+    class(X) <- "phylip.data"
+    return(X)
+  } else {
+    cat("Warning:\n  cannot convert object x to object of class 'phylip.data'.\n")
+    cat("  returning NULL. Sorry!\n\n")
+    return(NULL)
+  }
+}
+
+lx_phy <- read.phyDat("lx_phy.txt",
+  type = "USER",
+  levels = c(0, 1)
+)
+```
+
+```{r}
+lx_phylip <- as.phylip.data(lx_phy)
+lx_clique <- Rclique(lx_phylip)
+idx <- attr(lx_phy, "index")
+wgt <- attr(lx_phy, "weight")
+ps <- parsimony(lx_clique, lx_phy, site = "site")
+tb <- tibble(wgt, ps) %>% 
+  rowid_to_column(var = "id") %>% 
+  full_join(tibble(id = idx))
+filter(tb, ps <= 1)
+```
+
