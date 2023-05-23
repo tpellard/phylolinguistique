@@ -48,32 +48,6 @@ On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dan
 write.tree(lx_bab, "lx_bab.nwk")
 ```
 
-Les méthodes de parcimonie retournent typiquement plusieurs arbres également parcimonieux. Il est possible de les visualiser individuellement.
-
-```{r}
-library(ggtree)
-ggtree(lx_bab[[1]], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-25, 45) + ylim(-35, 55) +
-  theme_tree()
-```
-
-```{r}
-#| code-fold: true
-ggtree(lx_bab[[2]], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-30, 38) + ylim(-28, 55) +
-  theme_tree()
-ggtree(lx_bab[[3]], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-17, 53) + ylim(-25, 60) +
-  theme_tree()
-ggtree(lx_bab[[4]], layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-30, 38) + ylim(-30, 50) +
-  theme_tree()
-```
-
 Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.
 
 ```{r}
@@ -85,10 +59,7 @@ write.tree(lx_pratchet, "lx_pratchet.nwk")
 ```
 
 ```{r}
-ggtree(lx_pratchet, layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-60, 30) + ylim(-35, 45) +
-  theme_tree()
+plot(lx_pratchet, "unrooted")
 ```
 
 :::{.callout-caution}
