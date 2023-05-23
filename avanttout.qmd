@@ -9,7 +9,7 @@ execute:
 
 Les linguistes ont pendant longtemps réalisé des classifications phylogénétiques des langues à la main. Toutefois cela devient rapidement impossible avec de larges jeux de données à moins de partir à la [«cueillette de cerises»](https://fr.wikipedia.org/wiki/Cherry_picking) en sélectionnant intentionnellement un petit nombre de données, ce qui est la porte ouverte [aux biais de sélection](https://fr.wikipedia.org/wiki/Biais_de_s%C3%A9lection).
 
-Même pour les méthodes les plus simples, comme la [lexicostatistique](https://en.wikipedia.org/wiki/Lexicostatistics), qui peuvent être effectuées manuellement, l'analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s'agit là typiquement d'une tâche pour un ordinateur.
+Même pour les méthodes les plus simples, comme la [lexicostatistique](https://en.wikipedia.org/wiki/Lexicostatistics), qui peuvent être effectuées manuellement, l'analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s'agit là typiquement d'[une tâche pour un ordinateur](https://cipanglo.hypotheses.org/1725).
 
 :::{.column-margin}
 Pour *n* taxons, il y a $\frac{(2n-3)!}{2^{n-2}(n-2)!}$ arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.
