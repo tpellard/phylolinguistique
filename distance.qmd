@@ -17,9 +17,9 @@ Commençons par importer de nouveau la matrice de traits que nous avions sauvega
 ```{r}
 library(tidyverse)
 library(phangorn)
-lx_phy <- read.phyDat("lx_phy.txt",
+lx_phy <- read.phyDat("lx_phy.phy",
   type = "USER",
-  levels = c(0, 1)
+  levels = c("0", "1", "?")
 )
 ```
 
@@ -67,38 +67,26 @@ On peut alors sauvegarder les résultats dans un fichier au [format Newick](http
 write.tree(lx_upgma, "lx_upgma.nwk")
 ```
 
-On obtient un arbre unique raciné qu'on peut facilement visualiser. Il est néanmoins souvent nécessaire d'ajuster les axes afin d'afficher correctement les étiquettes des feuilles de l'arbre.
+On obtient un arbre unique enraciné qu'on peut facilement visualiser.
 
 ```{r}
-library(ggtree)
-upgma_tree <- ggtree(lx_upgma) +
-  geom_tiplab() +
-  xlim_tree(0.14) +
-  theme_tree()
-upgma_tree
+plot(lx_upgma)
 ```
 
 ## Neighbour joining
 
-La méthode de [neighbour joining](https://fr.wikipedia.org/wiki/Neighbour_joining) est plus sophistiquée que celle de UPGMA mais reste néanmoins simple. Elle s'en distingue par la prise en compte dans l'algorithme de la distance entre toutes les paires de taxons, et non seulement entre les paires les plus proches. Elle produit un arbre non raciné et non ultramétrique.
+La méthode de [neighbour joining](https://fr.wikipedia.org/wiki/Neighbour_joining) est plus sophistiquée que celle de UPGMA mais reste néanmoins simple. Elle s'en distingue par la prise en compte dans l'algorithme de la distance entre toutes les paires de taxons, et non seulement entre les paires les plus proches. Elle produit un arbre non enraciné et non ultramétrique.
 
 ```{r}
 lx_nj <- NJ(lx_dist)
-nj_tree <- ggtree(lx_nj, layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-.2, .09) +
-  ylim(-.17, .12) +
-  theme_tree()
-nj_tree
+lx_nj
+plot(lx_nj, "unrooted")
 ```
 
-On peut bien sûr artificiellement raciner l'arbre, mais c'est rarement une bonne idée. C'est néanmoins parfois nécessaire pour visualiser un grand nombre de langues.
+On peut bien sûr artificiellement enraciner l'arbre, mais c'est rarement une bonne idée. C'est néanmoins parfois nécessaire pour visualiser un grand nombre de langues.
 
 ```{r}
-ggtree(lx_nj) +
-  geom_tiplab() +
-  xlim_tree(0.21) +
-  theme_tree()
+plot(lx_nj, "tidy")
 ```
 
 ## NeighborNet
@@ -111,11 +99,5 @@ lx_nn
 ```
 
 ```{r}
-library(tanggle)
-nn_nx <- ggsplitnet(lx_nn) +
-  geom_tiplab2() +
-  xlim(-.15, .13) +
-  ylim(-.16, .1) +
-  theme_tree()
-nn_nx
+plot(lx_nn)
 ```
