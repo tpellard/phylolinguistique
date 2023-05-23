@@ -23,7 +23,7 @@ lx_phy <- read.phyDat("lx_phy.txt",
 )
 ```
 
-Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symmétrique, on peut donc se passer d'afficher l'un des deux triangles.
+Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symétrique, on peut donc se passer d'afficher l'un des deux triangles.
 
 ```{r}
 lx_dist <- dist.hamming(lx_phy)
