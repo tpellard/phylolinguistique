@@ -68,8 +68,3 @@ write.tree(lx_pratchet, "lx_pratchet.nwk")
 ```{r}
 plot(lx_pratchet, "unrooted")
 ```
-
-:::{.callout-caution}
-### À faire
-Parcimonies de Camin-Sokal et de Dollo
-:::
