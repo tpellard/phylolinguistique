@@ -1,4 +1,4 @@
-# Préparation des données 
+# Préparation des données
 
 La plupart des analyses phylolinguistiques utilisent des données lexicales. Une étape préalable à l'analyse phylogénétique consiste à déterminer quels mots sont cognats (homologues) et à les annoter. Cette tâche peut être grandement facilitée grâce à [Edictor](https://digling.org/edictor/), un éditeur libre et gratuit de bases de données lexicales comparatives créé par [Mattis List](https://lingulist.de). Il permet entre autres d'annoter facilement les classes de cognats (ensembles de mots apparentés) dans un navigateur internet en ligne ou hors ligne. Un [tutoriel en ligne](https://github.com/digling/edictor-tutorial) détaillé est disponible en ligne.
 
@@ -12,7 +12,8 @@ Téléchargeons et importons pour l'exemple des données sur les variétés [bai
 library(tidyverse)
 url <- "https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"
 download.file(url, "BAI.tsv")
-lx <- read_tsv("BAI.tsv", comment = "#") %>%
+lx_orig <- read_tsv("BAI.tsv", comment = "#")
+lx <- lx_orig %>%
   select(-MORPHEMES)
 ```
 
@@ -23,7 +24,7 @@ L'information sur les classes de cognats se trouve dans la colonne `COGIDS` (les
 rmarkdown::paged_table(select(lx, -TOKENS, -ID))
 ```
 
-Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans leur contexte didactique.
+Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans le contexte de ce tutoriel.
 
 ```{r}
 lx <- lx %>%
@@ -42,53 +43,133 @@ lx <- lx %>%
 
 ## Conversion
 
-Les seules colonnes qui vont nous servir sont `CONCEPTID` (identifiant unique du concept), `DOCULECT` (langue) et `COGIDS` (classe de cognats). Il s'agit de construire une matrice indiquant pour un concept donné quelles langues ont des formes apparentées.
-
-Il est préférable de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat pour une classe donnée?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat de la forme de chaque langue?). Cela permet de traiter plus facilement les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple.
-
-Il faut donc transposer la colonne `COGIDS` en lignes (ce serait la colonne `CONCEPT` si l'on voulait obtenir une matrice de caractères à états multiples) avec la fonction `pivot_wider()`. On obtient ainsi un tableau au format large avec les langues (taxons) en colonnes et les classes de cognats (caractères) en lignes.  
-
-Par ailleurs, certaines langues ont plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
-
-Quand il n'y a pas de cognat dans une langue pour un `COGIDS` donné, on insère un `0`, et sinon on insère un `1` avec l'option `values_fn = length`. Cela permet de transformer le contenu de la cellule (le `CONCEPTID`) avec la fonction `length` qui transforme le contenu en le nombre d'éléments de ce contenu, c'est-à-dire toujours `1`.
+Les seules colonnes qui vont nous intéresser ici sont `CONCEPTID` (identifiant unique du concept), `DOCULECT` (langue) et `COGIDS` (classe de cognats). Par ailleurs, certaines langues ont plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
 
 ```{r}
-lx_m <- lx %>%
-  select(CONCEPT, DOCULECT, COGIDS) %>%
-  distinct() %>%
-  pivot_wider(
-    names_from = DOCULECT,
-    values_from = CONCEPT,
-    values_fill = 0,
-    values_fn = length
-  ) %>%
-  select(-COGIDS)
+lx <- lx %>% 
+  select(CONCEPTID, DOCULECT, COGIDS) %>%
+  distinct()
 ```
 
 ```{r}
 #| echo: false
-rmarkdown::paged_table(lx_m)
+rmarkdown::paged_table(lx)
 ```
 
-:::{.callout-caution}
-### À faire
-Traitement des données manquantes `?`
-:::
+Le but est de construire une matrice indiquant quels mots sont cognats, mais plusieurs types de matrices sont possibles en fonction de l'information désirée. Ce n'est pas le cas le plus courant, mais on peut vouloir indiquer si une racine particulière, avec un identifiant `COGIDS` unique, existe ou non, quel que soit le concept qu'elle exprime dans la langue. On va pour cela pivoter notre tableau (et non le transposer): les valeurs de `COGIDS` vont devenir des colonnes remplies en fonction de la valeur de `CONCEPTID` dans chaque `DOCULECT`. Si pour une valeur de `COGIDS` donnée il n'y a pas de `CONCEPTID` associé dans un `DOCULECT`, c'est-à-dire que la langue n'a aucun concept avec une forme appartenant à cette classe de cognat, on remplit la cellule avec un `0`, sinon avec le nombre de concepts pour lesquels on trouve le cognat grâce à la fonction `length`. Ce nombre est en général `1`, mais en théorie, il peut être supérieur, et il faut donc remplacer les nombres supérieurs à `1` par `1`. On peut au préalable ordonner les données par ordre de la valeur de `COGIDS`. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les classes de cognats (caractères) en colonnes.
 
-Il suffit enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues) pour convertir notre matrice au format requis pour les analyses phylogénétiques.
+```{r}
+lx_roots <- lx %>%
+  select(CONCEPTID, DOCULECT, COGIDS) %>%
+  distinct() %>%
+  arrange(COGIDS) %>%
+  pivot_wider(
+    names_from = COGIDS,
+    values_from = CONCEPTID,
+    values_fill = 0,
+    values_fn = length
+  ) %>%
+  mutate(across(-DOCULECT, ~ ifelse(.x > 1, 1, .x)))
+```
+
+```{r}
+#| echo: false
+rmarkdown::paged_table(lx_roots)
+```
+
+Toutefois, il est plus courant en phylolinguistique de s'intéresser aux cas ou un même concept est exprimé par un cognat entre langues. Il est préférable dans ce cas de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat pour une classe donnée?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat de la forme de chaque langue?). Cela permet de traiter sans problème les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple.
+
+La conversion est un plus complexe et nécessite de pivoter trois fois notre tableau en faisant attention aux éventuelles données manquantes (les cas où un concept n'apparaît pas dans dans la liste d'une langue). Dans un premier temps, on utilise les valeurs de `DOCULECT` comme noms de colonnes et on remplit de `0` si la langue n'a pas de forme pour une classe de cognat et un concept donnés, et avec `1` sinon. Il faut rajouter une colonne fantoche auparavant avec par exemple `rowid_to_column` afin de conserver les colonnes `CONCEPT` et `COGIDS` et utiliser cette colonne fantoche pour remplir les cellules. On repivote ensuite notre tableau dans l'autre sens en mettant l'information binaire (présence ou non d'une même association entre un concept et une classe de cognat) dans une colonne `VALUE` dont on convertit le type de numérique à caractère. Pour chaque langue et concept, s'il n'y aucune classe de cognat et donc uniquement des `0` dans `VALUE`, c'est que les données sont manquantes, et on remplace les `0` par `?`, le symbole standard pour les données manquantes. Enfin on peut pivoter à nouveau le tableau, cette fois-ci en utilisant une nouvelle valeur concaténant `CONCEPT` et `COGIDS` comme noms de colonnes et en abandonnant ces deux colonnes d'origine. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les combinaisons entre concepts et classes de cognats en colonnes, avec `1` pour «présence», `0` pour «absence», et `?` pour «donnée manquante».
+
+```{r}
+lx_cogs <- lx %>%
+  rowid_to_column() %>%
+  pivot_wider(
+    names_from = DOCULECT,
+    values_from = rowid,
+    values_fill = 0,
+    values_fn = length
+  ) %>%
+  pivot_longer(cols = !(CONCEPTID | COGIDS), names_to = "DOCULECT", values_to = "VALUE") %>%
+  mutate(VALUE = as.character(VALUE)) %>%
+  group_by(CONCEPTID, DOCULECT) %>%
+  mutate(VALUE = ifelse(sum(VALUE != 0) == 0, "?", VALUE)) %>%
+  ungroup() %>%
+  mutate(id = paste0(CONCEPTID, "_", COGIDS)) %>%
+  select(DOCULECT, id, VALUE) %>%
+  pivot_wider(
+    names_from = id,
+    values_from = VALUE
+  )
+```
+
+```{r}
+#| echo: false
+rmarkdown::paged_table(lx_cogs)
+```
+
+Pour finir de convertir nos données en une matrice phylogénétique prêtre à l'analyse, il suffit de les convertir en objet matriciel puis enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues).
 
 ```{r}
 library(phangorn)
-lx_phy <- phyDat(lx_m,
-  type = "USER",
-  levels = c(0, 1),
-  names = names(lx_m)
-)
+lx_phy <- lx_cogs %>%
+  column_to_rownames("DOCULECT") %>%
+  as.matrix() %>%
+  phyDat(
+    type = "USER",
+    levels = c("0", "1", "?"),
+    names = names(.)
+  )
 lx_phy
 ```
 
-On peut également sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, le format a peu d'importance et l'option par défaut (Phylip) est suffisante.
+On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, l'option par défaut (Phylip) est suffisante (le réimport d'un fichier nexus à traits binaires pose en autre des problèmes non encore résolus).
 
-```{#lst:save .r}
-write.phyDat(lx_phy, "lx_phy.txt")
+```{r}
+#| label: lst:save
+write.phyDat(lx_phy, "lx_phy.phy", format = "phylip")
+```
+
+:::{.column-margin}
+::: callout-caution
+## À faire
+Régler le problème de lecture des fichiers nexus binaires
+:::
+:::
+
+Cette conversion étant un peu fastidieuse, il est plus pratique de créer une fonction réutilisable pour tout le processus de conversion d'un fichier `.tsv`au format Edictor vers une matrice de traits binaires au format `phyDat`.
+
+```{r}
+as_phyDat2_edictor <- function(dt) {
+  dt %>%
+    rowid_to_column() %>%
+    pivot_wider(
+      names_from = DOCULECT,
+      values_from = rowid,
+      values_fill = 0,
+      values_fn = length
+    ) %>%
+    pivot_longer(cols = !(CONCEPTID | COGIDS), names_to = "DOCULECT", values_to = "VALUE") %>%
+    mutate(VALUE = as.character(VALUE)) %>%
+    group_by(CONCEPTID, DOCULECT) %>%
+    mutate(VALUE = ifelse(sum(VALUE != 0) == 0, "?", VALUE)) %>%
+    ungroup() %>%
+    mutate(id = paste0(CONCEPTID, "_", COGIDS)) %>%
+    select(DOCULECT, id, VALUE) %>%
+    pivot_wider(
+      names_from = id,
+      values_from = VALUE
+    ) %>%
+    column_to_rownames("DOCULECT") %>%
+    as.matrix() %>%
+    phyDat(
+      type = "USER",
+      levels = c("0", "1", "?"),
+      names = names(.)
+    )
+}
+```
+
+```{r}
+as_phyDat2_edictor(lx)
 ```
