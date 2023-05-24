@@ -16,6 +16,7 @@ Commençons par importer de nouveau la matrice de traits binaires que nous avion
 
 ```{r}
 library(tidyverse)
+library(phangorn)
 library(TreeTools)
 lx_phy <- ReadAsPhyDat("lx_phy_bin.nex")
 ```
@@ -70,7 +71,7 @@ lx_upgma
 On peut alors sauvegarder les résultats dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick).
 
 ```{r}
-write.tree(lx_upgma, "lx_upgma.nwk")
+write.tree(lx_upgma, "lx_upgma.tree")
 ```
 
 On obtient un arbre unique enraciné qu'on peut facilement visualiser.
@@ -107,3 +108,10 @@ lx_nn
 ```{r}
 plot(lx_nn)
 ```
+
+Ce réseau peut être sauvegardé au format nexus avec la fonction `write.nexus.networx()`.
+
+```{r}
+write.nexus.networx(lx_nn, "lx_nn.nex")
+```
+
