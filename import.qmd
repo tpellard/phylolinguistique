@@ -106,8 +106,13 @@ lx_phy_multi <- lx_multi %>%
   column_to_rownames("DOCULECT") %>%
   as.matrix() %>%
   MatrixToPhyDat()
-lx_phy_multi
 ```
+::: column-margin
+::: {.callout-caution}
+## À faire
+Le résultat s'affiche mal en HTML.
+:::
+:::
 
 On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Le format Nexus est ici recommandé pour bien prendre en compte les polymorphismes.
 
