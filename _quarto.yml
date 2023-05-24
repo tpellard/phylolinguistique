@@ -52,7 +52,7 @@ book:
 lang: fr
 title-block-affiliation-single: "Affiliation"
 repo-action-links-issue: "Signaler un problème"
-bibliography: "/home/tpellard/texmf/bibtex/bib/linguistica_bib/linguistica.bib"
+bibliography: /home/tpellard/texmf/bibtex/bib/linguistica_bib/linguistica.bib
 csl: unified-style-sheet-for-linguistics_nocap.csl
 
 format:

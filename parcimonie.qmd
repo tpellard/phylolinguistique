@@ -4,15 +4,13 @@ Contrairement aux méthodes par distance, les méthodes de parcimonie ne constru
 
 Les méthodes de parcimonie sont plus complexes que celles par distance, mais elles restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans [certaines conditions](https://fr.wikipedia.org/wiki/Attraction_des_longues_branches).
 
-Commençons par importer de nouveau la matrice de traits que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée [précédemment](import.qmd#lst:save).
 
 ```{r}
 library(tidyverse)
 library(phangorn)
-lx_phy <- read.phyDat("lx_phy.phy",
-  type = "USER",
-  levels = c("0", "1", "?")
-)
+library(TreeTools)
+lx_phy <- ReadAsPhyDat("lx_phy_bin.nex")
 ```
 
 ## Parcimonie générale
@@ -22,7 +20,7 @@ Parmi les différentes variantes de parcimonie, la plus simple autorise tous les
 :::{.column-margin}
 ::: callout-caution
 ## À faire
-Inclure les autres types de parcimonie
+Inclure les autres types de parcimonie.
 :::
 :::
 
@@ -31,7 +29,7 @@ Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch 
 :::{.column-margin}
 ::: callout-caution
 ## À faire
-Vérifier le traitement des données manquantes
+Vérifier le traitement des données manquantes et celui despolymorphismes pour les données à états multiples.
 :::
 :::
 
@@ -52,7 +50,7 @@ plot(lx_bab[[1]], "unrooted")
 On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick).
 
 ```{r}
-write.tree(lx_bab, "lx_bab.nwk")
+write.tree(lx_bab, "lx_bab.tree")
 ```
 
 Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.
@@ -62,7 +60,7 @@ Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heu
 #| results: hide
 lx_pratchet <- pratchet(lx_phy)
 lx_pratchet <- acctran(lx_pratchet, lx_phy)
-write.tree(lx_pratchet, "lx_pratchet.nwk")
+write.tree(lx_pratchet, "lx_pratchet.tree")
 ```
 
 ```{r}
