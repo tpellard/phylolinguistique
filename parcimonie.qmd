@@ -4,13 +4,13 @@ Contrairement aux méthodes par distance, les méthodes de parcimonie ne constru
 
 Les méthodes de parcimonie sont plus complexes que celles par distance, mais elles restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans [certaines conditions](https://fr.wikipedia.org/wiki/Attraction_des_longues_branches).
 
-Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits à états multipes que nous avions sauvegardée [précédemment](import.qmd#lst:save).
 
 ```{r}
 library(tidyverse)
 library(phangorn)
 library(TreeTools)
-lx_phy <- ReadAsPhyDat("lx_phy_bin.nex")
+lx_phy <- ReadAsPhyDat("lx_phy_multi.nex")
 ```
 
 ## Parcimonie générale
