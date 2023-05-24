@@ -93,7 +93,7 @@ lx_cogs <- lx %>%
   pivot_longer(cols = !(CONCEPTID | COGIDS), names_to = "DOCULECT", values_to = "VALUE") %>%
   mutate(VALUE = as.character(VALUE)) %>%
   group_by(CONCEPTID, DOCULECT) %>%
-  mutate(VALUE = ifelse(sum(VALUE != 0) == 0, "?", VALUE)) %>%
+  mutate(VALUE = ifelse(sum(VALUE != "0") == 0, "?", VALUE)) %>%
   ungroup() %>%
   mutate(id = paste0(CONCEPTID, "_", COGIDS)) %>%
   select(DOCULECT, id, VALUE) %>%
@@ -152,7 +152,7 @@ as_phyDat2_edictor <- function(dt) {
     pivot_longer(cols = !(CONCEPTID | COGIDS), names_to = "DOCULECT", values_to = "VALUE") %>%
     mutate(VALUE = as.character(VALUE)) %>%
     group_by(CONCEPTID, DOCULECT) %>%
-    mutate(VALUE = ifelse(sum(VALUE != 0) == 0, "?", VALUE)) %>%
+    mutate(VALUE = ifelse(sum(VALUE != "0") == 0, "?", VALUE)) %>%
     ungroup() %>%
     mutate(id = paste0(CONCEPTID, "_", COGIDS)) %>%
     select(DOCULECT, id, VALUE) %>%
@@ -164,7 +164,7 @@ as_phyDat2_edictor <- function(dt) {
     as.matrix() %>%
     phyDat(
       type = "USER",
-      levels = c("0", "1", "?"),
+      levels = c("0", "1"),
       names = names(.)
     )
 }

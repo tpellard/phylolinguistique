@@ -9,7 +9,7 @@ On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec
 ```{r}
 library(tidyverse)
 library(phangorn)
-lx_phy <- read.phyDat("lx_phy.txt",
+lx_phy <- read.phyDat("lx_phy.phy",
   type = "USER",
   levels = c(0, 1)
 )
@@ -23,7 +23,7 @@ Il faut en plus définir une fonction qui sera appliquée à chaque échantillon
 library(TreeTools)
 lx_m <- PhyDatToMatrix(lx_phy)
 boot_upgma_hamming <- function(x) {
-  upgma(dist.hamming(phyDat(x, type = "USER", levels = c(0, 1))))
+  upgma(dist.hamming(phyDat(x, type = "USER", levels = c(0, 1)), exclude = "pairwise"))
 }
 n_bs <- 1000
 ```
