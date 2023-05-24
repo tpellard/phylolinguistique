@@ -6,7 +6,7 @@ La plupart des analyses phylolinguistiques utilisent des données lexicales. Une
 
 Edictor permet de sauvegarder les données traitées sous forme d'un fichier tabulaire au format [`.tsv`](https://fr.wikipedia.org/wiki/Tabulation-separated_values). Il est alors très simple de l'importer avec R, en prenant garde d'ignorer les lignes de commentaires à la fin marquées par `#`.
 
-Téléchargeons et importons pour l'exemple des données sur les variétés [bai](https://fr.wikipedia.org/wiki/Bai_(langue)) fournies dans Edictor. Comme la colonne `MORPHEMES` est entièrement vide, on peut immédiatement la supprimer.
+Téléchargeons et importons pour l'exemple des données sur les variétés [bai](https://fr.wikipedia.org/wiki/Bai_(langue)) fournies dans Edictor. Les seules colonnes qui vont nous intéresser ici sont `CONCEPTID` (identifiant unique du concept), `DOCULECT` (langue) et `COGIDS` (classe de cognats). En outre, certaines langues peuvent avoir plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
 
 ```{r}
 library(tidyverse)
@@ -14,14 +14,15 @@ url <- "https://raw.githubusercontent.com/digling/edictor/master/data/BAI.tsv"
 download.file(url, "BAI.tsv")
 lx_orig <- read_tsv("BAI.tsv", comment = "#")
 lx <- lx_orig %>%
-  select(-MORPHEMES)
+  select(CONCEPTID, DOCULECT, COGIDS) %>% 
+  distinct()
 ```
 
-L'information sur les classes de cognats se trouve dans la colonne `COGIDS` (les colonnes `ID` et `TOKENS` ne sont pas montrées ci-dessous).
+L'information sur les classes de cognats se trouve dans la colonne `COGIDS`.
 
 ```{r}
 #| echo: false
-rmarkdown::paged_table(select(lx, -TOKENS, -ID))
+rmarkdown::paged_table(lx)
 ```
 
 Comme il s'agit de faire un exemple et non une réelle analyse phylogénétique, je propose de renommer les langues de manière arbitraire afin de ne pas induire en erreur les personnes qui tomberaient par hasard sur les résultats de nos analyses et les diffuseraient sans le contexte de ce tutoriel.
@@ -43,46 +44,112 @@ lx <- lx %>%
 
 ## Conversion
 
-Les seules colonnes qui vont nous intéresser ici sont `CONCEPTID` (identifiant unique du concept), `DOCULECT` (langue) et `COGIDS` (classe de cognats). Par ailleurs, certaines langues ont plusieurs formes (variantes?) pour une même classe de cognats, mais l'information qui nous intéresse est simplement la présence ou non d'un cognat, on peut donc supprimer les lignes superflues correspondantes avec la fonction `distinct()`.
+Le but est de construire une matrice indiquant quels mots sont cognats, mais plusieurs types de matrices sont possibles.
+
+### États multiples
+
+Tout d'abord, on peut utiliser un codage à états multiples et encoder pour chaque concept quelle est la classe de cognat de la forme de chaque langue. Chaque caractère peut ainsi avoir dans une langue une valeur parmi un ensemble d'une longueur finie, typiquement représentée par un chiffre entre 0 et 9 dans les formats de fichier pour la phylogénétique. L'ensemble des états possibles est propre à chaque caractère: `1` pour un caractère ne représente pas la même valeur que `1` pour un autre caractère, et des caractères différents peuvent ne pas avoir le même nombre d'états possibles.
+
+::: column-margin
+::: {.callout-important appearance="simple"}
+Au-delà de 10 états différents, il est nécessaire d'utiliser d'autres symboles comme des lettres car les chaque doit être représenté par un seul symbole.
+:::
+:::
+
+Un problème qui se pose pour le codage à états multiples est celui du polymorphisme, par exemple quand une langue présente deux synonymes pour un même concept et que chacun appartient à une classe de cognat différente. La convention standard pour une langue présentant à la fois l'état `1` et l'état `2` sera ici de noter dans ce cas `{12}`.
+
+::: column-margin
+::: {.callout-note appearance="simple"}
+On trouve aussi la convention d'utiliser des parenthèses.
+:::
+:::
+
+::: column-margin
+::: {.callout-caution appearance="simple"}
+Vérifier s'il est possible d'avoir un polymorphisme de plus de deux états.
+:::
+:::
+
+Il donc nécessaire tout d'abord de transformer les valeurs de `COGIDS` en chiffres à l'intérieur de chaque groupe de `CONCEPTID`. On concatène ensuite les valeurs multiples de `COGIDS` pour un même `DOCULECT` et `CONCEPTID`, avant de les entourer de parenthèses. On peut ensuite pivoter (et non transposer) notre tableau: les valeurs de `CONCEPTID` vont devenir des colonnes remplies par les valeurs correspondantes de `COGIDS`. Si pour une valeur de `CONCEPTID` donnée il n'y a pas de `COGIDS` associé dans un `DOCULECT`, c'est-à-dire que la langue n'a aucun concept avec une forme appartenant à cette classe de cognat, on remplit la cellule avec un `?` pour indiquer que les données sont manquantes
 
 ```{r}
-lx <- lx %>% 
-  select(CONCEPTID, DOCULECT, COGIDS) %>%
-  distinct()
-```
-
-```{r}
-#| echo: false
-rmarkdown::paged_table(lx)
-```
-
-Le but est de construire une matrice indiquant quels mots sont cognats, mais plusieurs types de matrices sont possibles en fonction de l'information désirée. Ce n'est pas le cas le plus courant, mais on peut vouloir indiquer si une racine particulière, avec un identifiant `COGIDS` unique, existe ou non, quel que soit le concept qu'elle exprime dans la langue. On va pour cela pivoter notre tableau (et non le transposer): les valeurs de `COGIDS` vont devenir des colonnes remplies en fonction de la valeur de `CONCEPTID` dans chaque `DOCULECT`. Si pour une valeur de `COGIDS` donnée il n'y a pas de `CONCEPTID` associé dans un `DOCULECT`, c'est-à-dire que la langue n'a aucun concept avec une forme appartenant à cette classe de cognat, on remplit la cellule avec un `0`, sinon avec le nombre de concepts pour lesquels on trouve le cognat grâce à la fonction `length`. Ce nombre est en général `1`, mais en théorie, il peut être supérieur, et il faut donc remplacer les nombres supérieurs à `1` par `1`. On peut au préalable ordonner les données par ordre de la valeur de `COGIDS`. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les classes de cognats (caractères) en colonnes.
-
-```{r}
-lx_roots <- lx %>%
-  select(CONCEPTID, DOCULECT, COGIDS) %>%
-  distinct() %>%
-  arrange(COGIDS) %>%
+lx_multi <- lx %>%
+  group_by(CONCEPTID) %>%
+  mutate(COGIDS = as.factor(COGIDS) %>% as.numeric()) %>%
+  group_by(DOCULECT, CONCEPTID) %>%
+  summarise(COGIDS = paste0(COGIDS, collapse = "")) %>%
+  ungroup() %>%
+  mutate(COGIDS = ifelse(str_detect(COGIDS, "..+"), paste0("{", COGIDS, "}"), COGIDS)) %>%
   pivot_wider(
-    names_from = COGIDS,
-    values_from = CONCEPTID,
-    values_fill = 0,
-    values_fn = length
-  ) %>%
-  mutate(across(-DOCULECT, ~ ifelse(.x > 1, 1, .x)))
+    names_from = CONCEPTID,
+    values_from = COGIDS,
+    values_fill = "?",
+  )
 ```
 
 ```{r}
 #| echo: false
-rmarkdown::paged_table(lx_roots)
+rmarkdown::paged_table(lx_multi)
 ```
 
-Toutefois, il est plus courant en phylolinguistique de s'intéresser aux cas ou un même concept est exprimé par un cognat entre langues. Il est préférable dans ce cas de produire une matrice avec des caractères binaires (la langue possède-t-elle (1) ou non (0) un cognat pour une classe donnée?) plutôt qu'avec des caractères à états multiples (quelle est la classe de cognat de la forme de chaque langue?). Cela permet de traiter sans problème les cas de polymorphisme (plusieurs formes pour un même concept), comme on peut en trouver dans nos données d'exemple.
+Pour finir de convertir nos données en une matrice phylogénétique prête à l'analyse, il suffit de les convertir en objet matriciel puis enfin d'utiliser la fonction `MatrixTophyDat()` de `TreeTools`.
 
-La conversion est un plus complexe et nécessite de pivoter trois fois notre tableau en faisant attention aux éventuelles données manquantes (les cas où un concept n'apparaît pas dans dans la liste d'une langue). Dans un premier temps, on utilise les valeurs de `DOCULECT` comme noms de colonnes et on remplit de `0` si la langue n'a pas de forme pour une classe de cognat et un concept donnés, et avec `1` sinon. Il faut rajouter une colonne fantoche auparavant avec par exemple `rowid_to_column` afin de conserver les colonnes `CONCEPT` et `COGIDS` et utiliser cette colonne fantoche pour remplir les cellules. On repivote ensuite notre tableau dans l'autre sens en mettant l'information binaire (présence ou non d'une même association entre un concept et une classe de cognat) dans une colonne `VALUE` dont on convertit le type de numérique à caractère. Pour chaque langue et concept, s'il n'y aucune classe de cognat et donc uniquement des `0` dans `VALUE`, c'est que les données sont manquantes, et on remplace les `0` par `?`, le symbole standard pour les données manquantes. Enfin on peut pivoter à nouveau le tableau, cette fois-ci en utilisant une nouvelle valeur concaténant `CONCEPT` et `COGIDS` comme noms de colonnes et en abandonnant ces deux colonnes d'origine. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les combinaisons entre concepts et classes de cognats en colonnes, avec `1` pour «présence», `0` pour «absence», et `?` pour «donnée manquante».
+::: column-margin
+::: {.callout-warning appearance="simple"}
+La fonction `phyDat()` de `phangorn` ne semble pas capable de convertir les cas de polymorphismes.
+:::
+:::
 
 ```{r}
-lx_cogs <- lx %>%
+library(TreeTools)
+lx_phy_multi <- lx_multi %>%
+  column_to_rownames("DOCULECT") %>%
+  as.matrix() %>%
+  MatrixToPhyDat()
+lx_phy_multi
+```
+
+On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Le format Nexus est ici recommandé pour bien prendre en compte les polymorphismes.
+
+```{r}
+library(phangorn)
+write.phyDat(lx_phy_multi, "lx_phy_multi.nex", format = "nexus")
+```
+
+Cette conversion étant un peu fastidieuse, il est plus pratique de créer une fonction réutilisable pour tout le processus de conversion d'un fichier `.tsv`au format Edictor vers une matrice de traits binaires au format `phyDat`.
+
+```{r}
+as_phyDatM_edictor <- function(dt) {
+  dt %>%
+    group_by(CONCEPTID) %>%
+    mutate(COGIDS = as.factor(COGIDS) %>% as.numeric()) %>%
+    group_by(DOCULECT, CONCEPTID) %>%
+    summarise(COGIDS = paste0(COGIDS, collapse = "")) %>%
+    ungroup() %>%
+    mutate(COGIDS = ifelse(str_detect(COGIDS, "..+"), paste0("{", COGIDS, "}"), COGIDS)) %>%
+    pivot_wider(
+      names_from = CONCEPTID,
+      values_from = COGIDS,
+      values_fill = "?",
+    ) %>%
+    column_to_rownames("DOCULECT") %>%
+    as.matrix() %>%
+    MatrixToPhyDat()
+}
+```
+
+```{r}
+as_phyDatM_edictor(lx)
+```
+
+### États binaires
+
+Il est cependant plus courant en phylolinguistique de produire une matrice avec des caractères binaires: la langue possède-t-elle (`1`) ou non (`0`) un cognat pour une classe de cognats et un concept donnés? Cela permet de traiter sans problème les cas de polymorphisme, comme on peut en trouver dans nos données d'exemple, et lève toute limite au nombre d'états possibles pour un caractère.
+
+La conversion est un peu plus complexe et nécessite de pivoter trois fois notre tableau en faisant attention aux éventuelles données manquantes (les cas où un concept n'apparaît pas dans dans la liste d'une langue). Dans un premier temps, on utilise les valeurs de `DOCULECT` comme noms de colonnes et on remplit de `0` si la langue n'a pas de forme pour une classe de cognat et un concept donnés, et avec `1` sinon. Il faut rajouter une colonne fantoche auparavant avec par exemple `rowid_to_column` afin de conserver les colonnes `CONCEPT` et `COGIDS` et utiliser cette colonne fantoche pour remplir les cellules. On repivote ensuite notre tableau dans l'autre sens en mettant l'information binaire (présence ou non d'une même association entre un concept et une classe de cognat) dans une colonne `VALUE` dont on convertit le type de numérique à caractère. Pour chaque langue et concept, s'il n'y aucune classe de cognat et donc uniquement des `0` dans `VALUE`, c'est que les données sont manquantes, et on remplace les `0` par `?`, le symbole standard pour les données manquantes. Enfin on peut pivoter à nouveau le tableau, cette fois-ci en utilisant une nouvelle valeur concaténant `CONCEPT` et `COGIDS` comme noms de colonnes et en abandonnant ces deux colonnes d'origine. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les combinaisons entre concepts et classes de cognats en colonnes, avec `1` pour «présence», `0` pour «absence», et `?` pour «donnée manquante».
+
+```{r}
+lx_bin <- lx %>%
   rowid_to_column() %>%
   pivot_wider(
     names_from = DOCULECT,
@@ -105,35 +172,31 @@ lx_cogs <- lx %>%
 
 ```{r}
 #| echo: false
-rmarkdown::paged_table(lx_cogs)
+rmarkdown::paged_table(lx_bin)
 ```
 
-Pour finir de convertir nos données en une matrice phylogénétique prêtre à l'analyse, il suffit de les convertir en objet matriciel puis enfin d'utiliser la fonction `phyDat()` de `phangorn` en précisant l'ensemble des valeurs possibles de `COGIDS` et le nom des colonnes (langues).
+Comme précédemment, il suffit de convertir le résultat avec `MatrixTophyDat()` de `TreeTools`.
 
 ```{r}
-library(phangorn)
-lx_phy <- lx_cogs %>%
+lx_phy_bin <- lx_bin %>%
   column_to_rownames("DOCULECT") %>%
   as.matrix() %>%
-  phyDat(
-    type = "USER",
-    levels = c("0", "1"),
-    names = names(.)
-  )
-lx_phy
+  MatrixToPhyDat()
+lx_phy_bin
 ```
 
 On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, l'option par défaut (Phylip) est suffisante (le réimport d'un fichier nexus à traits binaires pose en autre des problèmes non encore résolus).
 
 ```{r}
 #| label: lst:save
-write.phyDat(lx_phy, "lx_phy.phy", format = "phylip")
+write.phyDat(lx_phy_bin, "lx_phy_bin.nex", format = "nexus")
 ```
 
-:::{.column-margin}
+::: column-margin
 ::: callout-caution
 ## À faire
-Régler le problème de lecture des fichiers nexus binaires
+
+Régler le problème de spécification des symboles dans les fichiers Nexus pour les données binaires.
 :::
 :::
 
@@ -162,14 +225,44 @@ as_phyDat2_edictor <- function(dt) {
     ) %>%
     column_to_rownames("DOCULECT") %>%
     as.matrix() %>%
-    phyDat(
-      type = "USER",
-      levels = c("0", "1"),
-      names = names(.)
-    )
+    MatrixToPhyDat()
 }
 ```
 
 ```{r}
 as_phyDat2_edictor(lx)
 ```
+
+<!-- ## Données complexes: Les cognats partiels -->
+
+<!-- La procédure décrite ci-dessus présuppose une définition et un encodage simples de la relation «cognat»: deux mots sont cognats si et seulement si leur valeur de `COGIDS` est identique. Mais, cette relation n'est pas binaire, notamment si l'on considère l'existence de cognats partiels, comme des composés incluant un même racine et un élément différent dans deux langues [@List2016BeyondCognacy]. @WuList2023AnnotatingCognatesPhylogeneticStudiesSoutheastAsianLanguages ont proposé une notation dans Edictor pour encoder ces cognats partiels. -->
+
+<!-- Le jeu de données de l'article est accessible, et la colonne `MORPHEMES` est ici importante. Comme il n'y a pas de colonne `CONCEPTID` il est nécessaire de la créer en renommant `CONCEPT` en `CONCEPTID`. -->
+
+<!-- ```{r} -->
+
+<!-- url <- "https://raw.githubusercontent.com/lingpy/evaluation-paper/master/edictor/liusinitic.tsv" -->
+
+<!-- download.file(url, "liusinitic.tsv") -->
+
+<!-- lx_orig2 <- read_tsv("liusinitic.tsv", comment = "#") -->
+
+<!-- lx2 <- lx_orig2 %>% -->
+
+<!--   rename(CONCEPTID = CONCEPT) %>%  -->
+
+<!--   select(CONCEPTID, DOCULECT, MORPHEMES, COGIDS) -->
+
+<!-- ``` -->
+
+<!-- Ici la colonne `COGIDS` contient plusieurs identifiants numériques uniques séparés par des espaces, un par morphème, et la colonne `MORPHEMES` contient elle les gloses des différents morphèmes, également séparées par des espaces. Cette colonne contient également des annotations: les morphèmes étymologiquement non saillants (comme les affixes) sont préfixés d'un tiret bas (*underscore*, `_`), ce qui va permettre de les ignorer si on le désire lors de la création de la matrice. -->
+
+<!-- ```{r} -->
+
+<!-- #| echo: false -->
+
+<!-- rmarkdown::paged_table(lx2 %>% arrange(desc(CONCEPTID), DOCULECT)) -->
+
+<!-- ``` -->
+
+<!-- On peut bien sûr décider que ne sont cognats que les mots dont tous les morphèmes sont strictement cognats, et la procédure de conversion de la section précédente est alors suffisante. Mais on peut également choisir de reconnaître comme cognats des mots qui partagent au moins un morphème, typiquement un morphème saillant. -->
