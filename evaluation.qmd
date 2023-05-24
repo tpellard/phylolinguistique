@@ -9,21 +9,18 @@ On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec
 ```{r}
 library(tidyverse)
 library(phangorn)
-lx_phy <- read.phyDat("lx_phy.phy",
-  type = "USER",
-  levels = c(0, 1)
-)
-lx_upgma <- read.tree("lx_upgma.nwk")
+library(TreeTools)
+lx_phy <- ReadAsPhyDat("lx_phy_multi.nex")
+lx_upgma <- read.tree("lx_upgma.tree")
 ```
 
 Il faut au préalable récupérer la matrice de données. C'est totalement redondant mais il s'agit d'une contrainte technique.
-Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `dist.hamming()` puis `upgma()`. On définit également à l'avance le nombre de rééchantillonages à effectuer, ici 1000.
+Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `Hamming()` puis `upgma()`. On définit également à l'avance le nombre de rééchantillonages à effectuer, ici 1000.
 
 ```{r}
-library(TreeTools)
 lx_m <- PhyDatToMatrix(lx_phy)
 boot_upgma_hamming <- function(x) {
-  upgma(dist.hamming(phyDat(x, type = "USER", levels = c(0, 1)), exclude = "pairwise"))
+  upgma(Hamming(MatrixToPhyDat(x)))
 }
 n_bs <- 1000
 ```
@@ -45,23 +42,19 @@ lx_upgma_bs <- boot.phylo(lx_upgma,
 )
 ```
 
-On peut ainsi obtenir le nombre de rééchantillonages où l'un des clades de l'arbre par UPGMA apparaît. Il faut rajouter les valeurs des feuilles (langues), qui par définition apparaissent toujours.
+On peut ainsi obtenir le nombre de rééchantillonages où chacun des clades de l'arbre par UPGMA apparaît, les transformer en proportions, et affecter ces valeurs aux nœuds internes de l'arbre. On peut alors les afficher sur le dendrogramme.
 
 ```{r}
 upgma_bs_scores <- prop.clades(lx_upgma, lx_upgma_bs$trees, rooted = TRUE)
-upgma_support <- c(rep(n_bs, length(lx_phy)), upgma_bs_scores)
-upgma_support_pct <- upgma_support / n_bs
+upgma_support_pct <- upgma_bs_scores / n_bs
+lx_upgma$node.label <- upgma_support_pct
+plot(lx_upgma, show.node.label = TRUE)
 ```
 
-On peut ensuite rajouter les valeurs de *bootstrap* obtenues sur les différents nœuds internes de l'arbre UPGMA.
+Une autre méthodes consiste à directement afficher les résultats avec `plotBS()`.
 
 ```{r}
-library(ggtree)
-ggtree(lx_upgma) +
-  geom_tiplab() +
-  geom_nodelab(aes(label = upgma_support_pct), geom = "text", hjust = -.1) +
-  xlim_tree(0.14) +
-  theme_tree()
+plotBS(lx_upgma, lx_upgma_bs$trees)
 ```
 
 On peut choisir de n'afficher que les valeurs supérieures à un certain seuil, typiquement 70%.
