@@ -117,7 +117,7 @@ lx_phy <- lx_cogs %>%
   as.matrix() %>%
   phyDat(
     type = "USER",
-    levels = c("0", "1", "?"),
+    levels = c("0", "1"),
     names = names(.)
   )
 lx_phy
