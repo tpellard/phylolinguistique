@@ -12,26 +12,19 @@ Les méthodes par distance ne peuvent donc pas être recommandées pour l'analys
 
 ## Calcul des distances
 
-Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits à états multiples que nous avions sauvegardée [précédemment](import.qmd#lst:save). Calculer la distance sur les données binarisées pourrait biaiser les calculs en donnant plus de poids aux caractères ayant un plus grand nombre d'états possibles.
 
 ```{r}
 library(tidyverse)
 library(phangorn)
 library(TreeTools)
-lx_phy <- ReadAsPhyDat("lx_phy_bin.nex")
+lx_phy <- ReadAsPhyDat("lx_phy_multi.nex")
 ```
 
-::: column-margin
-::: {.callout-caution}
-## À faire
-Vérifier le traitement des polymorphismes pour les données à états multiples.
-:::
-:::
-
-Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. On peut exclure les données manquantes du calcul de distance pour chaque paire de langues avec l'option `exclude = "pairwise"`.
+Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `Hamming()` qui prend en charge les données manquantes et les polymorphismes.
 
 ```{r}
-lx_dist <- dist.hamming(lx_phy, exclude = "pairwise")
+lx_dist <- Hamming(lx_phy)
 ```
 
 La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symétrique, on peut donc se passer d'afficher l'un des deux triangles.

@@ -117,6 +117,7 @@ Le résultat s'affiche mal en HTML.
 On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Le format Nexus est ici recommandé pour bien prendre en compte les polymorphismes.
 
 ```{r}
+#| label: lst:save
 library(phangorn)
 write.phyDat(lx_phy_multi, "lx_phy_multi.nex", format = "nexus")
 ```
@@ -149,7 +150,7 @@ as_phyDatM_edictor(lx)
 
 ### États binaires
 
-Il est cependant plus courant en phylolinguistique de produire une matrice avec des caractères binaires: la langue possède-t-elle (`1`) ou non (`0`) un cognat pour une classe de cognats et un concept donnés? Cela permet de traiter sans problème les cas de polymorphisme, comme on peut en trouver dans nos données d'exemple, et lève toute limite au nombre d'états possibles pour un caractère.
+Il est cependant courant en phylolinguistique d'utiliser une matrice avec des caractères binaires: la langue possède-t-elle (`1`) ou non (`0`) un cognat pour une classe de cognats et un concept donnés? Cela permet de traiter sans problème les cas de polymorphisme, comme on peut en trouver dans nos données d'exemple, et lève toute limite au nombre d'états possibles pour un caractère. Les méthodes bayésiennes utilisent en général des données binaires car elles modélisent la perte et l'apparition de traits.
 
 La conversion est un peu plus complexe et nécessite de pivoter trois fois notre tableau en faisant attention aux éventuelles données manquantes (les cas où un concept n'apparaît pas dans dans la liste d'une langue). Dans un premier temps, on utilise les valeurs de `DOCULECT` comme noms de colonnes et on remplit de `0` si la langue n'a pas de forme pour une classe de cognat et un concept donnés, et avec `1` sinon. Il faut rajouter une colonne fantoche auparavant avec par exemple `rowid_to_column` afin de conserver les colonnes `CONCEPT` et `COGIDS` et utiliser cette colonne fantoche pour remplir les cellules. On repivote ensuite notre tableau dans l'autre sens en mettant l'information binaire (présence ou non d'une même association entre un concept et une classe de cognat) dans une colonne `VALUE` dont on convertit le type de numérique à caractère. Pour chaque langue et concept, s'il n'y aucune classe de cognat et donc uniquement des `0` dans `VALUE`, c'est que les données sont manquantes, et on remplace les `0` par `?`, le symbole standard pour les données manquantes. Enfin on peut pivoter à nouveau le tableau, cette fois-ci en utilisant une nouvelle valeur concaténant `CONCEPT` et `COGIDS` comme noms de colonnes et en abandonnant ces deux colonnes d'origine. On obtient ainsi un tableau au format large avec les langues (taxons) en lignes et les combinaisons entre concepts et classes de cognats en colonnes, avec `1` pour «présence», `0` pour «absence», et `?` pour «donnée manquante».
 
@@ -193,7 +194,6 @@ lx_phy_bin
 On peut alors sauvegarder la matrice obtenue avec la fonction `write.phyDat()`. Plusieurs formats courants comme [Nexus](https://fr.wikipedia.org/wiki/Nexus_(format_de_fichier)) ou [Phylip](https://en.wikipedia.org/wiki/PHYLIP) sont possibles. Pour une simple matrice comme la nôtre, l'option par défaut (Phylip) est suffisante (le réimport d'un fichier nexus à traits binaires pose en autre des problèmes non encore résolus).
 
 ```{r}
-#| label: lst:save
 write.phyDat(lx_phy_bin, "lx_phy_bin.nex", format = "nexus")
 ```
 
