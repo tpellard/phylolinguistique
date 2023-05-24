@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.313">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 2&nbsp; Méthodes par distance</title>
 <style>
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:image-width" content="4200">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-<body class="nav-sidebar floating slimcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
 <span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Méthodes par distance</span>
 </h1>
@@ -233,33 +233,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>les langues qui ont subi de nombreuses innovations originales (autapomorphies) peuvent se retrouver artificiellement rejetées sur des branches extérieures.</li>
 </ul>
 <p>Les méthodes par distance ne peuvent donc pas être recommandées pour l’analyse phylogénétique.</p>
-<section id="calcul-des-distances" class="level2 page-columns page-full" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="calcul-des-distances">
+<section id="calcul-des-distances" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="calcul-des-distances">
 <span class="header-section-number">2.1</span> Calcul des distances</h2>
-<p>Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
+<p>Commençons par importer de nouveau la matrice de traits à états multiples que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>. Calculer la distance sur les données binarisées pourrait biaiser les calculs en donnant plus de poids aux caractères ayant un plus grand nombre d’états possibles.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn">phangorn</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ms609.github.io/TreeTools/">TreeTools</a></span><span class="op">)</span></span>
-<span><span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/ReadCharacters.html">ReadAsPhyDat</a></span><span class="op">(</span><span class="st">"lx_phy_bin.nex"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/ReadCharacters.html">ReadAsPhyDat</a></span><span class="op">(</span><span class="st">"lx_phy_multi.nex"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-À faire
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Vérifier le traitement des polymorphismes pour les données à états multiples.</p>
-</div>
-</div>
-</div></div><p>Il est trivial de calculer la distance observée, ou <em>p</em>-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction <code><a href="https://klausvigo.github.io/phangorn/reference/dist.hamming.html">dist.hamming()</a></code>. On peut exclure les données manquantes du calcul de distance pour chaque paire de langues avec l’option <code>exclude = "pairwise"</code>.</p>
+<p>Il est trivial de calculer la distance observée, ou <em>p</em>-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction <code><a href="https://ms609.github.io/TreeTools/reference/Hamming.html">Hamming()</a></code> qui prend en charge les données manquantes et les polymorphismes.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">lx_phy</span>, exclude <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/Hamming.html">Hamming</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La diagonale des distances de chaque langue avec elle-même est bien sûr 0, et la matrice de distance est symétrique, on peut donc se passer d’afficher l’un des deux triangles.</p>
 <div class="cell">
@@ -271,11 +256,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="table table-sm table-striped small">
 <colgroup>
 <col style="width: 12%">
-<col style="width: 12%">
 <col style="width: 7%">
-<col style="width: 9%">
 <col style="width: 7%">
 <col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 12%">
 <col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 7%">
@@ -283,19 +268,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: right;">Magenta</th>
+<th style="text-align: right;">Bleu</th>
 <th style="text-align: right;">Cyan</th>
+<th style="text-align: right;">Indigo</th>
 <th style="text-align: right;">Jaune</th>
-<th style="text-align: right;">Vert</th>
-<th style="text-align: right;">Violet</th>
+<th style="text-align: right;">Magenta</th>
 <th style="text-align: right;">Orange</th>
 <th style="text-align: right;">Rouge</th>
-<th style="text-align: right;">Bleu</th>
-<th style="text-align: right;">Indigo</th>
+<th style="text-align: right;">Vert</th>
+<th style="text-align: right;">Violet</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Bleu</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -308,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">Cyan</td>
-<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.13</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -319,9 +304,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Jaune</td>
-<td style="text-align: right;">0.51</td>
-<td style="text-align: right;">0.25</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.08</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -331,10 +316,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Vert</td>
-<td style="text-align: right;">0.48</td>
-<td style="text-align: right;">0.25</td>
-<td style="text-align: right;">0.14</td>
+<td style="text-align: left;">Jaune</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.21</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -343,11 +328,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Violet</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">0.22</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">0.15</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.25</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -356,11 +341,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">Orange</td>
-<td style="text-align: right;">0.45</td>
-<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.21</td>
 <td style="text-align: right;">0.16</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -368,38 +353,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Rouge</td>
-<td style="text-align: right;">0.33</td>
-<td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.34</td>
-<td style="text-align: right;">0.31</td>
-<td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bleu</td>
-<td style="text-align: right;">0.38</td>
-<td style="text-align: right;">0.16</td>
-<td style="text-align: right;">0.27</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.16</td>
-<td style="text-align: right;">0.14</td>
+<td style="text-align: left;">Vert</td>
 <td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.21</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Indigo</td>
-<td style="text-align: right;">0.39</td>
+<td style="text-align: left;">Violet</td>
 <td style="text-align: right;">0.17</td>
-<td style="text-align: right;">0.25</td>
-<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.20</td>
 <td style="text-align: right;">0.22</td>
-<td style="text-align: right;">0.25</td>
-<td style="text-align: right;">0.25</td>
-<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.14</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -418,11 +403,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="table table-sm table-striped small">
 <colgroup>
 <col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
 <col style="width: 11%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 9%">
@@ -430,19 +415,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: right;">Magenta</th>
+<th style="text-align: right;">Bleu</th>
 <th style="text-align: right;">Cyan</th>
+<th style="text-align: right;">Indigo</th>
 <th style="text-align: right;">Jaune</th>
-<th style="text-align: right;">Vert</th>
-<th style="text-align: right;">Violet</th>
+<th style="text-align: right;">Magenta</th>
 <th style="text-align: right;">Orange</th>
 <th style="text-align: right;">Rouge</th>
-<th style="text-align: right;">Bleu</th>
-<th style="text-align: right;">Indigo</th>
+<th style="text-align: right;">Vert</th>
+<th style="text-align: right;">Violet</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Magenta</td>
+<td style="text-align: left;">Bleu</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -455,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">Cyan</td>
-<td style="text-align: right;">60.20</td>
+<td style="text-align: right;">86.92</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -466,9 +451,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Jaune</td>
-<td style="text-align: right;">48.76</td>
-<td style="text-align: right;">75.00</td>
+<td style="text-align: left;">Indigo</td>
+<td style="text-align: right;">87.16</td>
+<td style="text-align: right;">91.67</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -478,10 +463,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Vert</td>
-<td style="text-align: right;">52.50</td>
-<td style="text-align: right;">74.87</td>
-<td style="text-align: right;">86.27</td>
+<td style="text-align: left;">Jaune</td>
+<td style="text-align: right;">77.98</td>
+<td style="text-align: right;">78.70</td>
+<td style="text-align: right;">79.09</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -490,11 +475,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Violet</td>
-<td style="text-align: right;">49.75</td>
-<td style="text-align: right;">78.00</td>
-<td style="text-align: right;">87.32</td>
-<td style="text-align: right;">85.29</td>
+<td style="text-align: left;">Magenta</td>
+<td style="text-align: right;">83.49</td>
+<td style="text-align: right;">83.18</td>
+<td style="text-align: right;">81.65</td>
+<td style="text-align: right;">75.23</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -503,11 +488,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">Orange</td>
-<td style="text-align: right;">55.22</td>
-<td style="text-align: right;">75.50</td>
-<td style="text-align: right;">83.90</td>
-<td style="text-align: right;">90.69</td>
-<td style="text-align: right;">84.88</td>
+<td style="text-align: right;">86.24</td>
+<td style="text-align: right;">79.63</td>
+<td style="text-align: right;">79.09</td>
+<td style="text-align: right;">83.64</td>
+<td style="text-align: right;">80.73</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -515,38 +500,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Rouge</td>
-<td style="text-align: right;">67.16</td>
-<td style="text-align: right;">71.00</td>
-<td style="text-align: right;">66.34</td>
-<td style="text-align: right;">69.12</td>
-<td style="text-align: right;">71.22</td>
-<td style="text-align: right;">72.68</td>
+<td style="text-align: right;">84.40</td>
+<td style="text-align: right;">80.56</td>
+<td style="text-align: right;">82.73</td>
+<td style="text-align: right;">75.45</td>
+<td style="text-align: right;">85.32</td>
+<td style="text-align: right;">80.00</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bleu</td>
-<td style="text-align: right;">61.69</td>
-<td style="text-align: right;">84.18</td>
-<td style="text-align: right;">73.13</td>
-<td style="text-align: right;">76.00</td>
-<td style="text-align: right;">84.08</td>
-<td style="text-align: right;">85.57</td>
-<td style="text-align: right;">80.60</td>
+<td style="text-align: left;">Vert</td>
+<td style="text-align: right;">81.48</td>
+<td style="text-align: right;">77.57</td>
+<td style="text-align: right;">76.15</td>
+<td style="text-align: right;">80.73</td>
+<td style="text-align: right;">79.63</td>
+<td style="text-align: right;">89.91</td>
+<td style="text-align: right;">78.90</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Indigo</td>
-<td style="text-align: right;">60.70</td>
-<td style="text-align: right;">82.50</td>
-<td style="text-align: right;">74.63</td>
-<td style="text-align: right;">71.57</td>
-<td style="text-align: right;">77.56</td>
-<td style="text-align: right;">75.12</td>
-<td style="text-align: right;">75.12</td>
-<td style="text-align: right;">81.09</td>
+<td style="text-align: left;">Violet</td>
+<td style="text-align: right;">83.49</td>
+<td style="text-align: right;">79.63</td>
+<td style="text-align: right;">78.18</td>
+<td style="text-align: right;">78.18</td>
+<td style="text-align: right;">77.06</td>
+<td style="text-align: right;">88.18</td>
+<td style="text-align: right;">79.09</td>
+<td style="text-align: right;">86.24</td>
 <td style="text-align: right;">100</td>
 </tr>
 </tbody>
@@ -565,7 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Phylogenetic tree with 9 tips and 8 internal nodes.
 
 Tip labels:
-  Magenta, Cyan, Jaune, Vert, Violet, Orange, ...
+  Bleu, Cyan, Indigo, Jaune, Magenta, Orange, ...
 
 Rooted; includes branch lengths.</code></pre>
 </div>
@@ -592,7 +577,7 @@ Rooted; includes branch lengths.</code></pre>
 Phylogenetic tree with 9 tips and 7 internal nodes.
 
 Tip labels:
-  Magenta, Cyan, Jaune, Vert, Violet, Orange, ...
+  Bleu, Cyan, Indigo, Jaune, Magenta, Orange, ...
 
 Unrooted; includes branch lengths.</code></pre>
 </div>
@@ -616,10 +601,10 @@ Unrooted; includes branch lengths.</code></pre>
 <span><span class="va">lx_nn</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Phylogenetic tree with 9 tips and 44 internal nodes.
+Phylogenetic tree with 9 tips and 45 internal nodes.
 
 Tip labels:
-  Bleu, Rouge, Magenta, Indigo, Cyan, Violet, ...
+  Orange, Jaune, Bleu, Indigo, Cyan, Magenta, ...
 
 Unrooted; includes branch lengths.</code></pre>
 </div>

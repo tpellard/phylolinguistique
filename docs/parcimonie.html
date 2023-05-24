@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.313">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie</title>
 <style>
@@ -224,12 +224,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><p>Contrairement aux méthodes par distance, les méthodes de parcimonie ne construisent pas un arbre pas à pas mais recherchent le ou les arbre optimaux parmi l’ensemble des arbres possibles. Le critère d’évaluation des arbres est celui de <a href="https://fr.wikipedia.org/wiki/Maximum_de_parcimonie">maximum de parcimonie</a>: l’arbre préféré est celui qui suppose le moins de changements. Autrement dit, on suppose qu’un changement partagé s’est a priori produit dans l’ancêtre commun plutôt que de manière indépendante dans des langues différentes. Les méthodes de parcimonie cherchent donc à minimiser les homoplasies ou innovations parallèles.</p>
 <p>Les méthodes de parcimonie sont plus complexes que celles par distance, mais elles restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans <a href="https://fr.wikipedia.org/wiki/Attraction_des_longues_branches">certaines conditions</a>.</p>
-<p>Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
+<p>Commençons par importer de nouveau la matrice de traits à états multipes que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn">phangorn</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ms609.github.io/TreeTools/">TreeTools</a></span><span class="op">)</span></span>
-<span><span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/ReadCharacters.html">ReadAsPhyDat</a></span><span class="op">(</span><span class="st">"lx_phy_bin.nex"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/ReadCharacters.html">ReadAsPhyDat</a></span><span class="op">(</span><span class="st">"lx_phy_multi.nex"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="parcimonie-générale" class="level2 page-columns page-full" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="parcimonie-générale">
 <span class="header-section-number">3.1</span> Parcimonie générale</h2>
@@ -273,7 +273,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Phylogenetic tree with 9 tips and 7 internal nodes.
 
 Tip labels:
-  Magenta, Bleu, Jaune, Violet, Vert, Orange, ...
+  Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
 
 Unrooted; no branch lengths.</code></pre>
 </div>
@@ -291,7 +291,7 @@ Unrooted; no branch lengths.</code></pre>
 Phylogenetic tree with 9 tips and 7 internal nodes.
 
 Tip labels:
-  Magenta, Bleu, Jaune, Violet, Vert, Orange, ...
+  Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
 
 Unrooted; includes branch lengths.</code></pre>
 </div>
