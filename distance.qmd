@@ -5,23 +5,27 @@ Les méthodes par distance sont simples à comprendre et à implémenter car ell
 Toutefois, elles ont plusieurs faiblesses qui font qu'elles sont d'un usage limité aujourd'hui:
 
   * elles ne distinguent pas les innovations communes (synapomorphies) des rétentions communes (symplésiomorphies) et il y a donc une perte d'information cruciale;
-  * elles peuvent grouper ensemble de manière erronnée des langues conservatrices qui ont subi peu de changements;
+  * elles peuvent grouper ensemble de manière erronée des langues conservatrices qui ont subi peu de changements;
   * les langues qui ont subi de nombreuses innovations originales (autapomorphies) peuvent se retrouver artificiellement rejetées sur des branches extérieures.
   
 Les méthodes par distance ne peuvent donc pas être recommandées pour l'analyse phylogénétique.
 
 ## Calcul des distances
 
-Commençons par importer de nouveau la matrice de traits que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits binaires que nous avions sauvegardée [précédemment](import.qmd#lst:save).
 
 ```{r}
 library(tidyverse)
-library(phangorn)
-lx_phy <- read.phyDat("lx_phy.phy",
-  type = "USER",
-  levels = c("0", "1")
-)
+library(TreeTools)
+lx_phy <- ReadAsPhyDat("lx_phy_bin.nex")
 ```
+
+::: column-margin
+::: {.callout-caution}
+## À faire
+Vérifier le traitement des polymorphismes pour les données à états multiples.
+:::
+:::
 
 Il est trivial de calculer la distance observée, ou *p*-distance, sur une telle matrice. Il suffit de calculer pour chaque paire de langues le rapport entre nombre de caractères différents et le nombre de caractères total avec la fonction `dist.hamming()`. On peut exclure les données manquantes du calcul de distance pour chaque paire de langues avec l'option `exclude = "pairwise"`.
 
