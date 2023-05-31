@@ -2,7 +2,7 @@
 
 ## Évaluation de la robustesse
 
-Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un rééchantillonnage aléatoire avec remise ([bootstrap](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres rééchantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
+Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un rééchantillonnage aléatoire avec remise ([*bootstrap*](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres rééchantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
 
 On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec-upgma).
 
@@ -25,7 +25,7 @@ boot_upgma_hamming <- function(x) {
 n_bs <- 1000
 ```
 
-On peut alors lancer la procédure de rééchantillonage sur l'arbre obtenu par UPGMA et la matrice transposée de données. Même avec 1000 rééchantillonages, obtient les résultats en un temps très court.
+On peut alors lancer la procédure de rééchantillonage sur l'arbre obtenu par UPGMA et la matrice de données. Même avec 1000 rééchantillonages, on obtient les résultats en un temps très court.
 
 ::: {.column-margin}
 La fonction `set.seed()` permet de fixer la [graine aléatoire](https://fr.wikipedia.org/wiki/Graine_al%C3%A9atoire) et d'assurer la reproductibilité des résultats.
@@ -61,45 +61,43 @@ On peut choisir de n'afficher que les valeurs supérieures à un certain seuil, 
 
 ```{r}
 upgma_support_pct[upgma_support_pct < .7] <- NA
-ggtree(lx_upgma) +
-  geom_tiplab() +
-  geom_nodelab(aes(label = upgma_support_pct), geom = "text", hjust = -.1) +
-  xlim_tree(0.14) +
-  theme_tree()
+lx_upgma$node.label <- upgma_support_pct
+plot(lx_upgma, show.node.label = TRUE)
+```
+
+Ou plus simplement avec `plotBS()`:
+
+```{r}
+plotBS(lx_upgma, lx_upgma_bs$trees, p = 70)
 ```
 
 ## Résumer l'accord entre des résultats
 
-Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. C'est le cas par exemple de notre analyse par [parcimonie](parcimonie.qmd).
+Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. Comme ce n'est pas le cas de nos exemples jusqu'ici, générons un ensemble de 10 arbres aléatoires.
 
 ```{r}
-lx_bab <- read.tree("lx_bab.nwk")
+trees <- map(1:3, ~ rtree(n = 9))
+trees <- as.multiPhylo(c(trees[1], trees[1], trees[1], trees, trees))
 ```
 
 Il est possible de résumer l'accord entre ces arbres par un arbre consensus qui ne contient que les clades présents dans une proportion *p* des arbres. Un arbre consensus est donc normalement moins résolu que les arbres obtenus.
 
-Un arbre consensus strict ne contient que les clades présents dans *tous* les arbres (*p* = 1).
+Un arbre consensus strict ne contient que les clades présents dans *tous* les arbres (*p* = 1). Sans surprise, on obtient un «râteau».
 
 ::: {.column-margin}
 Un arbre consensus n'a pas en principe de longueurs de branches.
 :::
 
 ```{r}
-lx_bab_consensus <- consensus(lx_bab, p = 1)
-ggtree(lx_bab_consensus, layout = "daylight") +
-  geom_tiplab2() +
-    xlim(-4.75, 3.85) + ylim(-4.25, 4.75) +
-  theme_tree()
+trees_sc <- consensus(trees, p = 1)
+plot(trees_sc)
 ```
 
 Un arbre consensus majoritaire contient lui les clades présents dans la majorité (*p* ≥ .5) des arbres.
 
 ```{r}
-lx_bab_consensus_mj <- consensus(lx_bab, p = .5)
-ggtree(lx_bab_consensus_mj, layout = "daylight") +
-  geom_tiplab2() +
-  xlim(-6, 5) + ylim(-5, 5.25) +
-  theme_tree()
+trees_mc <- consensus(trees, p = .5)
+plot(trees_mc)
 ```
 
 :::{.callout-caution}
