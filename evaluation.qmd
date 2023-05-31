@@ -71,6 +71,25 @@ Ou plus simplement avec `plotBS()`:
 plotBS(lx_upgma, lx_upgma_bs$trees, p = 70)
 ```
 
+On peut évidemment de manière similaire utiliser le *bootstrap* avec la méthode du maximum de parcimonie.
+
+```{r}
+#| cache: true
+lx_bab <- read.tree("lx_bab.tree")
+boot_bab <- function(x) {
+  bab(MatrixToPhyDat(x))
+}
+lx_bab_bs <- boot.phylo(lx_bab,
+  lx_m,
+  boot_bab,
+  B = 100,
+  trees = TRUE,
+  quiet = TRUE
+)
+plotBS(lx_bab, lx_bab_bs$trees, p = 70)
+```
+
+
 ## Résumer l'accord entre des résultats
 
 Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. Comme ce n'est pas le cas de nos exemples jusqu'ici, générons un ensemble de 10 arbres aléatoires.

@@ -28,7 +28,7 @@ book:
     - import.qmd
     - distance.qmd
     - parcimonie.qmd
-    # - evaluation.qmd
+    - evaluation.qmd
     - bibliographie.qmd
   
   twitter-card:
