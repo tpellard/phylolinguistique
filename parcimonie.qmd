@@ -4,7 +4,7 @@ Contrairement aux méthodes par distance, les méthodes de parcimonie ne constru
 
 Les méthodes de parcimonie sont plus complexes que celles par distance, mais elles restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans [certaines conditions](https://fr.wikipedia.org/wiki/Attraction_des_longues_branches).
 
-Commençons par importer de nouveau la matrice de traits à états multipes que nous avions sauvegardée [précédemment](import.qmd#lst:save).
+Commençons par importer de nouveau la matrice de traits à états multiples que nous avions sauvegardée [précédemment](import.qmd#lst:save).
 
 ```{r}
 library(tidyverse)
@@ -24,12 +24,12 @@ Inclure les autres types de parcimonie.
 :::
 :::
 
-Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and bound* qui garantit de trouver la solution optimale. Le résultat est un objet `multiPhylo` pouvant contenir plusieurs arbres, bien qu'ici il n'y en ai qu'un seul.
+Jusqu'à une dizaine de taxons, il est possible d'utiliser l'algorithme *Branch and Bound* qui garantit de trouver la solution optimale. Le résultat est un objet `multiPhylo` pouvant contenir plusieurs arbres, bien qu'ici il n'y en ai qu'un seul.
 
 :::{.column-margin}
 ::: callout-caution
 ## À faire
-Vérifier le traitement des données manquantes et celui despolymorphismes pour les données à états multiples.
+Vérifier le traitement des données manquantes et celui des polymorphismes pour les données à états multiples.
 :::
 :::
 
@@ -53,7 +53,7 @@ On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dan
 write.tree(lx_bab, "lx_bab.tree")
 ```
 
-Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.
+Au-delà d'une dizaine de taxons, il est nécessaire d'utiliser une méthode heuristique comme le *Parsimony Ratchet*. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.
 
 ```{r}
 #| message: false

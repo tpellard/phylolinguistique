@@ -2,7 +2,7 @@
 
 ## Évaluation de la robustesse
 
-Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un rééchantillonnage aléatoire avec remise ([*bootstrap*](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres rééchantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
+Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un ré-échantillonnage aléatoire avec remise ([*bootstrap*](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres ré-échantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
 
 On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec-upgma).
 
@@ -15,7 +15,7 @@ lx_upgma <- read.tree("lx_upgma.tree")
 ```
 
 Il faut au préalable récupérer la matrice de données. C'est totalement redondant mais il s'agit d'une contrainte technique.
-Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `Hamming()` puis `upgma()`. On définit également à l'avance le nombre de rééchantillonages à effectuer, ici 1000.
+Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `Hamming()` puis `upgma()`. On définit également à l'avance le nombre de ré-échantillonnages à effectuer, ici 1000.
 
 ```{r}
 lx_m <- PhyDatToMatrix(lx_phy)
@@ -25,7 +25,7 @@ boot_upgma_hamming <- function(x) {
 n_bs <- 1000
 ```
 
-On peut alors lancer la procédure de rééchantillonage sur l'arbre obtenu par UPGMA et la matrice de données. Même avec 1000 rééchantillonages, on obtient les résultats en un temps très court.
+On peut alors lancer la procédure de ré-échantillonnage sur l'arbre obtenu par UPGMA et la matrice de données. Même avec 1000 ré-échantillonnages, on obtient les résultats en un temps très court.
 
 ::: {.column-margin}
 La fonction `set.seed()` permet de fixer la [graine aléatoire](https://fr.wikipedia.org/wiki/Graine_al%C3%A9atoire) et d'assurer la reproductibilité des résultats.
@@ -42,7 +42,7 @@ lx_upgma_bs <- boot.phylo(lx_upgma,
 )
 ```
 
-On peut ainsi obtenir le nombre de rééchantillonages où chacun des clades de l'arbre par UPGMA apparaît, les transformer en proportions, et affecter ces valeurs aux nœuds internes de l'arbre. On peut alors les afficher sur le dendrogramme.
+On peut ainsi obtenir le nombre de ré-échantillonnages où chacun des clades de l'arbre par UPGMA apparaît, les transformer en proportions, et affecter ces valeurs aux nœuds internes de l'arbre. On peut alors les afficher sur le dendrogramme.
 
 ```{r}
 upgma_bs_scores <- prop.clades(lx_upgma, lx_upgma_bs$trees, rooted = TRUE)
