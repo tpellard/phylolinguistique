@@ -101,6 +101,28 @@ trees_mc <- consensus(trees, p = .5)
 plot(trees_mc)
 ```
 
+L'indice de rétention (*retension index*, RI) est lui une mesure du degré de synapomorphie. Il se calcule:
+$RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}$
+
+```{r}
+RI(lx_bab, lx_phy)
+```
+
+L'indice de cohérence (*consistency index*, CI) est une mesure du degré d'homoplasie. Il se calcule comme le rapport du nombre de pas (changements d'état) d'un arbre sur le nombre de pas minimal nécessaire pour rendre compte des données. Plus le score est bas, plus l'arbre contient d'homoplasie, et une valeur de `1` indique une absence totale d'homoplasie.
+
+```{r}
+lx_bab <- read.tree("lx_bab.tree")
+CI(lx_bab, lx_phy)
+```
+
+L'index de cohérence redimensionné (*rescaled consistency index*, RC) est simplement le produit du CI et du RI.
+
+```{r}
+CI(lx_bab, lx_phy) * RI(lx_bab, lx_phy)
+```
+
+<!-- Le taux d'excès d'homoplasie -->
+
 :::{.callout-caution}
 ### À faire
 score de parcimonie, CI, RI, etc.
