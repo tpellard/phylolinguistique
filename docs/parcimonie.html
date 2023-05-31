@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./bibliographie.html" rel="next">
+<link href="./evaluation.html" rel="next">
 <link href="./distance.html" rel="prev">
 <link href="./phyloling_circ.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -190,6 +190,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation des résultats</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./bibliographie.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Bibliographie</span></a>
   </div>
@@ -224,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><p>Contrairement aux méthodes par distance, les méthodes de parcimonie ne construisent pas un arbre pas à pas mais recherchent le ou les arbre optimaux parmi l’ensemble des arbres possibles. Le critère d’évaluation des arbres est celui de <a href="https://fr.wikipedia.org/wiki/Maximum_de_parcimonie">maximum de parcimonie</a>: l’arbre préféré est celui qui suppose le moins de changements. Autrement dit, on suppose qu’un changement partagé s’est a priori produit dans l’ancêtre commun plutôt que de manière indépendante dans des langues différentes. Les méthodes de parcimonie cherchent donc à minimiser les homoplasies ou innovations parallèles.</p>
 <p>Les méthodes de parcimonie sont plus complexes que celles par distance, mais elles restent néanmoins beaucoup plus simples que les méthodes probabilistes. Si elles reposent sur peu de suppositions et ont une solide base épistémologique, ces méthodes posent des problèmes statistiques et peuvent donner des résultats faux dans <a href="https://fr.wikipedia.org/wiki/Attraction_des_longues_branches">certaines conditions</a>.</p>
-<p>Commençons par importer de nouveau la matrice de traits à états multipes que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
+<p>Commençons par importer de nouveau la matrice de traits à états multiples que nous avions sauvegardée <a href="./import.html#lst:save">précédemment</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn">phangorn</a></span><span class="op">)</span></span>
@@ -249,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Inclure les autres types de parcimonie.</p>
 </div>
 </div>
-</div></div><p>Jusqu’à une dizaine de taxons, il est possible d’utiliser l’algorithme <em>Branch and bound</em> qui garantit de trouver la solution optimale. Le résultat est un objet <code>multiPhylo</code> pouvant contenir plusieurs arbres, bien qu’ici il n’y en ai qu’un seul.</p>
+</div></div><p>Jusqu’à une dizaine de taxons, il est possible d’utiliser l’algorithme <em>Branch and Bound</em> qui garantit de trouver la solution optimale. Le résultat est un objet <code>multiPhylo</code> pouvant contenir plusieurs arbres, bien qu’ici il n’y en ai qu’un seul.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -262,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Vérifier le traitement des données manquantes et celui despolymorphismes pour les données à états multiples.</p>
+<p>Vérifier le traitement des données manquantes et celui des polymorphismes pour les données à états multiples.</p>
 </div>
 </div>
 </div></div><div class="cell">
@@ -304,7 +310,7 @@ Unrooted; includes branch lengths.</code></pre>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_bab</span>, <span class="st">"lx_bab.tree"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Au-delà d’une dizaine de taxons, il est nécessaire d’utiliser une méthode heuristique comme le Parsimony Ratchet. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.</p>
+<p>Au-delà d’une dizaine de taxons, il est nécessaire d’utiliser une méthode heuristique comme le <em>Parsimony Ratchet</em>. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></span>
 <span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
@@ -671,8 +677,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./bibliographie.html" class="pagination-link">
-        <span class="nav-page-text">Bibliographie</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./evaluation.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Évaluation des résultats</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

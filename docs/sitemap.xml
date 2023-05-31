@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/index.html</loc>
-    <lastmod>2023-05-24T21:09:53.282Z</lastmod>
+    <lastmod>2023-05-31T13:55:30.372Z</lastmod>
   </url>
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/avanttout.html</loc>
-    <lastmod>2023-05-24T14:22:31.207Z</lastmod>
+    <lastmod>2023-05-31T13:55:27.840Z</lastmod>
   </url>
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/import.html</loc>
-    <lastmod>2023-05-24T21:09:51.010Z</lastmod>
+    <lastmod>2023-05-31T13:49:10.220Z</lastmod>
   </url>
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/distance.html</loc>
-    <lastmod>2023-05-24T21:09:51.034Z</lastmod>
+    <lastmod>2023-05-31T13:48:39.711Z</lastmod>
   </url>
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/parcimonie.html</loc>
-    <lastmod>2023-05-24T21:09:51.042Z</lastmod>
+    <lastmod>2023-05-31T13:55:27.860Z</lastmod>
   </url>
   <url>
     <loc>https://tpellard.github.io/phylolinguistique/bibliographie.html</loc>
     <lastmod>2023-05-24T14:25:00.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tpellard.github.io/phylolinguistique/evaluation.html</loc>
+    <lastmod>2023-05-31T13:55:27.888Z</lastmod>
   </url>
 </urlset>
