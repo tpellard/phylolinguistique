@@ -12,6 +12,7 @@ Les linguistes ont pendant longtemps réalisé des classifications phylogénéti
 Même pour les méthodes les plus simples, comme la [lexicostatistique](https://en.wikipedia.org/wiki/Lexicostatistics), qui peuvent être effectuées manuellement, l'analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s'agit là typiquement d'[une tâche pour un ordinateur](https://cipanglo.hypotheses.org/1725).
 
 :::{.column-margin}
+::: {.callout-note appearance="simple"}
 Pour *n* taxons, il y a $\frac{(2n-3)!}{2^{n-2}(n-2)!}$ arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.
 
 ```{r}
@@ -25,6 +26,7 @@ tibble(n = c(2:10, 20, 30, 40, 50)) %>%
   mutate(arbres = ifelse(n > 10, knitr:::format_sci(arbres, "html"), arbres)) %>% 
   knitr::kable(digits=1, align = c("r", "r"))
 ```
+:::
 :::
 
 En outre, la plupart des méthodes d'inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d'arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu'il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des [méthodes heuristiques](https://en.wikipedia.org/wiki/Heuristic_(computer_science)) complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d'un ordinateur pour cela.
