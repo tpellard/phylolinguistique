@@ -65,7 +65,7 @@ plot(midpoint(lx_pratchet))
 Une autre méthode nécessite de déterminer un extra-groupe ou groupe externe (*outgroup*). La fonction `root()` permet de procéder à l'enracinement en indiquant le numéro ou le nom du taxon constituant le groupe externe, par exemple «Violet». Cela présuppose bien sûr qu'il ait été inclus dans l'analyse de départ.
 
 ```{r}
-lx_pratchet <- root(lx_pratchet, "Violet")
+lx_pratchet <- root(lx_pratchet, "Violet", resolve.root = TRUE)
 plot(lx_pratchet)
 ```
 
@@ -78,7 +78,7 @@ lx_phy2 <- lx_phy %>%
   MatrixToPhyDat()
 lx_pratchet <- pratchet(lx_phy2, trace = 0, method = "sankoff", all = TRUE) %>% 
   acctran(lx_phy2) %>% 
-  root("Fictif")
+  root("Fictif", resolve.root = TRUE)
 lx_pratchet
 lx_pratchet[[1]]
 plot(lx_pratchet)
