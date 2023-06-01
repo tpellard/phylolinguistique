@@ -1,8 +1,8 @@
 # Évaluation des résultats
 
-## Évaluation de la robustesse
+## Évaluation de la stabilité des clades
 
-Il est utile d'évaluer la robustesse des résultats obtenus. On peut le faire avec un ré-échantillonnage aléatoire avec remise ([*bootstrap*](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres ré-échantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
+Il est utile d'évaluer la stabilité des clades obtenus. On peut le faire avec un ré-échantillonnage aléatoire avec remise ([*bootstrap*](https://fr.wikipedia.org/wiki/Bootstrap_(statistiques))) qui va simuler de la variation et permettre ainsi de quantifier la sensibilité des résultats aux données de l'échantillon observé. Cette méthode permet d'obtenir pour chaque branche de l'arbre la proportion d'arbres ré-échantillonnés qui contiennent cette branche et ainsi d'identifier les branches reposant sur un faible nombre de données.
 
 On peut par exemple évaluer nos [résultats obtenus par UPGMA](distance.qmd#sec-upgma).
 
@@ -15,7 +15,7 @@ lx_upgma <- read.tree("lx_upgma.tree")
 ```
 
 Il faut au préalable récupérer la matrice de données. C'est totalement redondant mais il s'agit d'une contrainte technique.
-Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `phyDat()`, `Hamming()` puis `upgma()`. On définit également à l'avance le nombre de ré-échantillonnages à effectuer, ici 1000.
+Il faut en plus définir une fonction qui sera appliquée à chaque échantillon, ici on utilise la composition de `MatrixTophyDat()`, `Hamming()` puis `upgma()`. On définit également à l'avance le nombre de ré-échantillonnages à effectuer, ici 1000.
 
 ```{r}
 lx_m <- PhyDatToMatrix(lx_phy)
@@ -71,10 +71,16 @@ Ou plus simplement avec `plotBS()`:
 plotBS(lx_upgma, lx_upgma_bs$trees, p = 70)
 ```
 
+Un [arbre parcimonieux](parcimonie.qmd) obtenu avec `pratchet()` contient déjà des valeurs de *bootstrap*.
+```{r}
+lx_pratchet <- read_rds("lx_pratchet.rds")
+plotBS(lx_pratchet, p = .7)
+```
+
 
 ## Résumer l'accord entre des résultats
 
-Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. Comme ce n'est pas le cas de nos exemples jusqu'ici, générons un ensemble de 10 arbres aléatoires.
+Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres. Comme ce n'est pas le cas de nos exemples jusqu'ici, générons donc un ensemble de 10 arbres aléatoires.
 
 ```{r}
 trees <- map(1:3, ~ rtree(n = 9))
@@ -123,7 +129,8 @@ m <- phangorn:::lowerBound(lx_phy)[attr(lx_phy, "index")]
 s <- sankoff(lx_bab, lx_phy, site = "site")[attr(lx_phy, "index")]
 h <- s - m
 h
-sum(h)
+H <- sum(h)
+H
 ```
 
 On peut alors obtenir le numéro des caractères présentant de l'homoplasie:
@@ -150,13 +157,14 @@ Cet indice de cohérence est une mesure du degré d'homoplasie des données sur 
 
 L'indice de cohérence est cependant problématique car sa valeur minimale n'est en fait pas 0, ce qui ne permet donc pas de l'utiliser pour évaluer correctement le degré d'homoplasie.
 
-Il est possible d'utiliser à la place un indice de cohérence ré-échelonné (*rescaled consistency index*, rci) par l'introduction de *g*, le nombre maximal de transformations pour un caractère, ce qui correspond cas où toutes les transformations auraient lieu sur les branches terminales:
+Il est possible d'utiliser à la place un indice de cohérence mis à l'échelle (*rescaled consistency index*, rci) par l'introduction de *g*, le nombre maximal de transformations pour un caractère, ce qui correspond cas où toutes les transformations auraient lieu sur les branches terminales:
 
 $$rci = \frac{g-s}{g-m}\frac{m}{s} = \frac{g-s}{g-m}ci$$
 
 Les valeurs de *g* s'obtient avec une autre fonction cachée de `phangorn`.
 ```{r}
-phangorn:::upperBound(lx_phy)[attr(lx_phy, "index")]
+g <- phangorn:::upperBound(lx_phy)[attr(lx_phy, "index")]
+g
 ```
 
 Mais il est plus simple de calculer la partie gauche de la formule du rci avec la fonction `RI()`.
@@ -165,7 +173,7 @@ rci <- RI(lx_bab, lx_phy, sitewise = TRUE) * CI(lx_bab, lx_phy, sitewise = TRUE)
 rci
 ```
 
-L'indice de cohérence ré-échelonné RCI pour l'ensemble des caractères se calcule comme suit:
+L'indice de cohérence mis à l'échelle RCI pour l'ensemble des caractères se calcule comme suit:
 
 $$RCI = \frac{G-S}{G-M}\frac{M}{S}, G = \sum^N_{i=1} g_i$$
 
@@ -173,11 +181,29 @@ $$RCI = \frac{G-S}{G-M}\frac{M}{S}, G = \sum^N_{i=1} g_i$$
 CI(lx_bab, lx_phy) * RI(lx_bab, lx_phy)
 ```
 
-La partie gauche des formules d'indice de cohérence est lui-même une mesure appelée indice de rétention (*retention index*, ri, RI). Il mesure la proportion de synapomorphies potentielles effectivement retenues comme telle sur un arbre, ou le rapport du nombre d'homoplasies observées sur le nombre d'homoplasies possibles. Les caractères autapomorphiques ont un ri de 0. 
+Le coefficient de distortion *d* d'un caractère est le nombre d'homoplasies observées par rapport au nombre maximal possible.
+
+$$d = \frac{h}{g - m}$$
+```{r}
+d <- h/(g - m)
+d
+```
+
+
+On peut aussi le calculer pour un ensemble de caractères.
+```{r}
+D <- sum(h)/(sum(g) - sum(m))
+D
+```
+
+La partie gauche des formules d'indice de cohérence est lui-même une mesure appelée indice de rétention (*retention index*, ri, RI). Il s'agit du complément $1 - D$ de l'indice de distorsion *D*. Il mesure la proportion d'homoplasies possibles mais non observées, ce qui revient à la proportion de synapomorphies possibles effectivement retenues comme telle sur un arbre. Les caractères autapomorphiques ont un ri de 0. 
 
 ```{r}
-RI(lx_bab, lx_phy, sitewise = TRUE)
-RI(lx_bab, lx_phy)
+ri <- RI(lx_bab, lx_phy, sitewise = TRUE)
+ri
+RI <- RI(lx_bab, lx_phy)
+RI
+1 - D
 ```
 
 
@@ -186,18 +212,19 @@ Il est ainsi possible de comparer les scores de différents arbres, par exemple 
 tr <- c(lx_bab, lx_upgma)
 nms <- c("bab", "upgma")
 comp_tb <- map(seq_along(tr), function(i){
-  m <- phangorn:::lowerBound(lx_phy)[attr(lx_phy, "index")]
-  s <- sankoff(tr[[i]], lx_phy, site = "site")[attr(lx_phy, "index")]
-  h <- s - m
+  m_x <- phangorn:::lowerBound(lx_phy)[attr(lx_phy, "index")]
+  s_x <- sankoff(tr[[i]], lx_phy, site = "site")[attr(lx_phy, "index")]
+  h_x <- s_x - m_x
   CI_x <- CI(tr[[i]], lx_phy)
   RI_x <- RI(tr[[i]], lx_phy)
   df <- tribble(
     ~var, ~value,
-  "S", sum(s),
-  "H", sum(h),
+  "S", sum(s_x),
+  "H", sum(h_x),
   "CI", CI_x,
   "RCI", CI_x * RI_x,
-  "RI", RI_x
+  "RI", RI_x,
+  "D", 1 - RI_x
   )
   colnames(df)[2] <- nms[i]
   df
@@ -208,4 +235,5 @@ comp_tb <- map(seq_along(tr), function(i){
 #| echo: false
 rmarkdown::paged_table(comp_tb)
 ```
+
 Sans surprise, notre arbre obtenu par parcimonie est plus parcimonieux: il est plus court (nombre de pas) et contient moins d'homoplasies, et il est plus cohérent et a plus de rétention.
