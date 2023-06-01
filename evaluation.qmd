@@ -236,4 +236,5 @@ options(digits = 2)
 rmarkdown::paged_table(comp_tb)
 ```
 
-Les résultats sont similaires, mais le 4^e^ arbre obtenu par parcimonie contient moins d'homoplasies et a des meilleurs scores de CI, RCI et RI.
+Les résultats sont similaires, mais le 4^e^ arbre obtenu par parcimonie contient moins d'homoplasies et a des meilleurs scores de CI, RCI et RI. On remarque donc que l'option `all = TRUE` de `pratchet()` donne un ensemble d'arbres qui ne sont pas tous aussi parcimonieux les uns que les autres.
+
