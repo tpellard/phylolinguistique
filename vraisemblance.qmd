@@ -1,0 +1,20 @@
+# Méthode du maximum de vraisemblance
+
+
+```{r}
+library(tidyverse)
+library(phangorn)
+library(TreeTools)
+lx_phy <- ReadAsPhyDat("lx_phy_multi.nex")
+lx_pratchet <- read.tree("lx_pratchet.tree")
+```
+
+```{r}
+lx_pml <- pml(lx_pratchet[[4]], lx_phy)
+lx_pml_optim <- optim.pml(lx_pml, optEdge = TRUE, optRooted = TRUE, optNni = TRUE, rearrangement = "stochastic")
+```
+
+```{r}
+plot(lx_pml_optim$tree)
+```
+
