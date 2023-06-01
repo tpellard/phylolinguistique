@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.313">
+<meta name="generator" content="quarto-1.3.353">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie</title>
 <style>
@@ -205,11 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Sur cette page</h2>
-   
-  <ul>
-<li><a href="#parcimonie-g%C3%A9n%C3%A9rale" id="toc-parcimonie-générale" class="nav-link active" data-scroll-target="#parcimonie-g%C3%A9n%C3%A9rale"><span class="header-section-number">3.1</span> Parcimonie générale</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -237,9 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ms609.github.io/TreeTools/">TreeTools</a></span><span class="op">)</span></span>
 <span><span class="va">lx_phy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/ReadCharacters.html">ReadAsPhyDat</a></span><span class="op">(</span><span class="st">"lx_phy_multi.nex"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="parcimonie-générale" class="level2 page-columns page-full" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="parcimonie-générale">
-<span class="header-section-number">3.1</span> Parcimonie générale</h2>
-<p>Parmi les différentes variantes de parcimonie, la plus simple autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d’une matrice de traits binaires, les changements <code>0</code> &gt; <code>1</code> et <code>1</code> &gt; <code>0</code> sont ainsi traités de manière identique, et il n’est pas nécessaire de connaitre l’état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non enraciné.</p>
+<p>Parmi les différentes variantes de parcimonie, la plus simple (dite «de Wagner») autorise tous les changements sans restriction et les traite à égalité sans pondération, orientation, ou ordre. Dans le cas d’une matrice de traits binaires, les changements <code>0</code> &gt; <code>1</code> et <code>1</code> &gt; <code>0</code> sont ainsi traités de manière identique, et il n’est pas nécessaire de connaitre l’état ancestral de chaque trait et si un changement constitue une innovation ou une réversion, ce qui implique que le résultat est un arbre non enraciné.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -255,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Inclure les autres types de parcimonie.</p>
 </div>
 </div>
-</div></div><p>Jusqu’à une dizaine de taxons, il est possible d’utiliser l’algorithme <em>Branch and Bound</em> qui garantit de trouver la solution optimale. Le résultat est un objet <code>multiPhylo</code> pouvant contenir plusieurs arbres, bien qu’ici il n’y en ai qu’un seul.</p>
+</div></div><p>La comparaison des arbres possibles à la recherche du plus parcimonieux est une procédure longue, et avec beaucoup de taxons, il est nécessaire d’utiliser une méthode heuristique comme le <em>Parsimony Ratchet</em> avec <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet()</a></code>. Le résultat est un objet <code>multiPhylo</code> pouvant contenir plusieurs arbres si l’on a précisé l’option <code>all = TRUE</code>, bien qu’ici il n’y en ait qu’un seul.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -272,59 +266,140 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div></div><div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/bab.html">bab</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></span>
-<span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span>, trace <span class="op">=</span> <span class="fl">0</span>, method <span class="op">=</span> <span class="st">"sankoff"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Phylogenetic tree with 9 tips and 7 internal nodes.
 
 Tip labels:
   Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
+Node labels:
+  1, 0.65, 1, 0.98, 0.98, 0.74, ...
 
 Unrooted; no branch lengths.</code></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
-<p>Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran()</a></code> permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l’arbre et favorise l’interprétation des homoplasies comme des réversions.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>L’option <code>trace</code> permet de choisir la quantité d’information à afficher concernant la recherche de l’arbre.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>L’option <code>method = "sankoff"</code> permet d’utiliser l’algorithme de Sankoff qui est plus complexe mais plus général également.</p>
+</div>
+</div>
+</div>
+</div></div><p>Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran()</a></code> permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l’arbre et favorise l’interprétation des homoplasies comme des réversions.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_bab</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
-<span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
+<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Phylogenetic tree with 9 tips and 7 internal nodes.
 
 Tip labels:
   Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
+Node labels:
+  1, 0.65, 1, 0.98, 0.98, 0.74, ...
 
 Unrooted; includes branch lengths.</code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_bab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
-<p>On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au <a href="https://fr.wikipedia.org/wiki/Newick">format Newick</a>.</p>
+<p>On peut ensuite enraciner l’arbre, par exemple avec <code><a href="https://klausvigo.github.io/phangorn/reference/midpoint.html">midpoint()</a></code>, qui place la racine à mi-chemin des deux taxons les plus divergents. Cette méthode présuppose cependant que l’évolution a lieu a taux constant et que la topologie est équilibrée (les taxons sont bien distribués entre les différents clades).</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_bab</span>, <span class="st">"lx_bab.tree"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="2100"></p>
 </div>
-<p>Au-delà d’une dizaine de taxons, il est nécessaire d’utiliser une méthode heuristique comme le <em>Parsimony Ratchet</em>. Ici, la méthode retourne un seul et unique arbre qui diffère de ceux obtenus par la méthode précédente.</p>
-<div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></span>
-<span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.tree"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Une autre méthode nécessite de déterminer un extra-groupe ou groupe externe (<em>outgroup</em>). La fonction <code><a href="https://rdrr.io/pkg/ape/man/root.html">root()</a></code> permet de procéder à l’enracinement en indiquant le numéro ou le nom du taxon constituant le groupe externe, par exemple «Violet». Cela présuppose bien sûr qu’il ait été inclus dans l’analyse de départ.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html">root</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"Violet"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+<p>S’il n’y a pas de groupe externe mais que l’on connaît les états ancestraux, on peut rajouter aux données un taxon fictif possédant l’état ancestral pour tous les caractères, par exemple <code>1</code> partout. On obtient plusieurs arbres cette fois-ci, et chacun est manipulable en utilisant son index numérique.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_phy2</span> <span class="op">&lt;-</span> <span class="va">lx_phy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/MatrixToPhyDat.html">PhyDatToMatrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="st">"Fictif"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/MatrixToPhyDat.html">MatrixToPhyDat</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy2</span>, trace <span class="op">=</span> <span class="fl">0</span>, method <span class="op">=</span> <span class="st">"sankoff"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_phy2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html">root</a></span><span class="op">(</span><span class="st">"Fictif"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 phylogenetic trees</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Phylogenetic tree with 10 tips and 9 internal nodes.
+
+Tip labels:
+  Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
+Node labels:
+  Root, 1, 0.73, 0.99, 0.98, 0.89, ...
+
+Rooted; includes branch lengths.</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="2100"></p>
 </div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="2100"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+<p>Il suffit ensuite de supprimer le taxon fictif de l’arbre.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/drop.tip.html">drop.tip</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"Fictif"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="2100"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="2100"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+<p>On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au <a href="https://fr.wikipedia.org/wiki/Newick">format Newick</a>. Sauvegardons le résultat également comme un objet R, afin de conserver des propriétés intéressantes pour plus tard.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.tree"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.rds"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -689,7 +764,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item">
