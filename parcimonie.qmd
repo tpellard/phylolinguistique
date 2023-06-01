@@ -23,7 +23,7 @@ Inclure les autres types de parcimonie.
 :::
 :::
 
-La comparaison des arbres possibles à la recherche du plus parcimonieux est une procédure longue, et avec beaucoup de taxons, il est nécessaire d'utiliser une méthode heuristique comme le *Parsimony Ratchet* avec `pratchet()`. Le résultat est un objet `multiPhylo` pouvant contenir plusieurs arbres, bien qu'ici il n'y en ai qu'un seul.
+La comparaison des arbres possibles à la recherche du plus parcimonieux est une procédure longue, et avec beaucoup de taxons, il est nécessaire d'utiliser une méthode heuristique comme le *Parsimony Ratchet* avec `pratchet()`. Le résultat est un objet `multiPhylo` pouvant contenir plusieurs arbres si l'on a précisé l'option `all = TRUE`, bien qu'ici il n'y en ait qu'un seul.
 
 ::: column-margin
 ::: callout-caution
@@ -34,7 +34,7 @@ Vérifier le traitement des données manquantes et celui des polymorphismes pour
 :::
 
 ```{r}
-lx_pratchet <- pratchet(lx_phy, trace = 0)
+lx_pratchet <- pratchet(lx_phy, trace = 0, method = "sankoff", all = TRUE)
 lx_pratchet
 plot(lx_pratchet, "unrooted")
 ```
@@ -42,6 +42,9 @@ plot(lx_pratchet, "unrooted")
 ::: column-margin
 ::: {.callout-tip appearance="simple"}
 L'option `trace` permet de choisir la quantité d'information à afficher concernant la recherche de l'arbre.
+:::
+::: {.callout-note appearance="simple"}
+L'option `method = "sankoff"` permet d'utiliser l'algorithme de Sankoff qui est plus complexe mais plus général également.
 :::
 :::
 
@@ -66,16 +69,18 @@ lx_pratchet <- root(lx_pratchet, "Violet")
 plot(lx_pratchet)
 ```
 
-S'il n'y a pas de groupe externe mais que l'on connaît les états ancestraux, on peut rajouter aux données un taxon fictif possédant l'état ancestral pour tous les caractères, par exemple `1` partout.
+S'il n'y a pas de groupe externe mais que l'on connaît les états ancestraux, on peut rajouter aux données un taxon fictif possédant l'état ancestral pour tous les caractères, par exemple `1` partout. On obtient plusieurs arbres cette fois-ci, et chacun est manipulable en utilisant son index numérique.
 
 ```{r}
 lx_phy2 <- lx_phy %>% 
   PhyDatToMatrix() %>% 
   rbind("Fictif" = rep("1", ncol(.))) %>% 
   MatrixToPhyDat()
-lx_pratchet <- pratchet(lx_phy2, trace = 0) %>% 
+lx_pratchet <- pratchet(lx_phy2, trace = 0, method = "sankoff", all = TRUE) %>% 
   acctran(lx_phy2) %>% 
   root("Fictif")
+lx_pratchet
+lx_pratchet[[1]]
 plot(lx_pratchet)
 ```
 
@@ -86,7 +91,7 @@ lx_pratchet <- drop.tip(lx_pratchet, "Fictif")
 plot(lx_pratchet)
 ```
 
-On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick). Sauvegardons le résultat également comme un objet R pour plus tard afin de conserver des propriétés intéressantes.
+On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick). Sauvegardons le résultat également comme un objet R, afin de conserver des propriétés intéressantes pour plus tard.
 
 ```{r}
 write.tree(lx_pratchet, "lx_pratchet.tree")
