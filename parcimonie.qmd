@@ -34,7 +34,7 @@ Vérifier le traitement des données manquantes et celui des polymorphismes pour
 :::
 
 ```{r}
-lx_pratchet <- pratchet(lx_phy, trace = 0, method = "sankoff", all = TRUE)
+lx_pratchet <- pratchet(lx_phy, trace = 0, minit = 1000, k = 100, method = "sankoff", all = TRUE)
 lx_pratchet
 plot(lx_pratchet, "unrooted")
 ```
@@ -76,7 +76,7 @@ lx_phy2 <- lx_phy %>%
   PhyDatToMatrix() %>% 
   rbind("Fictif" = rep("1", ncol(.))) %>% 
   MatrixToPhyDat()
-lx_pratchet <- pratchet(lx_phy2, trace = 0, method = "sankoff", all = TRUE) %>% 
+lx_pratchet <- pratchet(lx_phy2, trace = 0, minit = 1000, k = 100, method = "sankoff", all = TRUE) %>% 
   acctran(lx_phy2) %>% 
   root("Fictif", resolve.root = TRUE, edgelabel = TRUE)
 lx_pratchet
