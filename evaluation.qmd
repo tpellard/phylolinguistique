@@ -77,7 +77,6 @@ lx_mp <- read_rds("lx_mp.rds")
 plotBS(lx_mp, p = .7)
 ```
 
-
 ## Résumer l'accord entre des résultats
 
 Une analyse phylogénétique résulte souvent non pas en un arbre unique mais en un ensemble d'arbres.
@@ -107,3 +106,135 @@ Un arbre consensus majoritaire contient lui les clades présents dans la majorit
 tree_mc <- consensus(trees, p = .5)
 plot(tree_mc)
 ```
+
+## Mesures du degré d'arborescence
+
+Il existe plusieurs mesures du degré d'arborescence de données phylogénétiques indiquant à quel point les données sont compatibles avec un arbre (quel qu'il soit).
+
+### Score δ
+
+Le score δ est une mesure du degré de conflit d'un jeu de données. Chaque taxon se voit attribué un score entre 0 et 1 en fonction de son degré d'implication dans les signaux contradictoires. Le score δ pour un taxon se base sur la distance entre paires de taxons à l'intérieur de tous les quartets (sous-ensembles de quatre taxons) incluant le taxon en question.
+
+Soit un quartet *q* composé de quatre taxons *i, j ,k, l* et les sommes des distance $d_{ij} + d_{kl}$, $d_{ik} + d_{il}$ et $d_{il} + d_{jk}$. Soit $m_1$ la plus grande de ces trois sommes, $m_2$ la seconde, et $m_3$ la plus petite. Le score δ du quartet *q* est égal au rapport entre les différences de ces sommes:
+
+$$\delta_q = \frac{m_1 - m_2}{m_1 - m_3}, \delta_q = 0\ \text{si}\ m_1 - m_3 = 0$$
+
+Le score δ d'un taxon est la moyenne des scores δ des quartets incluant le taxon, et le score δ d'un jeu de données est la moyenne des scores δ de tous les quartets.
+
+La fonction `delta.plot()` permet de calculer le score δ d'une matrice de distance et d'afficher un histogramme des valeurs pour l'ensemble des quartets et la moyenne pour chaque taxon.
+
+```{r}
+lx_delta <- lx_phy %>% 
+  Hamming() %>% 
+  delta.plot()
+lx_delta
+```
+
+Les moyennes de chaque taxon sont stockées dans l'attribut `delta.bar`, ce qui permet de calculer la moyenne.
+```{r}
+lx_delta$delta.bar
+mean(lx_delta$delta.bar)
+```
+
+Il n'est cependant possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction faisant appel à `Hamming()` et laissant le choix de la fonction de calcul du score en prévision de la suite.
+
+```{r}
+delta.score2 <- function (x, arg = "mean", f = phangorn:::delta.quartet, ...) 
+{
+    dist.dna <- as.matrix(Hamming(x, ...))
+    all.quartets <- t(combn(names(x), 4))
+    delta.values <- apply(all.quartets[, ], 1, f, 
+        dist.dna)
+    if (!arg %in% c("all", "mean", "sd")) 
+        stop("return options are: all, mean, or sd")
+    if (arg == "all") 
+        return(delta.values)
+    if (arg == "mean") 
+        return(mean(delta.values))
+    if (arg == "sd") 
+        return(sd(delta.values))
+}
+```
+
+On peut alors obtenir l'ensemble des score δ et tracer son propre diagramme de distribution.
+```{r}
+delta.score2(lx_phy, "all")
+delta.score2(lx_phy, "mean")
+delta.score2(lx_phy, "all") %>% mean()
+delta.score2(lx_phy, "all") %>% 
+  enframe() %>% 
+  ggplot(aes(x = value)) +
+  geom_density(fill = "lightgray") +
+  xlab("δ") +
+  theme_minimal()
+```
+
+### Score de résidus *Q*
+
+Un score alternatif calculé comme $(m_1 - m_2)^2$ a également été proposé. On peut reprendre le code de la fonction cachée `phangorn:::delta.quartet` pour définir une nouvelle fonction à passer à notre `delta.score2()`.
+
+```{r}
+q.resid <- function (quartet, dist.dna) {
+    m1 <- dist.dna[quartet[1], quartet[2]] + dist.dna[quartet[3], 
+        quartet[4]]
+    m2 <- dist.dna[quartet[1], quartet[3]] + dist.dna[quartet[2], 
+        quartet[4]]
+    m3 <- dist.dna[quartet[1], quartet[4]] + dist.dna[quartet[2], 
+        quartet[3]]
+    m <- sort(c(m1, m2, m3), decreasing = TRUE)
+    ret <- (m[1] - m[2])^2
+    return(ret)
+}
+delta.score2(lx_phy, "mean", f = q.resid)
+delta.score2(lx_phy, "all", f = q.resid) %>% 
+  enframe() %>% 
+  ggplot(aes(x = value)) +
+  geom_density(fill = "lightgray") +
+  xlab("Q-residual") +
+  theme_minimal()
+```
+
+On peut ensuite comparer les scores δ et les scores de résidus *Q*.
+```{r}
+ds <- delta.score2(lx_phy, "all")
+qr <- delta.score2(lx_phy, "all", f = q.resid)
+tibble(ds, qr) %>% 
+  ggplot(aes(x = ds, y =qr)) +
+  geom_point(color = "darkorange") +
+  geom_vline(xintercept = mean(ds)) +
+  geom_hline(yintercept = mean(qr)) +
+  xlab("δ") +
+  ylab("Q-residual") +
+  theme_minimal()
+```
+
+On peut obtenir également les scores pour chaque taxon.
+```{r}
+dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>% 
+  as_tibble() %>% 
+  mutate(ds, qr) %>% 
+  pivot_longer(cols = 1:4, names_to = NULL, values_to = "taxon")
+dsqr_bytaxon_mean <- dsqr_bytaxon %>% 
+  group_by(taxon) %>% 
+  summarise(across(ds:qr, mean))
+```
+
+```{r}
+#| echo: false
+rmarkdown::paged_table(dsqr_bytaxon)
+rmarkdown::paged_table(dsqr_bytaxon_mean)
+```
+
+```{r}
+dsqr_bytaxon %>% 
+  ggplot(aes(x = ds, y =qr, color = taxon)) +
+  geom_point() +
+  geom_vline(xintercept = mean(ds)) +
+  geom_hline(yintercept = mean(qr)) +
+  xlab("δ") +
+  ylab("Q-residual") +
+  facet_wrap(~ taxon) +
+  ggthemes::scale_color_ptol() +
+  theme_minimal()
+```
+
