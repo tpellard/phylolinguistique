@@ -76,3 +76,135 @@ On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dan
 write.tree(lx_mp_r, "lx_mp.tree")
 write_rds(lx_mp_r, "lx_mp.rds")
 ```
+
+## Mesures d'homoplasie et de cohérence
+
+Il est possible de calculer l'indice de cohérence (*consistency index*, ci) d'un caractère avec un arbre. Un caractère est cohérent avec un arbre si cet arbre implique que le caractère a évolué avec le minimum de transformations possibles pour rendre compte de ces états. Ce minimum *m* est l'amplitude du caractère, et pour un caractère avec *k* états possible, il est égal à $k - 1$. L'indice de cohérence se calcule comme le rapport de l'amplitude *m* sur le nombre de pas (transformations) *s* observé pour ce caractère.
+
+$ci = \frac{m}{s}$
+
+La fonction `CI()` avec l'option `sitewise` permet d'obtenir l'index de cohérence de chaque caractère d'une matrice phylogénétique. On obtient une valeur `NaN` quand il y a une division par 0, dans les cas de caractères sans transformation qui présentent le même état dans tous les taxons.
+
+```{r}
+ci <- CI(lx_mp_r, lx_phy, sitewise = TRUE)
+ci
+```
+
+Le nombre d'homoplasies *h* pour un caractère s'obtient par
+$h = l - r$. La valeur de *r* se calcule avec une fonction cachée de `phangorn`, et celle de *l* avec la fonction `sankoff()` et l'option `site = "site"`. En raison de la manière dont sont traités en interne les caractères de la matrice phylogénétique, il faut jouer avec les index de l'objet `PhyDat` pour bien récupérer la liste complète des valeurs. 
+
+```{r}
+m <- phangorn:::lowerBound(lx_phy)[attr(lx_phy, "index")]
+s <- sankoff(lx_mp_r, lx_phy, site = "site")[attr(lx_phy, "index")]
+h <- s - m
+h
+H <- sum(h)
+H
+```
+
+On peut alors obtenir le numéro des caractères présentant de l'homoplasie:
+```{r}
+which(h > 0)
+```
+
+L'indice de cohérence CI de l'ensemble des caractères est lui le rapport de la somme *M* des *m* sur la somme *S* des *s* de tous les *N* caractères.
+
+$$CI = \frac{M}{S}, M = \sum^N_{i=1} m_i, S = \sum^N_{i=1} s_i$$
+
+```{r}
+CI(lx_mp_r, lx_phy)
+sum(m)/sum(s)
+```
+
+*S* est le nombre total de pas ou longueur de l'arbre. On peut l'obtenir avec la fonction `sankoff()` sans option.
+```{r}
+sum(s)
+sankoff(lx_mp_r, lx_phy)
+```
+
+Cet indice de cohérence est une mesure du degré d'homoplasie des données sur un arbre. Plus le score est bas, plus l'arbre contient d'homoplasie, et une valeur de 1 indique une absence totale d'homoplasie. Les caractères autapomorphiques ont un ci de 1.
+
+L'indice de cohérence est cependant problématique car sa valeur minimale n'est en fait pas 0, ce qui ne permet donc pas de l'utiliser pour évaluer correctement le degré d'homoplasie.
+
+Il est possible d'utiliser à la place un indice de cohérence mis à l'échelle (*rescaled consistency index*, rci) par l'introduction de *g*, le nombre maximal de transformations pour un caractère, ce qui correspond cas où toutes les transformations auraient lieu sur les branches terminales:
+
+$$rci = \frac{g-s}{g-m}\frac{m}{s} = \frac{g-s}{g-m}ci$$
+
+Les valeurs de *g* s'obtient avec une autre fonction cachée de `phangorn`.
+```{r}
+g <- phangorn:::upperBound(lx_phy)[attr(lx_phy, "index")]
+g
+```
+
+Mais il est plus simple de calculer la partie gauche de la formule du rci avec la fonction `RI()`.
+```{r}
+rci <- RI(lx_mp_r, lx_phy, sitewise = TRUE) * CI(lx_mp_r, lx_phy, sitewise = TRUE)
+rci
+```
+
+L'indice de cohérence mis à l'échelle RCI pour l'ensemble des caractères se calcule comme suit:
+
+$$RCI = \frac{G-S}{G-M}\frac{M}{S}, G = \sum^N_{i=1} g_i$$
+
+```{r}
+CI(lx_mp_r, lx_phy) * RI(lx_mp_r, lx_phy)
+```
+
+Le coefficient de distortion *d* d'un caractère est le nombre d'homoplasies observées par rapport au nombre maximal possible.
+
+$$d = \frac{h}{g - m}$$
+```{r}
+d <- h/(g - m)
+d
+```
+
+
+On peut aussi le calculer pour un ensemble de caractères.
+```{r}
+D <- sum(h)/(sum(g) - sum(m))
+D
+```
+
+La partie gauche des formules d'indice de cohérence est lui-même une mesure appelée indice de rétention (*retention index*, ri, RI). Il s'agit du complément $1 - D$ de l'indice de distorsion *D*. Il mesure la proportion d'homoplasies possibles mais non observées, ce qui revient à la proportion de synapomorphies possibles effectivement retenues comme telle sur un arbre. Les caractères autapomorphiques ont un ri de 0. 
+
+```{r}
+ri <- RI(lx_mp_r, lx_phy, sitewise = TRUE)
+ri
+RI <- RI(lx_mp_r, lx_phy)
+RI
+1 - D
+```
+
+
+Il est ainsi possible de comparer les scores de différents arbres, par exemple celui obtenu par parcimonie et celui obtenu par UPGMA.
+```{r}
+lx_upgma <- read.tree("lx_upgma.tree")
+tr <- c(lx_mp_r, lx_upgma)
+nms <- c("MP", "UPGMA")
+comp_tb <- map(seq_along(tr), function(i){
+  m_x <- phangorn:::lowerBound(lx_phy)[attr(lx_phy, "index")]
+  s_x <- sankoff(tr[[i]], lx_phy, site = "site")[attr(lx_phy, "index")]
+  h_x <- s_x - m_x
+  CI_x <- CI(tr[[i]], lx_phy)
+  RI_x <- RI(tr[[i]], lx_phy)
+  df <- tribble(
+    ~var, ~value,
+  "S", sum(s_x),
+  "H", sum(h_x),
+  "CI", CI_x,
+  "RCI", CI_x * RI_x,
+  "RI", RI_x,
+  "D", 1 - RI_x
+  )
+  colnames(df)[2] <- nms[i]
+  df
+}) %>% 
+  reduce(left_join)
+```
+```{r}
+#| echo: false
+options(digits = 2)
+rmarkdown::paged_table(comp_tb)
+```
+
+Les résultats sont similaires, mais, sans surprise, l'arbre obtenu par parcimonie contient moins d'homoplasies et a des meilleurs scores de CI, RCI et RI que celui obtenu par UPGMA.
