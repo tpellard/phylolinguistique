@@ -11,7 +11,7 @@ Les linguistes ont pendant longtemps réalisé des classifications phylogénéti
 
 Même pour les méthodes les plus simples, comme la [lexicostatistique](https://en.wikipedia.org/wiki/Lexicostatistics), qui peuvent être effectuées manuellement, l'analyse des données est longue et fastidieuse, et la moindre modification des données demande de recommencer à zéro. Il s'agit là typiquement d'[une tâche pour un ordinateur](https://cipanglo.hypotheses.org/1725).
 
-:::{.column-margin}
+::: column-margin
 ::: {.callout-note appearance="simple"}
 Pour *n* taxons, il y a $\frac{(2n-3)!}{2^{n-2}(n-2)!}$ arbres racinés à embranchements binaires possibles. Pour 10 langues, il y a plus de 34 millions de possibilités.
 
@@ -33,11 +33,17 @@ En outre, la plupart des méthodes d'inférence phylogénétique compare les dif
 
 Le logiciel [R](https://www.r-project.org/), en plus d'être libre, gratuit et multiplateforme, est particulièrement indiqué pour ce genre de travail. Il est spécialisé dans l'analyse quantitative et la visualisation de données, et il existe de nombreuses extensions dédiées à la phylogénétique.
 
+::: callout-warning
+Le logiciel R n'est cependant pas l'outil de choix pour effectuer des inférences phylogénétiques. Seules les méthodes les plus simples sont implémentées, et il est normalement nécessaire d'utiliser d'[autres outils](https://evolution.gs.washington.edu/phylip/software.html). C'est notamment des méthodes bayésiennes qui sont à l'heure actuelle les plus couramment utilisées.
+
+En revanche, R est un outil de choix pour l'analyse des résultats d'inférence phylogénétique obtenus avec d'autres outils.
+:::
+
 ## Installation des logiciels
 
 Il est nécessaire avant toute chose d'installer le logiciel R si ce n'est pas déjà fait: <https://cran.r-project.org/>.
 
-:::{.callout-tip appearance="simple"}
+::: {.callout-tip appearance="simple"}
 L'utilisation de l'environnement de développement gratuit, libre et multiplateforme [Rstudio](https://www.rstudio.com/) est recommandée.
 :::
 

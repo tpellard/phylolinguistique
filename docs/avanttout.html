@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.313">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - Avant tout chose</title>
 <style>
@@ -306,6 +306,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div></div><p>En outre, la plupart des méthodes d’inférence phylogénétique compare les différents arbres théoriquement possibles à la recherche du ou des arbres optimaux selon le critère choisi (maximum de parcimonie, de compatibilité, de vraisemblance, de probabilité postérieure). Or le nombre d’arbres à comparer devient vite astronomique en fonction du nombre de taxons (langues), si bien qu’il est le plus souvent impossible de comparer tous les arbres possibles, et il est nécessaire de recourir à des <a href="https://en.wikipedia.org/wiki/Heuristic_(computer_science)">méthodes heuristiques</a> complexes afin de trouver une solution approximative. Il est évidemment impossible de se passer d’un ordinateur pour cela.</p>
 <p>Le logiciel <a href="https://www.r-project.org/">R</a>, en plus d’être libre, gratuit et multiplateforme, est particulièrement indiqué pour ce genre de travail. Il est spécialisé dans l’analyse quantitative et la visualisation de données, et il existe de nombreuses extensions dédiées à la phylogénétique.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avertissement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le logiciel R n’est cependant pas l’outil de choix pour effectuer des inférences phylogénétiques. Seules les méthodes les plus simples sont implémentées, et il est normalement nécessaire d’utiliser d’<a href="https://evolution.gs.washington.edu/phylip/software.html">autres outils</a>. C’est notamment des méthodes bayésiennes qui sont à l’heure actuelle les plus couramment utilisées.</p>
+<p>En revanche, R est un outil de choix pour l’analyse des résultats d’inférence phylogénétique obtenus avec d’autres outils.</p>
+</div>
+</div>
 </section><section id="installation-des-logiciels" class="level2"><h2 class="anchored" data-anchor-id="installation-des-logiciels">Installation des logiciels</h2>
 <p>Il est nécessaire avant toute chose d’installer le logiciel R si ce n’est pas déjà fait: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>.</p>
 <div class="callout callout-style-simple callout-tip">
