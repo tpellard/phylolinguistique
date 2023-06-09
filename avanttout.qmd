@@ -34,7 +34,7 @@ En outre, la plupart des méthodes d'inférence phylogénétique compare les dif
 Le logiciel [R](https://www.r-project.org/), en plus d'être libre, gratuit et multiplateforme, est particulièrement indiqué pour ce genre de travail. Il est spécialisé dans l'analyse quantitative et la visualisation de données, et il existe de nombreuses extensions dédiées à la phylogénétique.
 
 ::: callout-warning
-Le logiciel R n'est cependant pas l'outil de choix pour effectuer des inférences phylogénétiques. Seules les méthodes les plus simples sont implémentées, et il est normalement nécessaire d'utiliser d'[autres outils](https://evolution.gs.washington.edu/phylip/software.html). C'est notamment des méthodes bayésiennes qui sont à l'heure actuelle les plus couramment utilisées.
+Le logiciel R n'est cependant pas uilisable pour effectuer des inférences phylogénétiques. Seules les méthodes les plus simples sont implémentées, et il est normalement nécessaire d'utiliser d'[autres outils](https://evolution.gs.washington.edu/phylip/software.html). C'est notamment des méthodes bayésiennes qui sont à l'heure actuelle les plus couramment utilisées.
 
 En revanche, R est un outil de choix pour l'analyse des résultats d'inférence phylogénétique obtenus avec d'autres outils.
 :::
