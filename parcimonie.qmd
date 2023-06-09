@@ -34,9 +34,9 @@ Vérifier le traitement des données manquantes et celui des polymorphismes pour
 :::
 
 ```{r}
-lx_pratchet <- pratchet(lx_phy, trace = 0, minit = 1000, k = 100, method = "sankoff", all = TRUE)
-lx_pratchet
-plot(lx_pratchet, "unrooted")
+lx_mp <- pratchet(lx_phy, trace = 0, minit = 1000, k = 100, method = "sankoff", all = TRUE)
+lx_mp
+plot(lx_mp, "unrooted")
 ```
 
 ::: column-margin
@@ -51,49 +51,28 @@ L'option `method = "sankoff"` permet d'utiliser l'algorithme de Sankoff qui est 
 Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction `acctran()` permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l'arbre et favorise l'interprétation des homoplasies comme des réversions.
 
 ```{r}
-lx_pratchet <- acctran(lx_pratchet, lx_phy)
-lx_pratchet
-plot(lx_pratchet, "unrooted")
+lx_mp_bl <- acctran(lx_mp, lx_phy)
+lx_mp_bl
+plot(lx_mp_bl, "unrooted")
 ```
 
 On peut ensuite enraciner l'arbre, par exemple avec `midpoint()`, qui place la racine à mi-chemin des deux taxons les plus divergents. Cette méthode présuppose cependant que l'évolution a lieu a taux constant et que la topologie est équilibrée (les taxons sont bien distribués entre les différents clades).
 
 ```{r}
-plot(midpoint(lx_pratchet))
+plot(midpoint(lx_mp_bl))
 ```
 
 Une autre méthode nécessite de déterminer un extra-groupe ou groupe externe (*outgroup*). La fonction `root()` permet de procéder à l'enracinement en indiquant le numéro ou le nom du taxon constituant le groupe externe, par exemple «Violet». Cela présuppose bien sûr qu'il ait été inclus dans l'analyse de départ.
 
 ```{r}
-lx_pratchet <- root(lx_pratchet, "Violet", resolve.root = TRUE, edgelabel = TRUE)
-plot(lx_pratchet)
-```
-
-S'il n'y a pas de groupe externe mais que l'on connaît les états ancestraux, on peut rajouter aux données un taxon fictif possédant l'état ancestral pour tous les caractères, par exemple `1` partout. On obtient plusieurs arbres cette fois-ci, et chacun est manipulable en utilisant son index numérique.
-
-```{r}
-lx_phy2 <- lx_phy %>% 
-  PhyDatToMatrix() %>% 
-  rbind("Fictif" = rep("1", ncol(.))) %>% 
-  MatrixToPhyDat()
-lx_pratchet <- pratchet(lx_phy2, trace = 0, minit = 1000, k = 100, method = "sankoff", all = TRUE) %>% 
-  acctran(lx_phy2) %>% 
-  root("Fictif", resolve.root = TRUE, edgelabel = TRUE)
-lx_pratchet
-lx_pratchet[[1]]
-plot(lx_pratchet)
-```
-
-Il suffit ensuite de supprimer le taxon fictif de l'arbre.
-
-```{r}
-lx_pratchet <- drop.tip(lx_pratchet, "Fictif")
-plot(lx_pratchet)
+lx_mp_r <- RootTree(lx_mp, "Violet") %>% 
+  acctran(lx_phy)
+plot(lx_mp_r)
 ```
 
 On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au [format Newick](https://fr.wikipedia.org/wiki/Newick). Sauvegardons le résultat également comme un objet R, afin de conserver des propriétés intéressantes pour plus tard.
 
 ```{r}
-write.tree(lx_pratchet, "lx_pratchet.tree")
-write_rds(lx_pratchet, "lx_pratchet.rds")
+write.tree(lx_mp_r, "lx_mp.tree")
+write_rds(lx_mp_r, "lx_mp.rds")
 ```
