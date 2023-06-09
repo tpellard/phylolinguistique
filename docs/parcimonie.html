@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.313">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie</title>
 <style>
@@ -91,7 +91,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-detached-cancel-button-title": "Annuler",
     "search-submit-button-title": "Envoyer"
   }
-}</script>
+}</script><link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 <meta property="og:title" content="Phylolinguistique avec R - 3&nbsp; Méthodes de parcimonie">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://tpellard.github.io/phylolinguistique/parcimonie_files/figure-html/unnamed-chunk-2-1.png">
@@ -205,7 +206,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+<li><a href="#mesures-dhomoplasie-et-de-coh%C3%A9rence" id="toc-mesures-dhomoplasie-et-de-cohérence" class="nav-link active" data-scroll-target="#mesures-dhomoplasie-et-de-coh%C3%A9rence"><span class="header-section-number">3.1</span> Mesures d’homoplasie et de cohérence</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -266,8 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div></div><div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span>, trace <span class="op">=</span> <span class="fl">0</span>, method <span class="op">=</span> <span class="st">"sankoff"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy</span>, trace <span class="op">=</span> <span class="fl">0</span>, minit <span class="op">=</span> <span class="fl">1000</span>, k <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"sankoff"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">lx_mp</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Phylogenetic tree with 9 tips and 7 internal nodes.
@@ -275,11 +280,11 @@ Phylogenetic tree with 9 tips and 7 internal nodes.
 Tip labels:
   Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
 Node labels:
-  1, 0.67, 1, 1, 1, 0.78, ...
+  1, 0.701, 0.986, 0.997, 1, 0.797, ...
 
 Unrooted; no branch lengths.</code></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_mp</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="2100"></p>
 </div>
@@ -308,8 +313,8 @@ Unrooted; no branch lengths.</code></pre>
 </div>
 </div></div><p>Il est nécessaire de calculer explicitement la longueur des différentes branches. La fonction <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran()</a></code> permet de calculer la longueur par la méthode de transformation accélérée qui assigne les changements le plus haut possible dans l’arbre et favorise l’interprétation des homoplasies comme des réversions.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
-<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_mp_bl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_mp</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
+<span><span class="va">lx_mp_bl</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Phylogenetic tree with 9 tips and 7 internal nodes.
@@ -317,95 +322,258 @@ Phylogenetic tree with 9 tips and 7 internal nodes.
 Tip labels:
   Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
 Node labels:
-  1, 0.67, 1, 1, 1, 0.78, ...
+  1, 0.701, 0.986, 0.997, 1, 0.797, ...
 
 Unrooted; includes branch lengths.</code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_mp_bl</span>, <span class="st">"unrooted"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
 <p>On peut ensuite enraciner l’arbre, par exemple avec <code><a href="https://klausvigo.github.io/phangorn/reference/midpoint.html">midpoint()</a></code>, qui place la racine à mi-chemin des deux taxons les plus divergents. Cette méthode présuppose cependant que l’évolution a lieu a taux constant et que la topologie est équilibrée (les taxons sont bien distribués entre les différents clades).</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">lx_mp_bl</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
 <p>Une autre méthode nécessite de déterminer un extra-groupe ou groupe externe (<em>outgroup</em>). La fonction <code><a href="https://rdrr.io/pkg/ape/man/root.html">root()</a></code> permet de procéder à l’enracinement en indiquant le numéro ou le nom du taxon constituant le groupe externe, par exemple «Violet». Cela présuppose bien sûr qu’il ait été inclus dans l’analyse de départ.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html">root</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"Violet"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_mp_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/RootTree.html">RootTree</a></span><span class="op">(</span><span class="va">lx_mp</span>, <span class="st">"Violet"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_mp_r</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="parcimonie_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
-<p>S’il n’y a pas de groupe externe mais que l’on connaît les états ancestraux, on peut rajouter aux données un taxon fictif possédant l’état ancestral pour tous les caractères, par exemple <code>1</code> partout. On obtient plusieurs arbres cette fois-ci, et chacun est manipulable en utilisant son index numérique.</p>
-<div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_phy2</span> <span class="op">&lt;-</span> <span class="va">lx_phy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/MatrixToPhyDat.html">PhyDatToMatrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="st">"Fictif"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://ms609.github.io/TreeTools/reference/MatrixToPhyDat.html">MatrixToPhyDat</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">lx_phy2</span>, trace <span class="op">=</span> <span class="fl">0</span>, method <span class="op">=</span> <span class="st">"sankoff"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">lx_phy2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html">root</a></span><span class="op">(</span><span class="st">"Fictif"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">lx_pratchet</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>4 phylogenetic trees</code></pre>
-</div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Phylogenetic tree with 10 tips and 9 internal nodes.
-
-Tip labels:
-  Bleu, Magenta, Rouge, Jaune, Orange, Vert, ...
-Node labels:
-  Root, 1, 0.86, 0.97, 0.97, 0.9, ...
-
-Rooted; includes branch lengths.</code></pre>
-</div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid" width="2100"></p>
-</div>
-</div>
-<p>Il suffit ensuite de supprimer le taxon fictif de l’arbre.</p>
-<div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_pratchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/drop.tip.html">drop.tip</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"Fictif"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lx_pratchet</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="2100"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="parcimonie_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid" width="2100"></p>
-</div>
-</div>
 <p>On peut alors sauvegarder les résultats (arbres avec longueurs de branches) dans un fichier au <a href="https://fr.wikipedia.org/wiki/Newick">format Newick</a>. Sauvegardons le résultat également comme un objet R, afin de conserver des propriétés intéressantes pour plus tard.</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.tree"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds</a></span><span class="op">(</span><span class="va">lx_pratchet</span>, <span class="st">"lx_pratchet.rds"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html">write.tree</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="st">"lx_mp.tree"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">write_rds</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="st">"lx_mp.rds"</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="mesures-dhomoplasie-et-de-cohérence" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="mesures-dhomoplasie-et-de-cohérence">
+<span class="header-section-number">3.1</span> Mesures d’homoplasie et de cohérence</h2>
+<p>Il est possible de calculer l’indice de cohérence (<em>consistency index</em>, ci) d’un caractère avec un arbre. Un caractère est cohérent avec un arbre si cet arbre implique que le caractère a évolué avec le minimum de transformations possibles pour rendre compte de ces états. Ce minimum <em>m</em> est l’amplitude du caractère, et pour un caractère avec <em>k</em> états possible, il est égal à <span class="math inline">\(k - 1\)</span>. L’indice de cohérence se calcule comme le rapport de l’amplitude <em>m</em> sur le nombre de pas (transformations) <em>s</em> observé pour ce caractère.</p>
+<p><span class="math inline">\(ci = \frac{m}{s}\)</span></p>
+<p>La fonction <code><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI()</a></code> avec l’option <code>sitewise</code> permet d’obtenir l’index de cohérence de chaque caractère d’une matrice phylogénétique. On obtient une valeur <code>NaN</code> quand il y a une division par 0, dans les cas de caractères sans transformation qui présentent le même état dans tous les taxons.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span>, sitewise <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">ci</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 1.0000000       NaN 1.0000000 0.6666667       NaN       NaN       NaN
+  [8]       NaN       NaN       NaN 1.0000000 0.7500000       NaN 1.0000000
+ [15] 1.0000000 1.0000000       NaN       NaN       NaN       NaN 1.0000000
+ [22]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [29]       NaN       NaN       NaN       NaN       NaN 0.5000000 1.0000000
+ [36] 1.0000000       NaN       NaN       NaN       NaN       NaN       NaN
+ [43]       NaN       NaN 1.0000000       NaN 1.0000000       NaN       NaN
+ [50]       NaN 1.0000000       NaN       NaN       NaN 0.3333333 0.5000000
+ [57]       NaN 1.0000000       NaN 1.0000000 1.0000000 1.0000000 1.0000000
+ [64]       NaN 1.0000000 1.0000000       NaN 0.5000000 1.0000000       NaN
+ [71] 1.0000000 0.5000000       NaN       NaN       NaN 0.7500000       NaN
+ [78]       NaN 1.0000000       NaN       NaN       NaN 1.0000000 1.0000000
+ [85] 0.6000000 1.0000000       NaN       NaN       NaN       NaN       NaN
+ [92] 0.7500000       NaN       NaN       NaN 1.0000000       NaN 0.5000000
+ [99]       NaN       NaN       NaN 1.0000000       NaN       NaN       NaN
+[106]       NaN       NaN       NaN       NaN 1.0000000</code></pre>
+</div>
+</div>
+<p>Le nombre d’homoplasies <em>h</em> pour un caractère s’obtient par <span class="math inline">\(h = l - r\)</span>. La valeur de <em>r</em> se calcule avec une fonction cachée de <code>phangorn</code>, et celle de <em>l</em> avec la fonction <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">sankoff()</a></code> et l’option <code>site = "site"</code>. En raison de la manière dont sont traités en interne les caractères de la matrice phylogénétique, il faut jouer avec les index de l’objet <code>PhyDat</code> pour bien récupérer la liste complète des valeurs.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">phangorn</span><span class="fu">:::</span><span class="fu">lowerBound</span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">sankoff</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span>, site <span class="op">=</span> <span class="st">"site"</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="va">s</span> <span class="op">-</span> <span class="va">m</span></span>
+<span><span class="va">h</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0
+ [38] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0
+ [75] 0 1 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 1 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span>
+<span><span class="va">H</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 14</code></pre>
+</div>
+</div>
+<p>On peut alors obtenir le numéro des caractères présentant de l’homoplasie:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">h</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  4 12 34 55 56 68 72 76 85 92 98</code></pre>
+</div>
+</div>
+<p>L’indice de cohérence CI de l’ensemble des caractères est lui le rapport de la somme <em>M</em> des <em>m</em> sur la somme <em>S</em> des <em>s</em> de tous les <em>N</em> caractères.</p>
+<p><span class="math display">\[CI = \frac{M}{S}, M = \sum^N_{i=1} m_i, S = \sum^N_{i=1} s_i\]</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.86</code></pre>
+</div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.86</code></pre>
+</div>
+</div>
+<p><em>S</em> est le nombre total de pas ou longueur de l’arbre. On peut l’obtenir avec la fonction <code><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">sankoff()</a></code> sans option.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100</code></pre>
+</div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">sankoff</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100</code></pre>
+</div>
+</div>
+<p>Cet indice de cohérence est une mesure du degré d’homoplasie des données sur un arbre. Plus le score est bas, plus l’arbre contient d’homoplasie, et une valeur de 1 indique une absence totale d’homoplasie. Les caractères autapomorphiques ont un ci de 1.</p>
+<p>L’indice de cohérence est cependant problématique car sa valeur minimale n’est en fait pas 0, ce qui ne permet donc pas de l’utiliser pour évaluer correctement le degré d’homoplasie.</p>
+<p>Il est possible d’utiliser à la place un indice de cohérence mis à l’échelle (<em>rescaled consistency index</em>, rci) par l’introduction de <em>g</em>, le nombre maximal de transformations pour un caractère, ce qui correspond cas où toutes les transformations auraient lieu sur les branches terminales:</p>
+<p><span class="math display">\[rci = \frac{g-s}{g-m}\frac{m}{s} = \frac{g-s}{g-m}ci\]</span></p>
+<p>Les valeurs de <em>g</em> s’obtient avec une autre fonction cachée de <code>phangorn</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">phangorn</span><span class="fu">:::</span><span class="fu">upperBound</span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">g</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 6 0 1 3 0 0 0 0 0 0 1 5 0 6 1 4 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 3 4 1 0
+ [38] 0 0 0 0 0 0 0 2 0 6 0 0 0 1 0 0 0 4 2 0 4 0 5 6 4 1 0 4 1 0 2 1 0 4 4 0 0
+ [75] 0 5 0 0 3 0 0 0 7 4 6 5 0 0 0 0 0 6 0 0 0 2 0 4 0 0 0 1 0 0 0 0 0 0 0 3</code></pre>
+</div>
+</div>
+<p>Mais il est plus simple de calculer la partie gauche de la formule du rci avec la fonction <code><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span>, sitewise <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span>, sitewise <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">rci</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 1.0000000       NaN       NaN 0.0000000       NaN       NaN       NaN
+  [8]       NaN       NaN       NaN       NaN 0.3750000       NaN 1.0000000
+ [15]       NaN 1.0000000       NaN       NaN       NaN       NaN       NaN
+ [22]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [29]       NaN       NaN       NaN       NaN       NaN 0.2500000 1.0000000
+ [36]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [43]       NaN       NaN 1.0000000       NaN 1.0000000       NaN       NaN
+ [50]       NaN       NaN       NaN       NaN       NaN 0.1111111 0.0000000
+ [57]       NaN 1.0000000       NaN 1.0000000 1.0000000 1.0000000       NaN
+ [64]       NaN 1.0000000       NaN       NaN 0.0000000       NaN       NaN
+ [71] 1.0000000 0.3333333       NaN       NaN       NaN 0.3750000       NaN
+ [78]       NaN 1.0000000       NaN       NaN       NaN 1.0000000 1.0000000
+ [85] 0.2000000 1.0000000       NaN       NaN       NaN       NaN       NaN
+ [92] 0.5000000       NaN       NaN       NaN       NaN       NaN 0.0000000
+ [99]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+[106]       NaN       NaN       NaN       NaN       NaN</code></pre>
+</div>
+</div>
+<p>L’indice de cohérence mis à l’échelle RCI pour l’ensemble des caractères se calcule comme suit:</p>
+<p><span class="math display">\[RCI = \frac{G-S}{G-M}\frac{M}{S}, G = \sum^N_{i=1} g_i\]</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6142857</code></pre>
+</div>
+</div>
+<p>Le coefficient de distortion <em>d</em> d’un caractère est le nombre d’homoplasies observées par rapport au nombre maximal possible.</p>
+<p><span class="math display">\[d = \frac{h}{g - m}\]</span></p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">h</span><span class="op">/</span><span class="op">(</span><span class="va">g</span> <span class="op">-</span> <span class="va">m</span><span class="op">)</span></span>
+<span><span class="va">d</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 0.0000000       NaN       NaN 1.0000000       NaN       NaN       NaN
+  [8]       NaN       NaN       NaN       NaN 0.5000000       NaN 0.0000000
+ [15]       NaN 0.0000000       NaN       NaN       NaN       NaN       NaN
+ [22]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [29]       NaN       NaN       NaN       NaN       NaN 0.5000000 0.0000000
+ [36]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [43]       NaN       NaN 0.0000000       NaN 0.0000000       NaN       NaN
+ [50]       NaN       NaN       NaN       NaN       NaN 0.6666667 1.0000000
+ [57]       NaN 0.0000000       NaN 0.0000000 0.0000000 0.0000000       NaN
+ [64]       NaN 0.0000000       NaN       NaN 1.0000000       NaN       NaN
+ [71] 0.0000000 0.3333333       NaN       NaN       NaN 0.5000000       NaN
+ [78]       NaN 0.0000000       NaN       NaN       NaN 0.0000000 0.0000000
+ [85] 0.6666667 0.0000000       NaN       NaN       NaN       NaN       NaN
+ [92] 0.3333333       NaN       NaN       NaN       NaN       NaN 1.0000000
+ [99]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+[106]       NaN       NaN       NaN       NaN       NaN</code></pre>
+</div>
+</div>
+<p>On peut aussi le calculer pour un ensemble de caractères.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">D</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2857143</code></pre>
+</div>
+</div>
+<p>La partie gauche des formules d’indice de cohérence est lui-même une mesure appelée indice de rétention (<em>retention index</em>, ri, RI). Il s’agit du complément <span class="math inline">\(1 - D\)</span> de l’indice de distorsion <em>D</em>. Il mesure la proportion d’homoplasies possibles mais non observées, ce qui revient à la proportion de synapomorphies possibles effectivement retenues comme telle sur un arbre. Les caractères autapomorphiques ont un ri de 0.</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ri</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span>, sitewise <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">ri</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 1.0000000       NaN       NaN 0.0000000       NaN       NaN       NaN
+  [8]       NaN       NaN       NaN       NaN 0.5000000       NaN 1.0000000
+ [15]       NaN 1.0000000       NaN       NaN       NaN       NaN       NaN
+ [22]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [29]       NaN       NaN       NaN       NaN       NaN 0.5000000 1.0000000
+ [36]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+ [43]       NaN       NaN 1.0000000       NaN 1.0000000       NaN       NaN
+ [50]       NaN       NaN       NaN       NaN       NaN 0.3333333 0.0000000
+ [57]       NaN 1.0000000       NaN 1.0000000 1.0000000 1.0000000       NaN
+ [64]       NaN 1.0000000       NaN       NaN 0.0000000       NaN       NaN
+ [71] 1.0000000 0.6666667       NaN       NaN       NaN 0.5000000       NaN
+ [78]       NaN 1.0000000       NaN       NaN       NaN 1.0000000 1.0000000
+ [85] 0.3333333 1.0000000       NaN       NaN       NaN       NaN       NaN
+ [92] 0.6666667       NaN       NaN       NaN       NaN       NaN 0.0000000
+ [99]       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+[106]       NaN       NaN       NaN       NaN       NaN</code></pre>
+</div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">RI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
+<span><span class="va">RI</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7142857</code></pre>
+</div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="va">D</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7142857</code></pre>
+</div>
+</div>
+<p>Il est ainsi possible de comparer les scores de différents arbres, par exemple celui obtenu par parcimonie et celui obtenu par UPGMA.</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lx_upgma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html">read.tree</a></span><span class="op">(</span><span class="st">"lx_upgma.tree"</span><span class="op">)</span></span>
+<span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">lx_mp_r</span>, <span class="va">lx_upgma</span><span class="op">)</span></span>
+<span><span class="va">nms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MP"</span>, <span class="st">"UPGMA"</span><span class="op">)</span></span>
+<span><span class="va">comp_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">tr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">m_x</span> <span class="op">&lt;-</span> <span class="fu">phangorn</span><span class="fu">:::</span><span class="fu">lowerBound</span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">s_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/parsimony.html">sankoff</a></span><span class="op">(</span><span class="va">tr</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="va">lx_phy</span>, site <span class="op">=</span> <span class="st">"site"</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">lx_phy</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">h_x</span> <span class="op">&lt;-</span> <span class="va">s_x</span> <span class="op">-</span> <span class="va">m_x</span></span>
+<span>  <span class="va">CI_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">CI</a></span><span class="op">(</span><span class="va">tr</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
+<span>  <span class="va">RI_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://klausvigo.github.io/phangorn/reference/CI.html">RI</a></span><span class="op">(</span><span class="va">tr</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="va">lx_phy</span><span class="op">)</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span><span class="va">var</span>, <span class="op">~</span><span class="va">value</span>,</span>
+<span>  <span class="st">"S"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">s_x</span><span class="op">)</span>,</span>
+<span>  <span class="st">"H"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">h_x</span><span class="op">)</span>,</span>
+<span>  <span class="st">"CI"</span>, <span class="va">CI_x</span>,</span>
+<span>  <span class="st">"RCI"</span>, <span class="va">CI_x</span> <span class="op">*</span> <span class="va">RI_x</span>,</span>
+<span>  <span class="st">"RI"</span>, <span class="va">RI_x</span>,</span>
+<span>  <span class="st">"D"</span>, <span class="fl">1</span> <span class="op">-</span> <span class="va">RI_x</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">nms</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>  <span class="va">df</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html">reduce</a></span><span class="op">(</span><span class="va">left_join</span><span class="op">)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["var"],"name":[1],"type":["chr"],"align":["left"]},{"label":["MP"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["UPGMA"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"S","2":"100.00","3":"102.00"},{"1":"H","2":"14.00","3":"16.00"},{"1":"CI","2":"0.86","3":"0.84"},{"1":"RCI","2":"0.61","3":"0.57"},{"1":"RI","2":"0.71","3":"0.67"},{"1":"D","2":"0.29","3":"0.33"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>Les résultats sont similaires, mais, sans surprise, l’arbre obtenu par parcimonie contient moins d’homoplasies et a des meilleurs scores de CI, RCI et RI que celui obtenu par UPGMA.</p>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -770,7 +938,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tpellard/phylolinguistique/issues/new" class="toc-action">Signaler un problème</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item">
