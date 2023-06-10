@@ -136,12 +136,12 @@ lx_delta$delta.bar
 mean(lx_delta$delta.bar)
 ```
 
-Il n'est cependant pas possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction faisant appel à `Hamming()` et laissant le choix de la fonction de calcul du score en prévision de la suite.
+Il n'est cependant pas possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction prennant en entrée une matrice de données et laissant le choix de la fonction de calcul du score en prévision de la suite.
 
 ```{r}
-delta.score2 <- function(x, arg = "mean", f = phangorn:::delta.quartet, ...) {
-  dist.dna <- as.matrix(Hamming(x, ...))
-  all.quartets <- t(combn(names(x), 4))
+delta.score2 <- function(x, arg = "mean", f = phangorn:::delta.quartet) {
+  dist.dna <- as.matrix(x)
+  all.quartets <- t(combn(attributes(x)$Labels, 4))
   delta.values <- apply(
     all.quartets[, ], 1, f,
     dist.dna
@@ -164,10 +164,11 @@ delta.score2 <- function(x, arg = "mean", f = phangorn:::delta.quartet, ...) {
 On peut alors obtenir l'ensemble des score δ et tracer son propre diagramme de distribution.
 ```{r}
 library(ggthemes)
-delta.score2(lx_phy, "all")
-delta.score2(lx_phy, "mean")
-delta.score2(lx_phy, "all") %>% mean()
-delta.score2(lx_phy, "all") %>%
+lx_dist <- Hamming(lx_phy)
+delta.score2(lx_dist, "all")
+delta.score2(lx_dist, "mean")
+delta.score2(lx_dist, "all") %>% mean()
+delta.score2(lx_dist, "all") %>%
   enframe() %>%
   ggplot(aes(x = value)) +
   geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
@@ -177,7 +178,7 @@ delta.score2(lx_phy, "all") %>%
 
 ### Score de résidus *Q*
 
-Un score alternatif calculé comme $(m_1 - m_2)^2$ a également été proposé. On peut reprendre le code de la fonction cachée `phangorn:::delta.quartet` pour définir une nouvelle fonction à passer à notre `delta.score2()`.
+Un score alternatif calculé comme $(m_1 - m_2)^2$ a également été proposé. On peut reprendre le code de la fonction cachée `phangorn:::delta.quartet` pour définir une nouvelle fonction à passer à notre `delta.score2()`. Il est nécessaire de mettre au préalable les distances à l'échelle pour que leur moyenne soit égale à 1.
 
 ```{r}
 qresid.score <- function(quartet, dist.dna) {
@@ -197,8 +198,9 @@ qresid.score <- function(quartet, dist.dna) {
   ret <- (m[1] - m[2])^2
   return(ret)
 }
-delta.score2(lx_phy, "mean", f = qresid.score)
-delta.score2(lx_phy, "all", f = qresid.score) %>%
+lx_dist2 <- lx_dist/mean(lx_dist)
+delta.score2(lx_dist2, "mean", f = qresid.score)
+delta.score2(lx_dist2, "all", f = qresid.score) %>%
   enframe() %>%
   ggplot(aes(x = value)) +
   geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
@@ -208,8 +210,8 @@ delta.score2(lx_phy, "all", f = qresid.score) %>%
 
 On peut ensuite comparer les scores δ et les scores de résidus *Q*.
 ```{r}
-ds <- delta.score2(lx_phy, "all")
-qr <- delta.score2(lx_phy, "all", f = qresid.score)
+ds <- delta.score2(lx_dist, "all")
+qr <- delta.score2(lx_dist2, "all", f = qresid.score)
 tibble(ds, qr) %>%
   ggplot(aes(x = ds, y = qr)) +
   geom_vline(xintercept = mean(ds), linewidth = .4) +
