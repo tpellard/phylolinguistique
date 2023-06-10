@@ -139,20 +139,25 @@ mean(lx_delta$delta.bar)
 Il n'est cependant pas possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction faisant appel à `Hamming()` et laissant le choix de la fonction de calcul du score en prévision de la suite.
 
 ```{r}
-delta.score2 <- function (x, arg = "mean", f = phangorn:::delta.quartet, ...) 
-{
-    dist.dna <- as.matrix(Hamming(x, ...))
-    all.quartets <- t(combn(names(x), 4))
-    delta.values <- apply(all.quartets[, ], 1, f, 
-        dist.dna)
-    if (!arg %in% c("all", "mean", "sd")) 
-        stop("return options are: all, mean, or sd")
-    if (arg == "all") 
-        return(delta.values)
-    if (arg == "mean") 
-        return(mean(delta.values))
-    if (arg == "sd") 
-        return(sd(delta.values))
+delta.score2 <- function(x, arg = "mean", f = phangorn:::delta.quartet, ...) {
+  dist.dna <- as.matrix(Hamming(x, ...))
+  all.quartets <- t(combn(names(x), 4))
+  delta.values <- apply(
+    all.quartets[, ], 1, f,
+    dist.dna
+  )
+  if (!arg %in% c("all", "mean", "sd")) {
+    stop("return options are: all, mean, or sd")
+  }
+  if (arg == "all") {
+    return(delta.values)
+  }
+  if (arg == "mean") {
+    return(mean(delta.values))
+  }
+  if (arg == "sd") {
+    return(sd(delta.values))
+  }
 }
 ```
 
@@ -162,8 +167,8 @@ library(ggthemes)
 delta.score2(lx_phy, "all")
 delta.score2(lx_phy, "mean")
 delta.score2(lx_phy, "all") %>% mean()
-delta.score2(lx_phy, "all") %>% 
-  enframe() %>% 
+delta.score2(lx_phy, "all") %>%
+  enframe() %>%
   ggplot(aes(x = value)) +
   geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
   xlab("δ") +
@@ -175,20 +180,26 @@ delta.score2(lx_phy, "all") %>%
 Un score alternatif calculé comme $(m_1 - m_2)^2$ a également été proposé. On peut reprendre le code de la fonction cachée `phangorn:::delta.quartet` pour définir une nouvelle fonction à passer à notre `delta.score2()`.
 
 ```{r}
-q.resid <- function (quartet, dist.dna) {
-    m1 <- dist.dna[quartet[1], quartet[2]] + dist.dna[quartet[3], 
-        quartet[4]]
-    m2 <- dist.dna[quartet[1], quartet[3]] + dist.dna[quartet[2], 
-        quartet[4]]
-    m3 <- dist.dna[quartet[1], quartet[4]] + dist.dna[quartet[2], 
-        quartet[3]]
-    m <- sort(c(m1, m2, m3), decreasing = TRUE)
-    ret <- (m[1] - m[2])^2
-    return(ret)
+qresid.score <- function(quartet, dist.dna) {
+  m1 <- dist.dna[quartet[1], quartet[2]] + dist.dna[
+    quartet[3],
+    quartet[4]
+  ]
+  m2 <- dist.dna[quartet[1], quartet[3]] + dist.dna[
+    quartet[2],
+    quartet[4]
+  ]
+  m3 <- dist.dna[quartet[1], quartet[4]] + dist.dna[
+    quartet[2],
+    quartet[3]
+  ]
+  m <- sort(c(m1, m2, m3), decreasing = TRUE)
+  ret <- (m[1] - m[2])^2
+  return(ret)
 }
-delta.score2(lx_phy, "mean", f = q.resid)
-delta.score2(lx_phy, "all", f = q.resid) %>% 
-  enframe() %>% 
+delta.score2(lx_phy, "mean", f = qresid.score)
+delta.score2(lx_phy, "all", f = qresid.score) %>%
+  enframe() %>%
   ggplot(aes(x = value)) +
   geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
   xlab("Q-residual") +
@@ -198,12 +209,12 @@ delta.score2(lx_phy, "all", f = q.resid) %>%
 On peut ensuite comparer les scores δ et les scores de résidus *Q*.
 ```{r}
 ds <- delta.score2(lx_phy, "all")
-qr <- delta.score2(lx_phy, "all", f = q.resid)
-tibble(ds, qr) %>% 
-  ggplot(aes(x = ds, y =qr)) +
-  geom_point(color = few_pal("Dark")(2)[2], fill = few_pal("Dark")(2)[2], size = 4, pch = 21, alpha = .5) +
+qr <- delta.score2(lx_phy, "all", f = qresid.score)
+tibble(ds, qr) %>%
+  ggplot(aes(x = ds, y = qr)) +
   geom_vline(xintercept = mean(ds), linewidth = .4) +
   geom_hline(yintercept = mean(qr), linewidth = .4) +
+  geom_point(color = few_pal("Dark")(2)[2], fill = few_pal("Dark")(2)[2], pch = 21, alpha = .5, size = 4) +
   xlab("δ") +
   ylab("Q-residual") +
   theme_minimal()
@@ -211,13 +222,13 @@ tibble(ds, qr) %>%
 
 Les score δ et de résidus *q* globaux sont difficiles à interpréter, mais il est néanmoins possible d'obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c'est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.
 ```{r}
-dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>% 
-  as_tibble() %>% 
-  mutate(ds, qr) %>% 
+dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>%
+  as_tibble() %>%
+  mutate(ds, qr) %>%
   pivot_longer(cols = 1:4, names_to = NULL, values_to = "taxon")
-dsqr_bytaxon_mean <- dsqr_bytaxon %>% 
-  group_by(taxon) %>% 
-  summarise(across(ds:qr, mean)) %>% 
+dsqr_bytaxon_mean <- dsqr_bytaxon %>%
+  group_by(taxon) %>%
+  summarise(across(ds:qr, mean)) %>%
   arrange(ds, qr)
 ```
 
@@ -227,16 +238,16 @@ rmarkdown::paged_table(dsqr_bytaxon_mean)
 ```
 
 ```{r}
-dsqr_bytaxon %>% 
-  ggplot(aes(x = ds, y =qr, color = taxon, fill = taxon)) +
-  geom_point(pch = 21, alpha = .5, size = 4) +
+dsqr_bytaxon %>%
+  ggplot(aes(x = ds, y = qr, color = taxon, fill = taxon)) +
   geom_vline(data = dsqr_bytaxon_mean, aes(xintercept = ds, color = taxon), linewidth = .4) +
   geom_hline(data = dsqr_bytaxon_mean, aes(yintercept = qr, color = taxon), linewidth = .4) +
   geom_vline(xintercept = mean(ds), linewidth = .4, linetype = "dashed") +
   geom_hline(yintercept = mean(qr), linewidth = .4, linetype = "dashed") +
+  geom_point(pch = 21, alpha = .5, size = 4) +
   xlab("δ") +
   ylab("Q-residual") +
-  facet_wrap(~ taxon) +
+  facet_wrap(~taxon) +
   scale_color_ptol() +
   scale_fill_ptol() +
   theme_minimal() +
