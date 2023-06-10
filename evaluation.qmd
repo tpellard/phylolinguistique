@@ -201,7 +201,7 @@ ds <- delta.score2(lx_phy, "all")
 qr <- delta.score2(lx_phy, "all", f = q.resid)
 tibble(ds, qr) %>% 
   ggplot(aes(x = ds, y =qr)) +
-  geom_point(color = few_pal("Dark")(2)[2], fill = few_pal("Dark")(2)[2], size = 3, pch = 21, alpha = .5) +
+  geom_point(color = few_pal("Dark")(2)[2], fill = few_pal("Dark")(2)[2], size = 4, pch = 21, alpha = .5) +
   geom_vline(xintercept = mean(ds), linewidth = .4) +
   geom_hline(yintercept = mean(qr), linewidth = .4) +
   xlab("δ") +
@@ -229,7 +229,7 @@ rmarkdown::paged_table(dsqr_bytaxon_mean)
 ```{r}
 dsqr_bytaxon %>% 
   ggplot(aes(x = ds, y =qr, color = taxon, fill = taxon)) +
-  geom_point(pch = 21, alpha = .5) +
+  geom_point(pch = 21, alpha = .5, size = 4) +
   geom_vline(data = dsqr_bytaxon_mean, aes(xintercept = ds, color = taxon), linewidth = .4) +
   geom_hline(data = dsqr_bytaxon_mean, aes(yintercept = qr, color = taxon), linewidth = .4) +
   geom_vline(xintercept = mean(ds), linewidth = .4, linetype = "dashed") +
