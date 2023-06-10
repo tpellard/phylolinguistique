@@ -504,7 +504,7 @@ $delta.bar
 <p><img src="evaluation_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="2100"></p>
 </div>
 </div>
-<p>Les score δ et de résidus <em>q</em> globaux sont difficiles à interpréter, mais il est néanmoins possible d’obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c’est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.</p>
+<p>Les score δ et de résidus <em>Q</em> globaux sont difficiles à interpréter, mais il est néanmoins possible d’obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c’est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.</p>
 <div class="cell">
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dsqr_bytaxon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">lx_phy</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>

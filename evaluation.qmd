@@ -222,7 +222,7 @@ tibble(ds, qr) %>%
   theme_minimal()
 ```
 
-Les score δ et de résidus *q* globaux sont difficiles à interpréter, mais il est néanmoins possible d'obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c'est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.
+Les score δ et de résidus *Q* globaux sont difficiles à interpréter, mais il est néanmoins possible d'obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c'est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.
 ```{r}
 dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>%
   as_tibble() %>%
