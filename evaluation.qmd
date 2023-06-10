@@ -1,4 +1,4 @@
-# Évaluation des résultats
+# Évaluation et exploration
 
 ## Évaluation de la stabilité des clades
 
@@ -136,7 +136,7 @@ lx_delta$delta.bar
 mean(lx_delta$delta.bar)
 ```
 
-Il n'est cependant possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction faisant appel à `Hamming()` et laissant le choix de la fonction de calcul du score en prévision de la suite.
+Il n'est cependant pas possible de récupérer l'ensemble des scores pour les différents quartets. Il faut pour cela utiliser la fonction `delta.score()` de `phangorn`, qui a le désavantage d'utiliser `dist.hamming()` en interne à la place de `Hamming()`. On peut cependant copier le code de la fonction `delta.score()` pour créer une nouvelle fonction faisant appel à `Hamming()` et laissant le choix de la fonction de calcul du score en prévision de la suite.
 
 ```{r}
 delta.score2 <- function (x, arg = "mean", f = phangorn:::delta.quartet, ...) 
@@ -158,13 +158,14 @@ delta.score2 <- function (x, arg = "mean", f = phangorn:::delta.quartet, ...)
 
 On peut alors obtenir l'ensemble des score δ et tracer son propre diagramme de distribution.
 ```{r}
+library(ggthemes)
 delta.score2(lx_phy, "all")
 delta.score2(lx_phy, "mean")
 delta.score2(lx_phy, "all") %>% mean()
 delta.score2(lx_phy, "all") %>% 
   enframe() %>% 
   ggplot(aes(x = value)) +
-  geom_density(fill = "lightgray") +
+  geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
   xlab("δ") +
   theme_minimal()
 ```
@@ -189,7 +190,7 @@ delta.score2(lx_phy, "mean", f = q.resid)
 delta.score2(lx_phy, "all", f = q.resid) %>% 
   enframe() %>% 
   ggplot(aes(x = value)) +
-  geom_density(fill = "lightgray") +
+  geom_density(fill = few_pal("Medium")(2)[1], color = few_pal("Dark")(2)[1]) +
   xlab("Q-residual") +
   theme_minimal()
 ```
@@ -200,15 +201,15 @@ ds <- delta.score2(lx_phy, "all")
 qr <- delta.score2(lx_phy, "all", f = q.resid)
 tibble(ds, qr) %>% 
   ggplot(aes(x = ds, y =qr)) +
-  geom_point(color = "darkorange") +
-  geom_vline(xintercept = mean(ds)) +
-  geom_hline(yintercept = mean(qr)) +
+  geom_point(color = few_pal("Dark")(2)[2], fill = few_pal("Dark")(2)[2], size = 3, pch = 21, alpha = .5) +
+  geom_vline(xintercept = mean(ds), linewidth = .4) +
+  geom_hline(yintercept = mean(qr), linewidth = .4) +
   xlab("δ") +
   ylab("Q-residual") +
   theme_minimal()
 ```
 
-On peut obtenir également les scores pour chaque taxon.
+Les score δ et de résidus *q* globaux sont difficiles à interpréter, mais il est néanmoins possible d'obtenir les scores pour chaque taxon et de comparer ces scores entre taxons. On constate que c'est le taxon Jaune qui a les plus mauvais scores et qui est donc le plus problématique.
 ```{r}
 dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>% 
   as_tibble() %>% 
@@ -216,25 +217,29 @@ dsqr_bytaxon <- t(combn(names(lx_phy), 4)) %>%
   pivot_longer(cols = 1:4, names_to = NULL, values_to = "taxon")
 dsqr_bytaxon_mean <- dsqr_bytaxon %>% 
   group_by(taxon) %>% 
-  summarise(across(ds:qr, mean))
+  summarise(across(ds:qr, mean)) %>% 
+  arrange(ds, qr)
 ```
 
 ```{r}
 #| echo: false
-rmarkdown::paged_table(dsqr_bytaxon)
 rmarkdown::paged_table(dsqr_bytaxon_mean)
 ```
 
 ```{r}
 dsqr_bytaxon %>% 
-  ggplot(aes(x = ds, y =qr, color = taxon)) +
-  geom_point() +
-  geom_vline(xintercept = mean(ds)) +
-  geom_hline(yintercept = mean(qr)) +
+  ggplot(aes(x = ds, y =qr, color = taxon, fill = taxon)) +
+  geom_point(pch = 21, alpha = .5) +
+  geom_vline(data = dsqr_bytaxon_mean, aes(xintercept = ds, color = taxon), linewidth = .4) +
+  geom_hline(data = dsqr_bytaxon_mean, aes(yintercept = qr, color = taxon), linewidth = .4) +
+  geom_vline(xintercept = mean(ds), linewidth = .4, linetype = "dashed") +
+  geom_hline(yintercept = mean(qr), linewidth = .4, linetype = "dashed") +
   xlab("δ") +
   ylab("Q-residual") +
   facet_wrap(~ taxon) +
-  ggthemes::scale_color_ptol() +
-  theme_minimal()
+  scale_color_ptol() +
+  scale_fill_ptol() +
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
