@@ -244,7 +244,7 @@ dsqr_bytaxon %>%
   geom_hline(data = dsqr_bytaxon_mean, aes(yintercept = qr, color = taxon), linewidth = .4) +
   geom_vline(xintercept = mean(ds), linewidth = .4, linetype = "dashed") +
   geom_hline(yintercept = mean(qr), linewidth = .4, linetype = "dashed") +
-  geom_point(pch = 21, alpha = .5, size = 4) +
+  geom_point(pch = 21, alpha = .5, size = 3) +
   xlab("δ") +
   ylab("Q-residual") +
   facet_wrap(~taxon) +
