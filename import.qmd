@@ -166,9 +166,10 @@ lx_bin <- lx %>%
   pivot_longer(cols = !(CONCEPTID | COGIDS), names_to = "DOCULECT", values_to = "VALUE") %>%
   mutate(VALUE = as.character(VALUE)) %>%
   group_by(CONCEPTID, DOCULECT) %>%
-  mutate(allzero = (sum(VALUE != "0") == 0)) |> 
-  rowwise() |> 
-  mutate(VALUE = ifelse(allzero, "?", VALUE)) %>%  ungroup() %>%
+  mutate(allzero = sum(VALUE != "0") == 0) %>% 
+  rowwise() %>% 
+  mutate(VALUE = ifelse(allzero, "?", VALUE)) %>%  
+  ungroup() %>%
   mutate(id = paste0(CONCEPTID, "_", COGIDS)) %>%
   select(DOCULECT, id, VALUE) %>%
   pivot_wider(
